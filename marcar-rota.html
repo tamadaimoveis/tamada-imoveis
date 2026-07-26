@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marcar rota — Tamada</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#0e0b0a;font-family:system-ui,Arial,sans-serif}
+  .hero{position:relative;width:100vw;height:100vh;overflow:hidden;cursor:crosshair}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center}
+  .hero svg{position:absolute;inset:0;width:100%;height:100%}
+  .bar{position:fixed;left:12px;top:12px;z-index:10;background:rgba(0,0,0,.82);color:#fff;padding:14px 16px;border-radius:10px;max-width:340px;font-size:13px;line-height:1.5}
+  .bar b{color:#ff6b6b}
+  .bar button{margin:8px 6px 0 0;padding:8px 12px;border:0;border-radius:6px;cursor:pointer;font-weight:700;font-size:12px}
+  #copy{background:#e33;color:#fff}
+  #undo,#clear{background:#444;color:#fff}
+  textarea{width:100%;height:64px;margin-top:8px;background:#111;color:#7CFC98;border:1px solid #333;border-radius:6px;font-family:monospace;font-size:10px;padding:6px}
+  #status{color:#7CFC98;font-size:12px;margin-top:6px;min-height:16px}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div><b>Clique ao longo da avenida</b>, de baixo pra cima, seguindo o caminho que a linha deve fazer. 6 a 12 cliques (inclua o ponto final, onde o pin deve ficar).</div>
+  <button id="copy">Copiar pontos</button>
+  <button id="undo">Desfazer</button>
+  <button id="clear">Limpar</button>
+  <textarea id="out" readonly placeholder="Os pontos aparecem aqui..."></textarea>
+  <div id="status"></div>
+</div>
+
+<div class="hero" id="hero">
+  <img src="assets/images/hero-cidade.jpg" alt="">
+  <svg id="overlay" viewBox="0 0 1344 768" preserveAspectRatio="xMidYMid slice" fill="none">
+    <path id="preview" stroke="#ff2f36" stroke-width="3" stroke-linecap="round"/>
+    <g id="dots"></g>
+  </svg>
+</div>
+
+<script>
+  const svg = document.getElementById('overlay');
+  const preview = document.getElementById('preview');
+  const dots = document.getElementById('dots');
+  const out = document.getElementById('out');
+  const status = document.getElementById('status');
+  let pts = [];
+
+  function toViewBox(clientX, clientY){
+    const p = new DOMPoint(clientX, clientY).matrixTransform(svg.getScreenCTM().inverse());
+    return [Math.round(p.x*10)/10, Math.round(p.y*10)/10];
+  }
+
+  function redraw(){
+    dots.innerHTML = pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#fff" stroke="#ff2f36" stroke-width="2"/>`).join('');
+    if(pts.length>1){
+      // Catmull-Rom -> bezier suave passando pelos pontos
+      const P = pts;
+      let d = `M${P[0][0]} ${P[0][1]}`;
+      for(let i=0;i<P.length-1;i++){
+        const p0=P[Math.max(0,i-1)], p1=P[i], p2=P[i+1], p3=P[Math.min(P.length-1,i+2)];
+        const c1=[p1[0]+(p2[0]-p0[0])/6, p1[1]+(p2[1]-p0[1])/6];
+        const c2=[p2[0]-(p3[0]-p1[0])/6, p2[1]-(p3[1]-p1[1])/6];
+        d += ` C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0]} ${p2[1]}`;
+      }
+      preview.setAttribute('d', d);
+    } else {
+      preview.removeAttribute('d');
+    }
+    out.value = JSON.stringify(pts);
+  }
+
+  document.getElementById('hero').addEventListener('click', e=>{
+    if(e.target.closest('.bar')) return;
+    pts.push(toViewBox(e.clientX, e.clientY));
+    redraw();
+    status.textContent = pts.length + ' ponto(s)';
+  });
+
+  document.getElementById('undo').onclick = ()=>{ pts.pop(); redraw(); status.textContent = pts.length + ' ponto(s)'; };
+  document.getElementById('clear').onclick = ()=>{ pts = []; redraw(); status.textContent = ''; };
+  document.getElementById('copy').onclick = async ()=>{
+    out.select();
+    try{ await navigator.clipboard.writeText(out.value); status.textContent = '✓ Copiado! Cola no chat.'; }
+    catch(_){ document.execCommand('copy'); status.textContent = '✓ Copiado (fallback)! Cola no chat.'; }
+  };
+</script>
+</body>
+</html>

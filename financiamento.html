@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Simule seu financiamento imobiliário com a Tamada — compare taxas dos principais bancos e do Minha Casa Minha Vida.">
+  <meta name="theme-color" content="#b21218">
+  <title>Simular financiamento — Tamada Imóveis</title>
+  <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/images/hero-financiamento.jpg" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="imoveis.css?v=16">
+  <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
+<body class="catalog-page finance-page">
+  <a class="skip-link" href="#simulador">Pular para o simulador</a>
+  <div class="page-grain" aria-hidden="true"></div>
+
+  <div class="utility-bar">
+    <div class="shell utility-inner">
+      <p><span class="live-dot"></span> Atendimento local em São Paulo e região</p>
+      <div>
+        <a href="tel:01126822320"><iconify-icon icon="solar:phone-linear"></iconify-icon> (11) 2682-2320</a>
+        <span class="utility-separator"></span>
+        <a href="https://wa.me/5511965935749" target="_blank" rel="noopener"><iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon> WhatsApp</a>
+        <span class="creci">CRECI 21745-J</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header catalog-header" id="siteHeader">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"></a>
+      <nav class="desktop-nav" aria-label="Navegação principal">
+        <details class="nav-dropdown">
+          <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a href="imoveis.html?purpose=sale">Todos à venda</a>
+            <a href="imoveis.html?purpose=sale&amp;type=HOUSE">Casas</a>
+            <a href="imoveis.html?purpose=sale&amp;type=TWO_STORY_HOUSE">Sobrados</a>
+            <a href="imoveis.html?purpose=sale&amp;type=APARTMENT">Apartamentos</a>
+            <a href="imoveis.html?purpose=sale&amp;type=LAND">Terrenos</a>
+            <a href="imoveis.html?purpose=sale&amp;commercial=1">Comerciais</a>
+          </div>
+        </details>
+        <details class="nav-dropdown">
+          <summary>Alugar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a href="imoveis.html?purpose=rent">Todos para alugar</a>
+            <a href="imoveis.html?purpose=rent&amp;type=HOUSE">Casas</a>
+            <a href="imoveis.html?purpose=rent&amp;type=TWO_STORY_HOUSE">Sobrados</a>
+            <a href="imoveis.html?purpose=rent&amp;type=APARTMENT">Apartamentos</a>
+            <a href="imoveis.html?purpose=rent&amp;commercial=1">Comerciais</a>
+          </div>
+        </details>
+        <details class="nav-dropdown active">
+          <summary>Serviços <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a href="anuncie.html">Anuncie seu imóvel</a>
+            <a href="https://www.tamadaimoveis.com.br/encomende-seu-imovel-compra-ou-locacao" target="_blank" rel="noopener">Encomende seu imóvel</a>
+            <a href="https://www.tamadaimoveis.com.br/avalie-seu-corretor" target="_blank" rel="noopener">Avalie seu corretor</a>
+            <a class="active" href="financiamento.html">Financiamento</a>
+            <a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a>
+            <a href="https://tmdconsultoriai.superlogica.net/clients/areadofornecedor" target="_blank" rel="noopener">Extrato do proprietário</a>
+          </div>
+        </details>
+        <details class="nav-dropdown">
+          <summary>Institucional <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a href="index.html#sobre">A Tamada</a>
+            <a href="https://www.tamadaimoveis.com.br/trabalhe-conosco" target="_blank" rel="noopener">Trabalhe conosco</a>
+            <a href="https://www.tamadaimoveis.com.br/leis-do-inquilinato" target="_blank" rel="noopener">Leis do Inquilinato</a>
+            <a href="https://www.tamadaimoveis.com.br/fale-conosco" target="_blank" rel="noopener">Dúvidas e reclamações</a>
+          </div>
+        </details>
+      </nav>
+      <div class="header-actions">
+        <a class="button button-ghost header-search" href="imoveis.html"><iconify-icon icon="solar:magnifer-linear"></iconify-icon><span>Ver catálogo</span></a>
+        <a class="button button-red" href="#simulador"><span>Simular agora</span><iconify-icon icon="solar:arrow-down-linear"></iconify-icon></a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-number">SIMULAR<br>FINANCIAMENTO</div>
+    <nav aria-label="Navegação móvel">
+      <a href="index.html"><span>00</span> Início</a>
+      <a href="imoveis.html?purpose=sale"><span>01</span> Comprar</a>
+      <a href="imoveis.html?purpose=rent"><span>02</span> Alugar</a>
+      <a href="anuncie.html"><span>03</span> Anuncie</a>
+      <a href="financiamento.html"><span>04</span> Financiamento</a>
+      <a href="index.html#sobre"><span>05</span> Institucional</a>
+    </nav>
+    <a class="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
+  </div>
+
+  <main id="financeContent">
+    <section class="catalog-hero">
+      <div class="catalog-hero-media" aria-hidden="true"><img src="assets/images/hero-financiamento.jpg" alt="" fetchpriority="high"></div>
+      <div class="catalog-hero-scrim" aria-hidden="true"></div>
+      <div class="shell">
+        <nav class="breadcrumbs" aria-label="Navegação estrutural"><a href="index.html">Início</a><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon><span>Financiamento</span></nav>
+        <div class="catalog-hero-grid">
+          <div>
+            <p class="eyebrow"><span></span> <span>Simulação de financiamento</span></p>
+            <h1>Descubra a parcela<br><em>que cabe no seu bolso.</em></h1>
+          </div>
+          <div class="catalog-hero-aside">
+            <p>Compare as taxas dos principais bancos e do Minha Casa Minha Vida em segundos. Sem compromisso e sem custo.</p>
+            <div class="announce-hero-actions">
+              <a class="button button-red button-large magnetic" href="#simulador"><span>Fazer minha simulação</span><iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carrossel de bancos -->
+    <section class="bank-strip" aria-label="Bancos parceiros">
+      <div class="shell bank-strip-head">
+        <span>Trabalhamos com os principais bancos do país</span>
+      </div>
+      <div class="bank-marquee" aria-hidden="true">
+        <div class="bank-track" id="bankTrack"></div>
+      </div>
+    </section>
+
+    <!-- Simulador -->
+    <section class="section finance-sim-section" id="simulador">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow"><span></span> Simulador</p><h2>Simule em<br><em>3 passos.</em></h2></div>
+          <p>Informe o valor do imóvel, a entrada e sua renda. A gente calcula a parcela em cada banco e verifica se você tem direito ao Minha Casa Minha Vida.</p>
+        </div>
+        <div class="finance-sim" id="financeSim"></div>
+      </div>
+    </section>
+
+    <section class="section finance-help">
+      <div class="shell finance-help-grid">
+        <div class="finance-help-copy reveal">
+          <p class="eyebrow"><span></span> Como funciona</p>
+          <h2>Um corretor<br><em>faz o resto.</em></h2>
+          <p>A simulação é uma estimativa. Cada banco tem análise de crédito própria e o subsídio do MCMV depende do seu perfil. Nossa equipe faz a análise real, cuida da documentação e acompanha até a assinatura.</p>
+        </div>
+        <ul class="finance-help-list reveal reveal-delay-1">
+          <li><iconify-icon icon="solar:check-circle-linear"></iconify-icon> Comparação com Caixa, Itaú, Bradesco, Santander e mais</li>
+          <li><iconify-icon icon="solar:check-circle-linear"></iconify-icon> Verificação automática do Minha Casa Minha Vida</li>
+          <li><iconify-icon icon="solar:check-circle-linear"></iconify-icon> Pode usar o FGTS como parte da entrada</li>
+          <li><iconify-icon icon="solar:check-circle-linear"></iconify-icon> Atendimento humano, sem custo pra simular</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer catalog-footer">
+    <div class="shell footer-top">
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <div class="footer-columns">
+        <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
+        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="financiamento.html">Simular financiamento</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="https://www.tamadaimoveis.com.br/trabalhe-conosco" target="_blank" rel="noopener">Trabalhe conosco</a></div>
+        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511966378282" target="_blank" rel="noopener">Locação e proprietários</a><a href="index.html#sobre">A Tamada</a></div>
+      </div>
+    </div>
+    <div class="shell footer-bottom"><p>© <span id="currentYear"></span> Tamada Imóveis · CRECI 21745-J</p><a href="index.html">Voltar ao início <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+  </footer>
+
+  <a class="floating-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
+
+  <script src="nav-dropdown.js"></script>
+  <script src="financiamento.js"></script>
+</body>
+</html>
