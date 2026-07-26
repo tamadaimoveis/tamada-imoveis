@@ -14,7 +14,7 @@
     let progress = window.scrollY / REVEAL_DISTANCE;
     progress = Math.min(1, Math.max(0, progress));
 
-    img.style.clipPath = `inset(${(1 - progress) * 100}% 0 0 0)`;
+    img.style.clipPath = `inset(0 0 ${(1 - progress) * 100}% 0)`;
     copy.style.opacity = progress;
     copy.style.transform = `translateY(${(1 - progress) * 40}px)`;
 
