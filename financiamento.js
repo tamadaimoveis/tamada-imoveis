@@ -239,38 +239,5 @@ function buildMarquee() {
   track.innerHTML = one + one; // duas cópias = loop contínuo
 }
 
-// Menu mobile
-const menuToggle = document.querySelector('#menuToggle');
-const mobileMenu = document.querySelector('#mobileMenu');
-menuToggle.addEventListener('click', () => {
-  const open = mobileMenu.classList.toggle('open');
-  menuToggle.classList.toggle('open', open);
-  menuToggle.setAttribute('aria-expanded', String(open));
-  mobileMenu.setAttribute('aria-hidden', String(!open));
-  document.body.classList.toggle('menu-open', open);
-});
-mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  mobileMenu.classList.remove('open'); menuToggle.classList.remove('open'); document.body.classList.remove('menu-open');
-}));
-
-// Header scroll
-const header = document.querySelector('#siteHeader');
-const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 90);
-onScroll();
-window.addEventListener('scroll', onScroll, { passive: true });
-
-// Reveal + magnetic
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
-}, { threshold: .12, rootMargin: '0px 0px -40px' });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-if (window.matchMedia('(pointer:fine)').matches) {
-  document.querySelectorAll('.magnetic').forEach(el => {
-    el.addEventListener('pointermove', e => { const r = el.getBoundingClientRect(); el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .08}px, ${(e.clientY - r.top - r.height / 2) * .1}px)`; });
-    el.addEventListener('pointerleave', () => { el.style.transform = ''; });
-  });
-}
-
 buildMarquee();
 render();
-document.querySelector('#currentYear').textContent = new Date().getFullYear();

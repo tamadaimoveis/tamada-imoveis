@@ -399,15 +399,6 @@ document.querySelector('#focusFilters').addEventListener('click', () => {
   if (innerWidth <= 900) toggleFilters(true); else document.querySelector('#catalogSearch').scrollIntoView({ behavior: 'smooth' });
 });
 
-const menuToggle = document.querySelector('#menuToggle');
-const mobileMenu = document.querySelector('#mobileMenu');
-menuToggle.addEventListener('click', () => {
-  const open = !mobileMenu.classList.contains('open');
-  menuToggle.classList.toggle('open', open); mobileMenu.classList.toggle('open', open);
-  menuToggle.setAttribute('aria-expanded', String(open)); mobileMenu.setAttribute('aria-hidden', String(!open)); document.body.classList.toggle('menu-open', open);
-});
-
-document.querySelector('#currentYear').textContent = new Date().getFullYear();
 syncControls();
 switchView(state.view);
 
@@ -421,9 +412,3 @@ if (purposeScroller) {
   window.addEventListener('resize', updateScrollFade);
   updateScrollFade();
 }
-
-// Header transparente sobre a hero -> sólido/fixo ao rolar (padrão da home)
-const siteHeader = document.querySelector('#siteHeader');
-const onHeaderScroll = () => siteHeader.classList.toggle('scrolled', window.scrollY > 90);
-onHeaderScroll();
-window.addEventListener('scroll', onHeaderScroll, { passive: true });

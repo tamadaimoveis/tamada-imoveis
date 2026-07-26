@@ -367,22 +367,10 @@ function render(property) {
   }, { threshold: .2 });
   chips.forEach(chip => chipObserver.observe(chip));
 
-  // reveal nos blocos + magnetic nos CTAs (reusa o CSS/JS do design system)
+  // reveal nos blocos + magnetic nos CTAs (initReveal/initMagnetic vêm de common.js)
   document.querySelectorAll('.detail-block, .detail-contact-card, .section-heading').forEach(el => el.classList.add('reveal'));
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
-  }, { threshold: .12, rootMargin: '0px 0px -40px' });
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-  if (window.matchMedia('(pointer:fine)').matches) {
-    document.querySelectorAll('.magnetic').forEach(el => {
-      el.addEventListener('pointermove', e => {
-        const r = el.getBoundingClientRect();
-        el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .08}px, ${(e.clientY - r.top - r.height / 2) * .1}px)`;
-      });
-      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
-    });
-  }
+  initReveal();
+  initMagnetic();
 
   const similar = pickSimilar(property);
   if (similar.length) document.querySelector('#similarGrid').innerHTML = similar.map(similarCard).join('');
@@ -404,20 +392,3 @@ else {
   document.title = 'Imóvel não encontrado — Tamada Imóveis';
   document.querySelector('#detailNotFound').hidden = false;
 }
-
-const menuToggle = document.querySelector('#menuToggle');
-const mobileMenu = document.querySelector('#mobileMenu');
-menuToggle.addEventListener('click', () => {
-  const open = mobileMenu.classList.toggle('open');
-  menuToggle.classList.toggle('open', open);
-  menuToggle.setAttribute('aria-expanded', String(open));
-  mobileMenu.setAttribute('aria-hidden', String(!open));
-  document.body.classList.toggle('menu-open', open);
-});
-
-const header = document.querySelector('#siteHeader');
-const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
-onScroll();
-window.addEventListener('scroll', onScroll, { passive: true });
-
-document.querySelector('#currentYear').textContent = new Date().getFullYear();
