@@ -1,5 +1,28 @@
-/* sobre.js — lightbox da galeria "Nosso espaço" (array fixo, sem lógica de catálogo).
+/* sobre.js — lightbox da galeria "Nosso espaço" (array fixo, sem lógica de catálogo)
+   + reveal ligado ao scroll na transição hero -> "Quem somos" (some a foto/texto no topo,
+   preenche conforme rola, acomoda quando termina — só nessa seção, o resto usa .reveal normal).
    Menu/scroll/reveal/magnetic/ano vêm de common.js. */
+
+(() => {
+  const section = document.querySelector('#heroTransition');
+  if (!section) return;
+  const img = section.querySelector('.about-image');
+  const copy = section.querySelector('.about-copy');
+
+  const REVEAL_DISTANCE = 550; // px de scroll ate revelar 100% — carrega em branco (scrollY=0 => progresso 0)
+  const onScroll = () => {
+    let progress = window.scrollY / REVEAL_DISTANCE;
+    progress = Math.min(1, Math.max(0, progress));
+
+    img.style.clipPath = `inset(${(1 - progress) * 100}% 0 0 0)`;
+    copy.style.opacity = progress;
+    copy.style.transform = `translateY(${(1 - progress) * 40}px)`;
+
+    if (progress >= 1) window.removeEventListener('scroll', onScroll);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
 
 const SPACE_PHOTOS = [
   { src: 'assets/images/space-sobre-1.jpg', alt: 'Fachada do escritório Tamada Imóveis' },
