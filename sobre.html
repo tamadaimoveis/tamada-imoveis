@@ -8,12 +8,13 @@
   <title>A Tamada — Tamada Imóveis</title>
   <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/images/hero-sobre.jpg" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="styles.css?v=18">
-  <link rel="stylesheet" href="imoveis.css?v=18">
+  <link rel="preload" href="assets/images/tamada-hero-poster.jpg" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="imoveis.css?v=33">
+  <link rel="stylesheet" href="hero-video.css?v=6">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
-<body class="catalog-page">
+<body class="catalog-page video-hero-page">
   <a class="skip-link" href="#sobreContent">Pular para o conteúdo</a>
   <div class="page-grain" aria-hidden="true"></div>
 
@@ -31,7 +32,7 @@
 
   <header class="site-header catalog-header" id="siteHeader">
     <div class="shell header-inner">
-      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"></a>
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown">
           <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
@@ -59,9 +60,6 @@
           <summary>Serviços <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
           <div>
             <a href="anuncie.html">Anuncie seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/encomende-seu-imovel-compra-ou-locacao" target="_blank" rel="noopener">Encomende seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/avalie-seu-corretor" target="_blank" rel="noopener">Avalie seu corretor</a>
-            <a href="financiamento.html">Financiamento</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadofornecedor" target="_blank" rel="noopener">Extrato do proprietário</a>
           </div>
@@ -91,26 +89,36 @@
       <a href="imoveis.html?purpose=sale"><span>01</span> Comprar</a>
       <a href="imoveis.html?purpose=rent"><span>02</span> Alugar</a>
       <a href="anuncie.html"><span>03</span> Anuncie</a>
-      <a href="financiamento.html"><span>04</span> Financiamento</a>
-      <a href="sobre.html"><span>05</span> Institucional</a>
+      <a href="sobre.html"><span>04</span> Institucional</a>
     </nav>
     <a class="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
   </div>
 
   <main id="sobreContent">
-    <section class="catalog-hero">
-      <div class="catalog-hero-media" aria-hidden="true"><img src="assets/images/hero-sobre.jpg" alt="" fetchpriority="high"></div>
+    <!-- Hero em vídeo: três tomadas da sede (fachada 32s→41s, interior 51s→56s acelerado,
+         parede com o logo 60s→63,3s), 14s em loop com o fim fundido no começo para não dar
+         salto. autoplay exige muted + playsinline. A imagem embaixo é pôster real: cobre o
+         carregamento e fica de vez se o vídeo falhar. Escurecimento e saturação são calibrados
+         em hero-video.css, não queimados no arquivo. -->
+    <section class="catalog-hero hero-video">
+      <div class="catalog-hero-media" aria-hidden="true">
+        <img src="assets/images/tamada-hero-poster.jpg" alt="" fetchpriority="high">
+        <video autoplay muted loop playsinline preload="auto" poster="assets/images/tamada-hero-poster.jpg">
+          <source src="assets/video/tamada-hero-mobile.mp4" type="video/mp4" media="(max-width:860px)">
+          <source src="assets/video/tamada-hero.mp4" type="video/mp4">
+        </video>
+      </div>
       <div class="catalog-hero-scrim" aria-hidden="true"></div>
       <div class="shell">
         <nav class="breadcrumbs" aria-label="Navegação estrutural"><a href="index.html">Início</a><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon><span>A Tamada</span></nav>
         <div class="catalog-hero-grid">
           <div>
             <p class="eyebrow"><span></span> <span>Institucional</span></p>
-            <h1>A imobiliária<br><em>do seu bairro.</em></h1>
+            <h1>Vinte anos<br><em>na mesma esquina.</em></h1>
           </div>
           <div class="catalog-hero-aside">
-            <p>Venda, locação e administração de imóveis em São Paulo e região — com gente que conhece a rua, o prédio e o vizinho.</p>
-            <dl><div><dt>93</dt><dd>imóveis locais</dd></div><div><dt>12</dt><dd>regiões em destaque</dd></div><div><dt>01</dt><dd>atendimento próximo</dd></div></dl>
+            <p>Sede própria em São Paulo, equipe que atua nas mesmas ruas há duas décadas e atendimento presencial de verdade — da primeira visita à entrega das chaves.</p>
+            <dl><div><dt>20</dt><dd>anos de sede própria</dd></div><div><dt>93</dt><dd>imóveis locais</dd></div><div><dt>12</dt><dd>regiões em destaque</dd></div></dl>
           </div>
         </div>
       </div>
@@ -118,7 +126,7 @@
 
     <section class="about-section section" id="heroTransition">
       <div class="about-image scroll-fill" style="clip-path:inset(0 0 100% 0)"><img src="assets/images/about-sobre-1.jpg" alt="Recepção da Tamada Imóveis"><span>Atendimento humano<br>do primeiro contato à chave</span></div>
-      <div class="about-copy scroll-fill" style="opacity:0;transform:translateY(40px)">
+      <div class="about-copy scroll-fill">
         <p class="eyebrow"><span>01</span> Quem somos</p>
         <h2>Uma imobiliária<br><em>que conhece a rua.</em></h2>
         <p>A Tamada nasceu perto de casa — e continua assim. Trabalhamos venda, locação e administração de imóveis com uma equipe que atua na mesma região há anos, entende os bairros de verdade e trata cada negócio com a atenção que ele merece, do primeiro contato à entrega das chaves.</p>
@@ -126,14 +134,14 @@
       </div>
     </section>
 
-    <section class="about-section section">
+    <section class="about-section section" id="valuesTransition">
       <div class="about-copy reveal">
         <p class="eyebrow"><span>02</span> Nossos valores</p>
         <h2>Transparência<br><em>em cada negociação.</em></h2>
         <p>Preço justo, contrato claro e nada de letra miúda. Você entende cada etapa do negócio antes de assinar — e continua acompanhado depois, seja como comprador, locatário ou proprietário.</p>
         <p>Atuamos sempre dentro da lei e da ética do mercado imobiliário, com registro CRECI e responsabilidade em cada etapa do processo.</p>
       </div>
-      <div class="about-image reveal"><img src="assets/images/about-sobre-2.jpg" alt="Chave e mapa de bairro sobre mesa de madeira" loading="lazy"><span>Do contrato<br>à entrega das chaves</span></div>
+      <div class="about-image scroll-fill" style="clip-path:inset(0 0 100% 0)"><img src="assets/images/about-sobre-2.jpg" alt="Chave e mapa de bairro sobre mesa de madeira" loading="lazy"><span>Do contrato<br>à entrega das chaves</span></div>
     </section>
 
     <section class="announce-benefits section">
@@ -203,17 +211,17 @@
 
   <footer class="site-footer catalog-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
-        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="financiamento.html">Financiamento</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
-        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511966378282" target="_blank" rel="noopener">Locação e proprietários</a><a href="sobre.html">A Tamada</a></div>
+        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
+        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">Locação e proprietários</a><a href="sobre.html">A Tamada</a></div>
       </div>
     </div>
     <div class="shell footer-bottom"><p>© <span id="currentYear"></span> Tamada Imóveis · CRECI 21745-J</p><a href="index.html">Voltar ao início <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
   </footer>
 
-  <a class="floating-whatsapp" href="https://wa.me/5511966378282" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
+  <a class="floating-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
 
   <!-- Lightbox pro: foto em tela cheia + controles + miniaturas (mesmo componente do imovel.html) -->
   <div class="lightbox" id="lightbox" hidden aria-modal="true" role="dialog" aria-label="Galeria do espaço Tamada">
@@ -235,8 +243,11 @@
     <div class="lightbox-thumbs" id="lbThumbs"></div>
   </div>
 
-  <script src="nav-dropdown.js"></script>
-  <script src="common.js"></script>
-  <script src="sobre.js"></script>
+  <script src="nav-dropdown.js?v=32"></script>
+  <script src="common.js?v=32"></script>
+  <!-- Só nesta página: dá o scrub da foto/texto na transição hero -> "Quem somos". -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
+  <script src="sobre.js?v=38"></script>
 </body>
 </html>

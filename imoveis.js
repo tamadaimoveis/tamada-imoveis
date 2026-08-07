@@ -13,7 +13,9 @@ const state = {
   type: queryParams.get('type') || '',
   maxPrice: Number(queryParams.get('max') || 0),
   minBeds: Number(queryParams.get('beds') || 0),
+  minBedsExact: Number(queryParams.get('beds') || 0) < 4,
   minGarages: 0,
+  minGaragesExact: true,
   minArea: 0,
   maxArea: 0,
   affordable: queryParams.get('affordable') === '1',
@@ -33,6 +35,7 @@ const el = {
   type: document.querySelector('#catalogType'),
   maxPrice: document.querySelector('#catalogMaxPrice'),
   sort: document.querySelector('#catalogSort'),
+  sideType: document.querySelector('#sideType'),
   load: document.querySelector('#loadCatalog'),
   gridView: document.querySelector('#gridView'),
   mapView: document.querySelector('#mapView'),
@@ -92,8 +95,14 @@ function matches(property) {
   if (state.type && property.type !== state.type) return false;
   const price = priceFor(property);
   if (state.maxPrice && (!price || price > state.maxPrice)) return false;
-  if (state.minBeds && Number(property.beds) < state.minBeds) return false;
-  if (state.minGarages && Number(property.garages) < state.minGarages) return false;
+  if (state.minBeds) {
+    const beds = Number(property.beds);
+    if (state.minBedsExact ? beds !== state.minBeds : beds < state.minBeds) return false;
+  }
+  if (state.minGarages) {
+    const garages = Number(property.garages);
+    if (state.minGaragesExact ? garages !== state.minGarages : garages < state.minGarages) return false;
+  }
   if (state.minArea && Number(property.area) < state.minArea) return false;
   if (state.maxArea && Number(property.area) > state.maxArea) return false;
   if (state.affordable && !(property.sale && property.sale <= 260000)) return false;
@@ -221,10 +230,12 @@ function syncControls() {
   const radio = document.querySelector(`input[name="sidePurpose"][value="${state.purpose === 'commercial' ? 'all' : state.purpose}"]`);
   if (radio) radio.checked = true;
   document.querySelectorAll('#sideBedrooms button').forEach(button => button.classList.toggle('active', Number(button.dataset.value) === state.minBeds));
+  el.sideType.value = state.type;
   document.querySelector('#onlyAffordable').checked = state.affordable;
   document.querySelector('#onlyCommercial').checked = state.commercial;
   document.querySelector('#onlyGarage').checked = state.garage;
   document.querySelectorAll('[data-view]').forEach(button => button.classList.toggle('active', button.dataset.view === state.view));
+  if (window.refreshElegantSelects) window.refreshElegantSelects();
 }
 
 function render() {
@@ -267,6 +278,7 @@ document.querySelector('#catalogSearch').addEventListener('submit', event => {
   state.type = el.type.value;
   state.maxPrice = Number(el.maxPrice.value || 0);
   state.limit = 18;
+  syncControls();
   render();
 });
 
@@ -276,11 +288,20 @@ el.load.addEventListener('click', () => { state.limit += 18; render(); });
 function bindNumberChips(selector, key) {
   document.querySelectorAll(`${selector} button`).forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll(`${selector} button`).forEach(item => item.classList.toggle('active', item === button));
-    state[key] = Number(button.dataset.value || 0); state.limit = 18; render();
+    state[key] = Number(button.dataset.value || 0);
+    state[`${key}Exact`] = !('min' in button.dataset);
+    state.limit = 18; render();
   }));
 }
 bindNumberChips('#sideBedrooms', 'minBeds');
 bindNumberChips('#sideGarages', 'minGarages');
+
+el.sideType.addEventListener('change', () => {
+  state.type = el.sideType.value;
+  state.limit = 18;
+  syncControls();
+  render();
+});
 
 let areaTimer;
 [el.minArea, el.maxArea].forEach(input => input.addEventListener('input', () => {
@@ -293,7 +314,7 @@ document.querySelector('#onlyCommercial').addEventListener('change', event => { 
 document.querySelector('#onlyGarage').addEventListener('change', event => { state.garage = event.target.checked; render(); });
 
 function clearFilters() {
-  Object.assign(state, { purpose: 'all', query: '', type: '', maxPrice: 0, minBeds: 0, minGarages: 0, minArea: 0, maxArea: 0, affordable: false, commercial: false, garage: false, limit: 18 });
+  Object.assign(state, { purpose: 'all', query: '', type: '', maxPrice: 0, minBeds: 0, minBedsExact: true, minGarages: 0, minGaragesExact: true, minArea: 0, maxArea: 0, affordable: false, commercial: false, garage: false, limit: 18 });
   el.minArea.value = ''; el.maxArea.value = '';
   document.querySelectorAll('.side-number-chips button').forEach(button => button.classList.toggle('active', button.dataset.value === '0'));
   document.querySelectorAll('.side-checks input').forEach(input => { input.checked = false; });
@@ -351,6 +372,7 @@ function showMapCard(property, markerIndex) {
   panel.hidden = false;
   markers.forEach((marker, index) => marker.setIcon(mapIcon(currentMapResults[index], index, index === markerIndex)));
   document.querySelectorAll('.map-result-item').forEach((item, index) => item.classList.toggle('active', index === markerIndex));
+  requestAnimationFrame(() => panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
 }
 
 function mapListItem(property, index) {

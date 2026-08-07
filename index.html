@@ -10,7 +10,7 @@
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/hero-cidade.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=32">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body>
@@ -61,9 +61,6 @@
           <summary>Serviços <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
           <div>
             <a href="anuncie.html">Anuncie seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/encomende-seu-imovel-compra-ou-locacao" target="_blank" rel="noopener">Encomende seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/avalie-seu-corretor" target="_blank" rel="noopener">Avalie seu corretor</a>
-            <a href="financiamento.html">Financiamento</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadofornecedor" target="_blank" rel="noopener">Extrato do proprietário</a>
           </div>
@@ -131,12 +128,12 @@
       <div class="shell hero-layout">
         <div class="hero-copy">
           <p class="eyebrow hero-eyebrow"><span></span> Imóveis que fazem parte da sua história</p>
-          <h1 aria-label="Seu próximo endereço já faz parte da cidade">
+          <h1 aria-label="Seu próximo endereço começa aqui">
             <span class="line-mask"><span>Seu próximo</span></span>
-            <span class="line-mask"><span><em>endereço</em> já faz</span></span>
-            <span class="line-mask"><span>parte da cidade.</span></span>
+            <span class="line-mask"><span><em>endereço</em> começa</span></span>
+            <span class="line-mask"><span>aqui.</span></span>
           </h1>
-          <p class="hero-lead">Da primeira chave ao próximo investimento, conectamos pessoas, bairros e possibilidades com a experiência de quem conhece cada rua.</p>
+          <p class="hero-lead">Há mais de 20 anos conectando pessoas aos melhores imóveis, com a experiência de quem conhece o mercado e valoriza cada conquista.</p>
           <div class="hero-actions">
             <a class="button button-red button-large magnetic" href="imoveis.html"><span>Encontrar meu imóvel</span><iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
             <a class="hero-phone" href="tel:01126822320"><span><iconify-icon icon="solar:phone-calling-rounded-linear"></iconify-icon></span><small>Prefere conversar?<b>(11) 2682-2320</b></small></a>
@@ -159,11 +156,11 @@
           </label>
           <label class="search-field">
             <span>Tipo de imóvel</span>
-            <div><iconify-icon icon="solar:buildings-2-linear"></iconify-icon><select id="heroType"><option value="">Todos os tipos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="HALL">Comercial</option><option value="LAND">Terreno</option></select></div>
+            <div><iconify-icon icon="solar:buildings-2-linear"></iconify-icon><select id="heroType" data-elegant><option value="">Todos os tipos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="HALL">Comercial</option><option value="LAND">Terreno</option></select></div>
           </label>
           <label class="search-field">
             <span>Faixa de valor</span>
-            <div><iconify-icon icon="solar:wallet-money-linear"></iconify-icon><select id="heroPrice"><option value="">Qualquer valor</option><option value="260000">Até R$ 260 mil</option><option value="500000">Até R$ 500 mil</option><option value="900000">Até R$ 900 mil</option><option value="2000000">Até R$ 2 milhões</option></select></div>
+            <div><iconify-icon icon="solar:wallet-money-linear"></iconify-icon><select id="heroPrice" data-elegant><option value="">Qualquer valor</option><option value="260000">Até R$ 260 mil</option><option value="500000">Até R$ 500 mil</option><option value="900000">Até R$ 900 mil</option><option value="2000000">Até R$ 2 milhões</option></select></div>
           </label>
           <button class="search-submit magnetic" type="submit"><span>Buscar imóveis</span><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
           <button class="advanced-link" type="button" data-open-search><iconify-icon icon="solar:tuning-2-linear"></iconify-icon> Mais filtros</button>
@@ -179,14 +176,13 @@
         <div class="section-heading reveal">
           <div>
             <p class="eyebrow"><span>01</span> Seleção Tamada</p>
-            <h2>Casas reais.<br><em>Possibilidades vivas.</em></h2>
+            <h2>Um imóvel para cada<br><em>momento da sua vida.</em></h2>
           </div>
-          <p>Uma seleção que atravessa diferentes momentos de vida — do primeiro apartamento ao espaço que faz seu negócio crescer.</p>
+          <p>Uma seleção pensada para diferentes momentos da vida: do primeiro apartamento ao espaço ideal para o crescimento do seu negócio.</p>
         </div>
 
         <div class="property-toolbar reveal">
           <div class="filter-chips" role="group" aria-label="Filtrar imóveis">
-            <button class="filter-chip active" type="button" data-filter="all">Todos</button>
             <button class="filter-chip" type="button" data-filter="sale">À venda</button>
             <button class="filter-chip" type="button" data-filter="rent">Para alugar</button>
             <button class="filter-chip" type="button" data-filter="affordable">Até R$ 260 mil</button>
@@ -197,7 +193,7 @@
 
         <div class="property-carousel" aria-label="Seleção de imóveis em destaque">
           <div class="property-carousel-head">
-            <div><span>CURADORIA DE ENDEREÇOS</span><strong>Uma cidade para atravessar.</strong></div>
+            <div><span>CURADORIA DE ENDEREÇOS</span><strong>Para morar, investir<br>e <em>crescer.</em></strong></div>
             <div class="property-carousel-controls">
               <span id="propertyPosition" aria-live="polite">00 / 00</span>
               <button id="propertyPrev" type="button" aria-label="Imóveis anteriores" disabled><iconify-icon icon="solar:arrow-left-linear"></iconify-icon></button>
@@ -208,6 +204,21 @@
             <div class="property-grid" id="propertyGrid" aria-live="polite"></div>
           </div>
           <div class="property-carousel-foot"><span>Deslize para explorar</span><i></i><span>Uma faixa de possibilidades</span></div>
+        </div>
+
+        <div class="property-carousel property-carousel-rent" aria-label="Imóveis para locação">
+          <div class="property-carousel-head">
+            <div><span>PARA QUEM QUER ALUGAR</span><strong>Encontre seu<br><em>próximo aluguel.</em></strong></div>
+            <div class="property-carousel-controls">
+              <span id="propertyPositionRent" aria-live="polite">00 / 00</span>
+              <button id="propertyPrevRent" type="button" aria-label="Imóveis anteriores" disabled><iconify-icon icon="solar:arrow-left-linear"></iconify-icon></button>
+              <button id="propertyNextRent" type="button" aria-label="Próximos imóveis" disabled><iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
+            </div>
+          </div>
+          <div class="property-carousel-window" id="propertyViewportRent">
+            <div class="property-grid" id="propertyGridRent" aria-live="polite"></div>
+          </div>
+          <div class="property-carousel-foot"><span>Deslize para explorar</span><i></i><span>Chaves na mão, sem burocracia</span></div>
         </div>
 
         <div class="property-footer reveal">
@@ -227,9 +238,9 @@
         <div class="shell map-heading">
           <div>
             <p class="eyebrow eyebrow-light"><span>02</span> Atlas Tamada</p>
-            <h2>A cidade muda<br><em>a cada esquina.</em></h2>
+            <h2>Encontre o bairro<br><em>ideal para você.</em></h2>
           </div>
-          <p>Escolha um bairro para ver, no mapa, os imóveis disponíveis ali perto.</p>
+          <p>Conheça os principais bairros onde atuamos e explore os imóveis disponíveis em cada região.</p>
         </div>
         <div class="shell neighborhood-list-wrap">
           <div class="neighborhood-list" id="neighborhoodList">
@@ -252,6 +263,9 @@
         <div class="shell map-layout">
           <div class="map-shell">
             <div id="propertyMap" class="property-map" aria-label="Mapa interativo de imóveis em São Paulo"></div>
+            <!-- Os pinos são posições aproximadas dentro do bairro, não o
+                 endereço do imóvel. Avisar evita que alguém vá até um pino. -->
+            <p class="map-disclaimer">Pinos em posição aproximada dentro do bairro. O endereço exato é informado pelo corretor.</p>
             <div class="map-fallback" id="mapFallback" aria-hidden="true">
               <span class="fallback-road road-one"></span><span class="fallback-road road-two"></span><span class="fallback-road road-three"></span>
               <button style="--x:32%;--y:38%">01</button><button style="--x:57%;--y:50%">02</button><button style="--x:72%;--y:31%">03</button><button style="--x:46%;--y:70%">04</button>
@@ -263,15 +277,15 @@
 
           <aside class="map-panel">
             <div class="map-panel-head">
-              <span id="mapIndex">01 / 12</span>
+              <span id="mapIndex"></span>
               <button type="button" id="mapFavorite" aria-label="Salvar imóvel"><iconify-icon icon="solar:heart-linear"></iconify-icon></button>
             </div>
-            <div class="map-card-image"><img id="mapCardImage" src="assets/images/ap7842-interior.jpg" alt="Imóvel selecionado no mapa"><span id="mapCardPurpose">À venda</span></div>
+            <div class="map-card-image"><img id="mapCardImage" src="" alt="Imóvel selecionado no mapa"><span id="mapCardPurpose">À venda</span></div>
             <div class="map-panel-copy">
-              <p id="mapCardLocation">Quarta Parada · São Paulo</p>
-              <h3 id="mapCardTitle">Apartamento com 3 quartos, 119 m²</h3>
+              <p id="mapCardLocation"></p>
+              <h3 id="mapCardTitle"></h3>
               <div class="map-card-features" id="mapCardFeatures"></div>
-              <strong id="mapCardPrice">R$ 1.850.000</strong>
+              <strong id="mapCardPrice"></strong>
               <a class="button button-red" id="mapCardLink" href="#" target="_blank" rel="noopener"><span>Conhecer o imóvel</span><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
             </div>
             <div class="map-neighborhoods" id="mapNeighborhoods"></div>
@@ -284,34 +298,43 @@
       <div class="shell">
         <div class="section-heading reveal">
           <div><p class="eyebrow"><span>03</span> Valores que cabem no seu bolso</p><h2>Oportunidades para<br><em>começar agora.</em></h2></div>
-          <p>Atalhos objetivos para encontrar imóveis dentro do seu momento financeiro, sem perder tempo em buscas genéricas.</p>
+          <p>Atalhos para encontrar imóveis dentro do seu momento financeiro, sem perder tempo em buscas genéricas.</p>
         </div>
 
         <div class="opportunity-grid">
-          <article class="opportunity-card opportunity-sale reveal">
+          <!-- Antes eram <article data-quick-filter>: só rolava até o carrossel
+               da própria home (12 imóveis em destaque) e filtrava ali dentro.
+               Viravam sempre "Compra até 260 mil" batendo num recorte de 12
+               itens que quase nunca tinha nenhum abaixo desse teto. Agora são
+               links de verdade pro catálogo completo, com os mesmos parâmetros
+               de URL que o card de "Salas, lojas" (o único que já ia pra lá). -->
+          <a class="opportunity-card opportunity-sale reveal" href="imoveis.html?purpose=sale&amp;affordable=1&amp;max=260000">
             <div class="opportunity-number">01</div>
             <div class="opportunity-icon"><iconify-icon icon="solar:key-minimalistic-square-3-linear"></iconify-icon></div>
             <p>Primeiro imóvel</p>
             <h3>Compra até<br><em>R$ 260 mil</em></h3>
             <span>Apartamentos e casas com financiamento acessível.</span>
-            <button type="button" data-quick-filter="affordable">Ver oportunidades <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
-          </article>
-          <article class="opportunity-card opportunity-rent reveal reveal-delay-1">
+            <span class="opportunity-cta">Ver oportunidades <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></span>
+          </a>
+          <a class="opportunity-card opportunity-rent reveal reveal-delay-1" href="imoveis.html?purpose=rent&amp;max=1500">
             <div class="opportunity-number">02</div>
             <div class="opportunity-icon"><iconify-icon icon="solar:home-smile-angle-linear"></iconify-icon></div>
             <p>Seu novo aluguel</p>
             <h3>Locação até<br><em>R$ 1.500/mês</em></h3>
             <span>Opções práticas para mudar de endereço sem complicação.</span>
-            <button type="button" data-quick-filter="rent">Ver para alugar <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
-          </article>
-          <article class="opportunity-card opportunity-program reveal reveal-delay-2">
+            <span class="opportunity-cta">Ver para alugar <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></span>
+          </a>
+          <!-- Substituiu o card de simulação de financiamento (serviço que a
+               Tamada não oferece). Aponta para um recorte com estoque real:
+               314 imóveis comerciais no catálogo. -->
+          <a class="opportunity-card opportunity-program reveal reveal-delay-2" href="imoveis.html?purpose=all&amp;commercial=1">
             <div class="opportunity-number">03</div>
-            <div class="opportunity-icon"><iconify-icon icon="solar:buildings-3-linear"></iconify-icon></div>
-            <p>Minha Casa, Minha Vida</p>
-            <h3>Seu plano pode<br><em>sair do papel.</em></h3>
-            <span>Orientação para simular, entender e avançar com segurança.</span>
-            <a href="financiamento.html">Simular financiamento <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
-          </article>
+            <div class="opportunity-icon"><iconify-icon icon="solar:shop-2-linear"></iconify-icon></div>
+            <p>Para o seu negócio</p>
+            <h3>Salas, lojas<br><em>e galpões.</em></h3>
+            <span>Pontos comerciais para abrir, crescer ou investir na Zona Leste.</span>
+            <span class="opportunity-cta">Ver comerciais <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></span>
+          </a>
         </div>
       </div>
     </section>
@@ -320,39 +343,43 @@
       <div class="shell">
         <div class="section-heading reveal">
           <div><p class="eyebrow"><span>04</span> Mais do que encontrar</p><h2>Serviços que deixam<br><em>tudo mais simples.</em></h2></div>
-          <p>Da avaliação à entrega das chaves, a Tamada organiza cada passo com atendimento próximo e caminhos claros.</p>
+          <p>Da avaliação à entrega das chaves, acompanhamos você em cada etapa com atendimento próximo, transparência e confiança.</p>
         </div>
 
         <div class="service-grid">
           <article class="service-card service-featured reveal">
             <div class="service-photo-bg" style="background-image:url('assets/images/service-featured.jpg')" aria-hidden="true"></div>
             <div class="service-map-lines" aria-hidden="true"></div>
-            <span>01 · Proprietários</span>
+            <span>Proprietários</span>
             <h3>Seu imóvel,<br><em>bem cuidado.</em></h3>
             <p>Avaliação, divulgação, locação e administração com acompanhamento do começo ao fim.</p>
             <a href="anuncie.html">Cadastrar imóvel <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
           </article>
+          <!-- Já foi "Simulação de financiamento", depois "Encomende seu imóvel"
+               (apontando para o site antigo). O serviço saiu do ar; a vaga é do
+               público comprador e o card de cima já cobre proprietários com o
+               anuncie.html, então aqui vai o acervo — que é o que temos. -->
           <article class="service-card service-photo reveal reveal-delay-1">
             <div class="service-photo-bg" style="background-image:url('assets/images/service-financing.jpg')" aria-hidden="true"></div>
-            <div class="service-icon"><iconify-icon icon="solar:calculator-minimalistic-linear"></iconify-icon></div>
-            <span>02 · Compradores</span>
-            <h3>Simulação de financiamento</h3>
-            <p>Entenda parcelas e possibilidades antes de escolher.</p>
-            <a href="financiamento.html">Começar simulação <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
+            <div class="service-icon"><iconify-icon icon="solar:magnifer-zoom-in-linear"></iconify-icon></div>
+            <span>Compradores</span>
+            <h3>Encontre seu imóvel</h3>
+            <p>Todo o acervo em um lugar só, com filtro por bairro, tipo e faixa de preço.</p>
+            <a href="imoveis.html">Ver imóveis <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
           </article>
           <article class="service-card service-photo reveal reveal-delay-2">
             <div class="service-photo-bg" style="background-image:url('assets/images/service-rent.jpg')" aria-hidden="true"></div>
             <div class="service-icon"><iconify-icon icon="solar:document-text-linear"></iconify-icon></div>
-            <span>03 · Inquilinos</span>
+            <span>Inquilinos</span>
             <h3>Aluguel sem burocracia</h3>
             <p>Informação objetiva e apoio durante toda a locação.</p>
-            <a href="https://wa.me/5511966378282" target="_blank" rel="noopener">Falar com locação <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
+            <a href="https://wa.me/5511965935749" target="_blank" rel="noopener">Falar com locação <iconify-icon icon="solar:arrow-right-linear"></iconify-icon></a>
           </article>
           <article class="service-card service-photo service-contact reveal reveal-delay-3">
             <div class="service-photo-bg" style="background-image:url('assets/images/service-contact.jpg')" aria-hidden="true"></div>
-            <span>04 · Atendimento</span>
+            <span>Atendimento</span>
             <h3>Já é cliente?</h3>
-            <p>Segunda via, extrato do proprietário, avaliação do corretor e suporte.</p>
+            <p>Segunda via, extrato do proprietário e suporte.</p>
             <div><a href="https://www.tamadaimoveis.com.br/segunda-via-boleto" target="_blank" rel="noopener">2ª via</a><a href="https://www.tamadaimoveis.com.br/extrato-proprietario" target="_blank" rel="noopener">Extrato</a><a href="https://www.tamadaimoveis.com.br/fale-conosco" target="_blank" rel="noopener">Suporte</a></div>
           </article>
         </div>
@@ -381,7 +408,7 @@
       <div class="shell contact-layout">
         <div class="contact-copy reveal">
           <p class="eyebrow eyebrow-light"><span>06</span> Vamos conversar</p>
-          <h2>Uma boa mudança<br>começa com uma<br><em>boa conversa.</em></h2>
+          <h2>Toda boa escolha<br>começa com a<br><em>orientação certa.</em></h2>
         </div>
         <div class="contact-actions reveal reveal-delay-1">
           <a href="https://wa.me/5511965935749" target="_blank" rel="noopener"><span><iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon> Novos clientes</span><strong>(11) 96593-5749</strong><b><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></b></a>
@@ -394,10 +421,10 @@
 
   <footer class="site-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="#inicio"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="#inicio"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
-        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://www.tamadaimoveis.com.br/encomende-seu-imovel-compra-ou-locacao" target="_blank" rel="noopener">Encomende seu imóvel</a><a href="https://www.tamadaimoveis.com.br/avalie-seu-corretor" target="_blank" rel="noopener">Avalie seu corretor</a><a href="financiamento.html">Financiamento</a></div>
+        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a></div>
         <div><h3>Institucional</h3><a href="sobre.html">A Tamada</a><a href="trabalhe-conosco.html">Trabalhe conosco</a><a href="https://www.tamadaimoveis.com.br/leis-do-inquilinato" target="_blank" rel="noopener">Leis do Inquilinato</a><a href="https://www.tamadaimoveis.com.br/fale-conosco" target="_blank" rel="noopener">Dúvidas e reclamações</a></div>
       </div>
     </div>
@@ -428,7 +455,7 @@
           <label class="modal-field full"><span>Localização ou código</span><div><iconify-icon icon="solar:map-point-linear"></iconify-icon><input id="modalLocation" type="search" placeholder="Ex.: Vila Granada ou AP7842-EIU"></div></label>
           <label class="modal-field"><span>Tipo do imóvel</span><select id="modalType"><option value="">Todos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="HALL">Comercial</option><option value="LAND">Terreno</option></select></label>
           <label class="modal-field"><span>Valor máximo</span><select id="modalPrice"><option value="">Sem limite</option><option value="260000">R$ 260 mil</option><option value="500000">R$ 500 mil</option><option value="900000">R$ 900 mil</option><option value="2000000">R$ 2 milhões</option><option value="5000000">R$ 5 milhões</option></select></label>
-          <fieldset class="modal-field full"><legend>Dormitórios</legend><div class="number-chips" id="bedroomChips"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1+</button><button type="button" data-value="2">2+</button><button type="button" data-value="3">3+</button><button type="button" data-value="4">4+</button></div></fieldset>
+          <fieldset class="modal-field full"><legend>Dormitórios</legend><div class="number-chips" id="bedroomChips"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3">3</button><button type="button" data-value="4" data-min="">4+</button></div></fieldset>
           <fieldset class="modal-field full"><legend>Características</legend><div class="feature-chips"><label><input type="checkbox" value="garage"><span>Com vaga</span></label><label><input type="checkbox" value="apartment"><span>Condomínio</span></label><label><input type="checkbox" value="affordable"><span>Até R$ 260 mil</span></label><label><input type="checkbox" value="commercial"><span>Uso comercial</span></label></div></fieldset>
         </div>
       </div>
@@ -440,8 +467,9 @@
   </dialog>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="catalog-data.js"></script>
-  <script src="nav-dropdown.js"></script>
-  <script src="script.js"></script>
+  <script src="catalog-data.js?v=32"></script>
+  <script src="elegant-select.js?v=32"></script>
+  <script src="nav-dropdown.js?v=32"></script>
+  <script src="script.js?v=32"></script>
 </body>
 </html>

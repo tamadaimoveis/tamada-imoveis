@@ -61,32 +61,80 @@ function whatsappLink(property, lead) {
   return `https://wa.me/5511965935749?text=${encodeURIComponent(text)}`;
 }
 
-function aboutText(property) {
-  const kind = typeLabels[property.type] || 'Imóvel';
-  const pieces = [`${kind} de ${String(property.area).replace('.', ',')} m² em ${property.neighborhood}, ${property.city}.`];
-  const feats = [];
-  if (property.beds) feats.push(`${property.beds} ${property.beds > 1 ? 'quartos' : 'quarto'}`);
-  if (property.baths) feats.push(`${property.baths} ${property.baths > 1 ? 'banheiros' : 'banheiro'}`);
-  if (property.garages) feats.push(`${property.garages} ${property.garages > 1 ? 'vagas' : 'vaga'} de garagem`);
-  if (feats.length) pieces.push(`Conta com ${feats.join(', ').replace(/, ([^,]*)$/, ' e $1')}.`);
-  if (property.sale && property.rent) pieces.push(`Disponível para compra por ${money(property.sale)} ou locação por ${money(property.rent, true)}.`);
-  else if (property.rent) pieces.push(`Disponível para locação por ${money(property.rent, true)}.`);
-  else if (property.sale) pieces.push(`À venda por ${money(property.sale)}.`);
-  pieces.push('A equipe Tamada acompanha a visita, tira dúvidas de documentação e orienta cada etapa da negociação.');
-  return pieces.join(' ');
+/* Descrição escrita pelo corretor, vinda do cadastro. Antes este bloco montava
+   um texto genérico a partir de quartos/preço — texto de template, igual em
+   todo imóvel. O texto real vem com quebras de parágrafo, então é renderizado
+   como HTML em vez de textContent. */
+function aboutHtml(property) {
+  const texto = (property.descricao || '').trim();
+  if (!texto) return '';
+  return texto
+    .split(/\r?\n\s*\r?\n/)
+    .map(p => p.trim())
+    .filter(Boolean)
+    .map(p => `<p>${escapeHtml(p).replace(/\r?\n/g, '<br>')}</p>`)
+    .join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
 
 // Ficha técnica — SÓ o que NÃO está na barra de specs (evita repetição de quartos/banheiros/vagas/área)
+/* Ficha técnica: SÓ o que não aparece em outro lugar da página.
+   Ficam de fora de propósito, porque já são exibidos acima:
+     área útil, quartos, banheiros, vagas → barra de specs
+     tipo, finalidade                     → selos abaixo do título
+     bairro, cidade                       → linha de localização
+     código                               → breadcrumb e selo na foto
+     acabamentos                          → bloco "Características"
+   Repetir tudo isso deixava a tabela longa e sem função. Linha sem valor
+   também não entra — imóvel sem condomínio não exibe "Condomínio: —". */
 function factRows(property) {
+  const f = property.ficha || {};
+  const m2 = v => `${String(v).replace('.', ',')} m²`;
+  const brl = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  const vagas = [
+    f.vagasCobertas ? `${f.vagasCobertas} coberta${f.vagasCobertas > 1 ? 's' : ''}` : null,
+    f.vagasDescobertas ? `${f.vagasDescobertas} descoberta${f.vagasDescobertas > 1 ? 's' : ''}` : null,
+  ].filter(Boolean).join(' · ');
+
   const rows = [
-    ['Código', property.ref],
-    ['Tipo', typeLabels[property.type] || 'Imóvel'],
-    ['Finalidade', purposeLabel(property)],
-    ['Bairro', property.neighborhood],
-    ['Cidade', property.city]
+    // Custo mensal — o que decide a compra e não está em lugar nenhum
+    ['Condomínio', f.condominio ? `${brl(f.condominio)}/mês` : null],
+    ['IPTU', f.iptu ? brl(f.iptu) : null],
+    ['Preço à vista', f.precoAVista ? brl(f.precoAVista) : null],
+    ['Valor do m²', f.precoM2 ? brl(f.precoM2) : null],
+    ['Aceita negociação', f.aceitaNegociacao ? 'Sim' : null],
+    ['Formas de pagamento', (property.pagamento || []).join(' · ') || null],
+    ['Garantias aceitas', (property.garantias || []).join(' · ') || null],
+    // Prédio e posição da unidade
+    ['Andar', f.andar],
+    ['Andares no prédio', f.andaresPredio],
+    ['Elevadores', f.elevadores],
+    ['Pé-direito', f.peDireito ? `${String(f.peDireito).replace('.', ',')} m` : null],
+    // Medidas e cômodos que a barra de specs não mostra
+    ['Área total', f.areaTotal && f.areaTotal !== f.areaUtil ? m2(f.areaTotal) : null],
+    ['Suítes', f.suites],
+    ['Salas', f.salas],
+    ['Distribuição das vagas', vagas || null],
+    ['Tipo de vaga', f.tipoVaga],
+    // Idade e estado
+    ['Ano de construção', f.anoConstrucao],
+    ['Ano da reforma', f.anoReforma],
+    ['Estágio da obra', f.obra],
+    ['Ocupação', f.ocupacao],
+    ['Imóvel locado', f.locado ? 'Sim' : null],
+    ['Exclusividade', f.exclusividade ? 'Sim' : null],
+    ['Zoneamento', f.zoneamento],
+    // Endereço, número, CEP e coordenadas NÃO entram — nem aqui nem no JSON que
+    // alimenta esta página. Localização pública é só bairro e cidade.
   ];
-  if (commercialTypes.has(property.type)) rows.push(['Uso', 'Comercial']);
-  return rows.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('');
+
+  return rows
+    .filter(([, value]) => value !== null && value !== undefined && value !== '' && value !== 0)
+    .map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(String(value))}</dd></div>`)
+    .join('');
 }
 
 /* Ícones SVG desenhados à mão (traço, não Iconify/IA) — 24x24 viewBox, stroke via currentColor */
@@ -109,26 +157,64 @@ const handIcons = {
   furnished: '<svg viewBox="0 0 24 24"><path d="M4 11a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5H4z"/><path d="M6 16v3M18 16v3M6 11V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/></svg>',
   land: '<svg viewBox="0 0 24 24"><path d="M4 18h16M6 18l3-9M18 18l-3-9M9 9l3-4 3 4z"/></svg>',
   commercial: '<svg viewBox="0 0 24 24"><path d="M4 9l1-4h14l1 4M4 9h16v11H4z"/><path d="M4 9a2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0M10 20v-6h4v6"/></svg>',
-  key: '<svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="4"/><path d="M11 11l8 8M16 16l2-2M18 18l2-2"/></svg>'
+  key: '<svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="4"/><path d="M11 11l8 8M16 16l2-2M18 18l2-2"/></svg>',
+  /* Traço contínuo, mesmo peso dos acima — desenhados para as comodidades que
+     vieram do cadastro real. */
+  pool: '<svg viewBox="0 0 24 24"><path d="M2 18c1.5 0 1.5 1.5 3 1.5S6.5 18 8 18s1.5 1.5 3 1.5S12.5 18 14 18s1.5 1.5 3 1.5S18.5 18 20 18"/><path d="M7 15V6a2 2 0 0 1 4 0v9M13 15V6a2 2 0 0 1 4 0v9M7 9h4M13 9h4"/></svg>',
+  gym: '<svg viewBox="0 0 24 24"><path d="M4 9v6M7 7v10M17 7v10M20 9v6M7 12h10"/></svg>',
+  sauna: '<svg viewBox="0 0 24 24"><path d="M8 3c0 2-2 2.5-2 4.5S8 10 8 12M12 3c0 2-2 2.5-2 4.5S12 10 12 12M16 3c0 2-2 2.5-2 4.5S16 10 16 12"/><path d="M4 16h16v4H4z"/></svg>',
+  wine: '<svg viewBox="0 0 24 24"><path d="M8 3h8l-1 6a3 3 0 0 1-6 0z"/><path d="M12 12v7M9 21h6"/></svg>',
+  sun: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>',
+  elevator: '<svg viewBox="0 0 24 24"><path d="M5 3h14v18H5z"/><path d="M12 3v18M9 9l-1.5-2L6 9M15 15l1.5 2L18 15"/></svg>',
+  garden: '<svg viewBox="0 0 24 24"><path d="M12 21V10"/><path d="M12 14c-4 0-6-2-6-5 3 0 6 1 6 5zM12 12c4 0 6-2 6-5-3 0-6 1-6 5z"/><path d="M5 21h14"/></svg>',
+  security: '<svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9.5 12l2 2 3.5-4"/></svg>',
+  play: '<svg viewBox="0 0 24 24"><path d="M4 20v-6M20 20v-6M4 14h16"/><path d="M8 14V7l8-3v10"/><circle cx="8" cy="7" r="0"/></svg>',
+  sport: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="3.5"/></svg>',
+  party: '<svg viewBox="0 0 24 24"><path d="M4 20l6-14 8 8z"/><path d="M14 4l1 2M18 3l-1 3M20 8l-3 1"/></svg>',
+  cinema: '<svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="M3 10h18M7 6v4M12 6v4M17 6v4"/><path d="M10 13l4 2-4 2z"/></svg>',
+  pet: '<svg viewBox="0 0 24 24"><circle cx="8" cy="7" r="2"/><circle cx="16" cy="7" r="2"/><circle cx="5" cy="13" r="2"/><circle cx="19" cy="13" r="2"/><path d="M12 12c-3 0-5 2.5-5 5a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3c0-2.5-2-5-5-5z"/></svg>',
+  solar: '<svg viewBox="0 0 24 24"><path d="M13 2L5 13h6l-2 9 8-11h-6z"/></svg>',
+  water: '<svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 10.5a6 6 0 0 1-12 0C6 9.5 12 3 12 3z"/></svg>',
+  check: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>'
 };
 
-// Comodidades inferidas dos dados reais + amenidades do texto do catálogo quando existirem.
-// Data-driven: quando o XML trouxer amenities[], é só passar property.amenities.
+/* Ícone por comodidade. Sem match cai no genérico `check` — melhor um ícone
+   neutro do que esconder uma comodidade que o imóvel realmente tem. */
+const ICONE_COMODIDADE = {
+  'Piscina': 'pool', 'Piscina Infantil': 'pool', 'Piscina Térmica': 'pool',
+  'Churrasqueira': 'bbq', 'Espaço Gourmet': 'gourmet', 'Varanda Gourmet': 'gourmet',
+  'Academia': 'gym', 'Sauna': 'sauna', 'Hidromassagem': 'jacuzzi',
+  'Lareira': 'fireplace', 'Adega': 'wine',
+  'Sacada / Varanda': 'balcony', 'Terraço': 'balcony', 'Solário': 'sun',
+  'Closet': 'closet', 'Mobiliado': 'furnished', 'Semimobiliado': 'furnished',
+  'Ar Condicionado': 'ac', 'Elevador': 'elevator',
+  'Garagem Coberta': 'garage', 'Quintal': 'garden', 'Área Verde': 'garden',
+  'Portaria 24h': 'security', 'Segurança 24h': 'security', 'Câmeras (CFTV)': 'security',
+  'Alarme': 'security', 'Interfone': 'security', 'Portão Eletrônico': 'security',
+  'Condomínio Fechado': 'security', 'Zelador': 'security',
+  'Playground': 'play', 'Brinquedoteca': 'play', 'Salão de Jogos': 'play',
+  'Quadra Poliesportiva': 'sport', 'Campo de Futebol': 'sport',
+  'Salão de Festas': 'party', 'Área de Lazer': 'party', 'Cinema': 'cinema',
+  'Escritório': 'office', 'Coworking': 'office',
+  'Aceita Pet': 'pet', 'Pet Place': 'pet',
+  'Energia Solar': 'solar', 'Água': 'water', 'Esgoto': 'water',
+  'Energia Elétrica': 'solar', 'TV a Cabo': 'tv',
+};
+
+/* Comodidades reais do imóvel. Antes esta lista era inventada a partir de
+   quartos/banheiros/vagas — dado que já aparece na barra de specs e na ficha
+   técnica, repetido aqui como se fosse diferencial. Agora só entra o que o
+   imóvel de fato tem cadastrado. */
 function amenityList(property) {
-  const out = [];
-  const add = (icon, label, sub) => out.push({ icon, label, sub });
-  if (property.beds) add('bed', `${property.beds} ${property.beds > 1 ? 'dormitórios' : 'dormitório'}`, property.beds > 1 ? 'quartos amplos' : 'quarto');
-  if (property.baths) add('bath', `${property.baths} ${property.baths > 1 ? 'banheiros' : 'banheiro'}`, 'completos');
-  if (property.garages) add('garage', `${property.garages} ${property.garages > 1 ? 'vagas' : 'vaga'}`, 'de garagem');
-  add('area', `${String(property.area).replace('.', ',')} m²`, 'área útil');
-  if (commercialTypes.has(property.type)) add('commercial', 'Uso comercial', 'ponto pronto');
-  if (property.type === 'LAND') add('land', 'Terreno', 'pronto pra construir');
-  if (property.type === 'TWO_STORY_HOUSE') add('office', 'Sobrado', 'pavimentos independentes');
-  if (Array.isArray(property.amenities)) {
-    const map = { churrasqueira: ['bbq', 'Churrasqueira'], lareira: ['fireplace', 'Lareira'], jacuzzi: ['jacuzzi', 'Hidromassagem'], gourmet: ['gourmet', 'Espaço gourmet'], sacada: ['balcony', 'Sacada'], closet: ['closet', 'Closet'], mobiliado: ['furnished', 'Mobiliado'], ar: ['ac', 'Ar-condicionado'] };
-    property.amenities.forEach(a => { const m = map[normalize(a)]; if (m) add(m[0], m[1], ''); });
-  }
-  return out;
+  const itens = [...(property.comodidades || [])];
+  // Acabamento não é comodidade, mas é diferencial de verdade e o cliente pediu
+  // que nada ficasse de fora.
+  for (const a of property.acabamentos || []) itens.push(`Piso ${a}`);
+  return itens.map(label => ({
+    icon: ICONE_COMODIDADE[label] || 'check',
+    label,
+    sub: '',
+  }));
 }
 
 function similarCard(property) {
@@ -150,36 +236,107 @@ function pickSimilar(property) {
   return sameHood.concat(sameType).slice(0, 3);
 }
 
-/* Fotos-extra que já temos soltas na pasta, mapeadas por ref.
-   Data-driven: quando o XML real chegar com galeria por imóvel, troca isto por property.photos[]. */
-const EXTRA_PHOTOS = {
-  'AP7842-EIU': ['assets/images/ap7842-interior.jpg'],
-  'AP9008-EIU': ['assets/images/ap9008-interior.jpg'],
-  'AP8974-EIU': ['assets/images/ap8974-lazer.jpg'],
-  'AP5402-EIU': ['assets/images/ap5402-vila-granada.jpg'],
-  'AP8934-EIU': ['assets/images/ap8934-belenzinho.jpg'],
-  'AP6692-EIU': ['assets/images/ap6692-lancamento.jpg'],
-  'AP5842-EIU': ['assets/images/ap5842-vila-domitila.jpg'],
-  'SL0446-EIU': ['assets/images/sl0446-comercial.jpg'],
-  'SO7729-EIU': ['assets/images/so7729-aruja.jpg'],
-  'SO6951-EIU': ['assets/images/so6951-vila-rio-branco.jpg'],
-  'TE1181-EIU': ['assets/images/te1181-vila-granada.jpg'],
-  'CA3287-EIU': ['assets/images/ca3287-engenheiro-goulart.jpg']
-};
+/* Redimensiona no CDN do Sanity. A tira mostra miniaturas e o lightbox mostra
+   grande — pedir o mesmo arquivo pros dois desperdiça banda em imóvel com 40
+   fotos. URL que não é do Sanity (asset local) passa intacta. */
+function sized(src, w) {
+  if (!src || !src.includes('cdn.sanity.io')) return src;
+  return `${src.split('?')[0]}?w=${w}&auto=format&fit=max`;
+}
+
+/* Registro completo do imóvel: arquivo estático gerado por
+   site/scripts/gerar-catalogo.mjs. Traz fotos, descrição, comodidades,
+   acabamentos e ficha técnica.
+
+   Não consulta o Sanity direto porque o navegador esbarraria em CORS (a origem
+   do site precisaria ser liberada no projeto) e somaria latência a cada
+   abertura. E não cabe no catalog-data.js: descrição + 22 fotos + comodidades
+   de 4.429 imóveis dariam dezenas de MB para todo visitante. */
+async function carregarImovel(ref) {
+  try {
+    const res = await fetch(`imovel/${encodeURIComponent(ref)}.json`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    // Falha no carregamento não pode derrubar a página — cai no que o
+    // catálogo já tem (foto de capa, preço, specs básicas).
+    return null;
+  }
+}
 
 function galleryPhotos(property) {
-  const extra = Array.isArray(property.photos) ? property.photos : (EXTRA_PHOTOS[property.ref.toUpperCase()] || []);
-  let all = [...new Set([property.image, ...extra.filter(src => src !== property.image)])];
-  // Enquanto o XML real (com galeria completa por imóvel) não chega, completa a tira com
-  // fotos de outros imóveis do mesmo tipo — dá a sensação de "várias fotos" que o cliente pediu.
-  if (all.length < 6) {
-    const pool = inventory
-      .filter(p => p.type === property.type && p.ref !== property.ref)
-      .concat(inventory.filter(p => p.ref !== property.ref))
-      .map(p => p.image);
-    for (const src of pool) { if (all.length >= 8) break; if (!all.includes(src)) all.push(src); }
+  // `photos` vem de carregarFotos(). Sem completar com foto de outro imóvel —
+  // agora que a galeria real existe, foto alheia induz o comprador a erro.
+  const extra = Array.isArray(property.photos) ? property.photos : [];
+  // Dedup pela URL SEM query string: a capa chega recortada para o card
+  // (?w=560&h=400) e a mesma foto vem crua na galeria — comparar a URL inteira
+  // deixava a primeira foto aparecer duas vezes.
+  const vistos = new Set();
+  const out = [];
+  for (const src of [property.image, ...extra]) {
+    if (!src) continue;
+    const base = src.split('?')[0];
+    if (vistos.has(base)) continue;
+    vistos.add(base);
+    out.push(src);
   }
-  return all;
+  return out;
+}
+
+/* youtu.be/ID e youtube.com/watch?v=ID → URL de embed. Devolve null em URL que
+   não seja YouTube, para não montar iframe de origem desconhecida. */
+function youtubeEmbed(url) {
+  const m = String(url || '').match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([\w-]{11})/);
+  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0` : null;
+}
+
+/* Vídeo e tour 360°: 2.842 imóveis têm vídeo e 29 têm tour no cadastro.
+   O player só é criado no clique — o iframe do YouTube carrega ~1 MB de
+   script, e embutir isso em toda visita derrubaria a velocidade do site. */
+function setupMedia(property) {
+  const modal = document.querySelector('#mediaModal');
+  const stage = document.querySelector('#mediaModalStage');
+  const titulo = document.querySelector('#mediaModalTitle');
+  const btnVideo = document.querySelector('#videoOpen');
+  const btnTour = document.querySelector('#tourOpen');
+  if (!modal) return;
+
+  const embedVideo = youtubeEmbed(property.video);
+  // Vídeo repetido em centenas de imóveis é o institucional da Tamada, não a
+  // filmagem desta casa — o rótulo avisa antes do clique.
+  const institucional = property.videoInstitucional === true;
+  if (btnVideo) {
+    btnVideo.hidden = !embedVideo;
+    btnVideo.querySelector('span')?.remove();
+    const txt = institucional ? 'Conheça a Tamada' : 'Vídeo';
+    btnVideo.lastChild.textContent = ` ${txt}`;
+  }
+  if (btnTour) btnTour.hidden = !property.tour;
+
+  const abrir = (src, rotulo, ehTour) => {
+    // innerHTML novo a cada abertura: garante que o player anterior morreu.
+    stage.innerHTML = `<iframe src="${src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen title="${rotulo}"></iframe>`;
+    titulo.textContent = rotulo;
+    modal.classList.toggle('is-tour', !!ehTour);
+    modal.hidden = false;
+    document.body.classList.add('modal-open');
+  };
+
+  const fechar = () => {
+    modal.hidden = true;
+    // Zera o palco para parar o áudio — só esconder o modal deixa tocando.
+    stage.innerHTML = '';
+    document.body.classList.remove('modal-open');
+  };
+
+  if (embedVideo) {
+    const rotulo = institucional ? 'Conheça a Tamada Imóveis' : 'Vídeo do imóvel';
+    btnVideo.addEventListener('click', () => abrir(embedVideo, rotulo, false));
+  }
+  if (property.tour) btnTour.addEventListener('click', () => abrir(property.tour, 'Tour virtual 360°', true));
+  document.querySelector('#mediaModalClose').addEventListener('click', fechar);
+  modal.addEventListener('click', e => { if (e.target === modal) fechar(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) fechar(); });
 }
 
 function setupGallery(property) {
@@ -189,7 +346,7 @@ function setupGallery(property) {
 
   // Tira de fotos: mostra ~3 por vez, deslizando (não 1 foto inteira)
   strip.innerHTML = photos.map((src, i) =>
-    `<button class="strip-cell" type="button" data-i="${i}" aria-label="Abrir foto ${i + 1}"><img src="${src}" alt="${label} — foto ${i + 1}" ${i > 2 ? 'loading="lazy"' : ''}></button>`
+    `<button class="strip-cell" type="button" data-i="${i}" aria-label="Abrir foto ${i + 1}"><img src="${sized(src, 640)}" alt="${label} — foto ${i + 1}" width="640" height="480" ${i > 2 ? 'loading="lazy"' : 'fetchpriority="high"'}></button>`
   ).join('');
 
   document.querySelector('#galleryCount').textContent = `${photos.length} fotos`;
@@ -218,7 +375,7 @@ function setupGallery(property) {
   let cur = 0, zoom = 1, rot = 0, panX = 0, panY = 0;
 
   thumbs.innerHTML = photos.map((src, i) =>
-    `<button class="lb-thumb" type="button" data-i="${i}"><img src="${src}" alt="" loading="lazy"></button>`
+    `<button class="lb-thumb" type="button" data-i="${i}"><img src="${sized(src, 200)}" alt="" width="200" height="150" loading="lazy"></button>`
   ).join('');
   const thumbEls = [...thumbs.querySelectorAll('.lb-thumb')];
 
@@ -226,7 +383,7 @@ function setupGallery(property) {
   const show = i => {
     cur = (i + photos.length) % photos.length;
     zoom = 1; rot = 0; panX = 0; panY = 0;
-    lbImg.src = photos[cur];
+    lbImg.src = sized(photos[cur], 1600);
     lbImg.alt = `${label} — foto ${cur + 1}`;
     counter.textContent = `${cur + 1} / ${photos.length}`;
     thumbEls.forEach((t, i) => t.classList.toggle('on', i === cur));
@@ -344,14 +501,41 @@ function render(property) {
 
   setupLeadGate(property);
   setupShare(property);
+  setupMedia(property);
 
-  document.querySelector('#detailAbout').textContent = aboutText(property);
-  document.querySelector('#detailFacts').innerHTML = factRows(property);
+  // Descrição do corretor. O título deste bloco era fixo ("Um imóvel com a cara
+  // do bairro") — texto de template repetido em 4.429 páginas, o que também
+  // penaliza SEO por conteúdo duplicado. Passa a nomear o imóvel de fato.
+  const sobre = aboutHtml(property);
+  const blocoSobre = document.querySelector('#detailAbout').closest('.detail-block');
+  if (sobre) {
+    document.querySelector('#detailAbout').innerHTML = sobre;
+    document.querySelector('#aboutTitle').innerHTML =
+      `${escapeHtml(typeLabels[property.type] || 'Imóvel')} em<br><em>${escapeHtml(property.neighborhood)}.</em>`;
+  } else if (blocoSobre) {
+    blocoSobre.hidden = true;
+  }
+
+  // Agora que a ficha só traz o que não está em outro lugar, ela pode ficar
+  // vazia num imóvel de cadastro enxuto — nesse caso o bloco inteiro sai.
+  const linhasFicha = factRows(property);
+  const blocoFicha = document.querySelector('#detailFacts').closest('.detail-block');
+  document.querySelector('#detailFacts').innerHTML = linhasFicha;
+  if (blocoFicha) blocoFicha.hidden = !linhasFicha;
+
   document.querySelector('#mapNeighborhood').textContent = `${property.neighborhood}.`;
 
   const amenities = amenityList(property);
+  // Imóvel sem comodidade cadastrada (213 dos 4.429) não deve exibir um bloco
+  // com título e grade vazia embaixo.
+  const blocoAmenities = document.querySelector('#amenitiesBlock');
+  if (!amenities.length) {
+    if (blocoAmenities) blocoAmenities.hidden = true;
+  } else if (blocoAmenities) {
+    blocoAmenities.hidden = false;
+  }
   document.querySelector('#amenityGrid').innerHTML = amenities.map(a =>
-    `<li>${handIcons[a.icon] || handIcons.key}<div><span>${a.label}</span>${a.sub ? `<small>${a.sub}</small>` : ''}</div></li>`
+    `<li>${handIcons[a.icon] || handIcons.check}<div><span>${escapeHtml(a.label)}</span>${a.sub ? `<small>${escapeHtml(a.sub)}</small>` : ''}</div></li>`
   ).join('');
 
   // Efeitos do design system: chips entram em cascata quando visíveis
@@ -387,8 +571,26 @@ function render(property) {
 
 const ref = (new URLSearchParams(location.search).get('ref') || '').toUpperCase().trim();
 const property = inventory.find(item => item.ref.toUpperCase() === ref);
-if (property) render(property);
-else {
+if (property) {
+  // Carrega o registro completo antes de renderizar. Se falhar, a página ainda
+  // abre com o que o catálogo tem.
+  carregarImovel(property.ref).then(dados => {
+    if (dados) {
+      property.photos = dados.fotos || [];
+      property.descricao = dados.descricao || '';
+      property.comodidades = dados.comodidades || [];
+      property.acabamentos = dados.acabamentos || [];
+      property.garantias = dados.garantias || [];
+      property.pagamento = dados.pagamento || [];
+      property.ficha = dados.ficha || {};
+      property.video = dados.video;
+      property.videoInstitucional = dados.videoInstitucional;
+      property.tour = dados.tour;
+      property.corretor = dados.corretor;
+    }
+    render(property);
+  });
+} else {
   document.title = 'Imóvel não encontrado — Tamada Imóveis';
   document.querySelector('#detailNotFound').hidden = false;
 }

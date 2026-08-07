@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Conheça a Tamada Imóveis — uma imobiliária de bairro em São Paulo, com atendimento próximo, transparência e CRECI licenciado.">
+  <meta name="theme-color" content="#b21218">
+  <title>A Tamada — Tamada Imóveis</title>
+  <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/images/hero-sobre.jpg" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="imoveis.css?v=32">
+  <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
+<body class="catalog-page">
+  <a class="skip-link" href="#sobreContent">Pular para o conteúdo</a>
+  <div class="page-grain" aria-hidden="true"></div>
+
+  <div class="utility-bar">
+    <div class="shell utility-inner">
+      <p><span class="live-dot"></span> Atendimento local em São Paulo e região</p>
+      <div>
+        <a href="tel:01126822320"><iconify-icon icon="solar:phone-linear"></iconify-icon> (11) 2682-2320</a>
+        <span class="utility-separator"></span>
+        <a href="https://wa.me/5511965935749" target="_blank" rel="noopener"><iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon> WhatsApp</a>
+        <span class="creci">CRECI 21745-J</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header catalog-header" id="siteHeader">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
+      <nav class="desktop-nav" aria-label="Navegação principal">
+        <details class="nav-dropdown">
+          <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a href="imoveis.html?purpose=sale">Todos à venda</a>
+            <a href="imoveis.html?purpose=sale&amp;type=HOUSE">Casas</a>
+            <a href="imoveis.html?purpose=sale&amp;type=TWO_STORY_HOUSE">Sobrados</a>
+            <a href="imoveis.html?purpose=sale&amp;type=APARTMENT">Apartamentos</a>
+            <a href="imoveis.html?purpose=sale&amp;type=LAND">Terrenos</a>
+            <a href="imoveis.html?purpose=sale&amp;commercial=1">Comerciais</a>
+          </div>
+        </details>
+        <details class="nav-dropdown">
+          <summary>Alugar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a href="imoveis.html?purpose=rent">Todos para alugar</a>
+            <a href="imoveis.html?purpose=rent&amp;type=HOUSE">Casas</a>
+            <a href="imoveis.html?purpose=rent&amp;type=TWO_STORY_HOUSE">Sobrados</a>
+            <a href="imoveis.html?purpose=rent&amp;type=APARTMENT">Apartamentos</a>
+            <a href="imoveis.html?purpose=rent&amp;commercial=1">Comerciais</a>
+          </div>
+        </details>
+        <a href="anuncie.html">Anuncie</a>
+        <details class="nav-dropdown">
+          <summary>Serviços <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a href="anuncie.html">Anuncie seu imóvel</a>
+            <a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a>
+            <a href="https://tmdconsultoriai.superlogica.net/clients/areadofornecedor" target="_blank" rel="noopener">Extrato do proprietário</a>
+          </div>
+        </details>
+        <details class="nav-dropdown">
+          <summary>Institucional <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
+          <div>
+            <a class="active" href="sobre.html">A Tamada</a>
+            <a href="trabalhe-conosco.html">Trabalhe conosco</a>
+            <a href="https://www.tamadaimoveis.com.br/leis-do-inquilinato" target="_blank" rel="noopener">Leis do Inquilinato</a>
+            <a href="https://www.tamadaimoveis.com.br/fale-conosco" target="_blank" rel="noopener">Dúvidas e reclamações</a>
+          </div>
+        </details>
+      </nav>
+      <div class="header-actions">
+        <a class="button button-ghost header-search" href="imoveis.html"><iconify-icon icon="solar:magnifer-linear"></iconify-icon><span>Ver catálogo</span></a>
+        <a class="button button-red" href="https://wa.me/5511965935749" target="_blank" rel="noopener"><span>Falar com a Tamada</span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-number">A<br>TAMADA</div>
+    <nav aria-label="Navegação móvel">
+      <a href="index.html"><span>00</span> Início</a>
+      <a href="imoveis.html?purpose=sale"><span>01</span> Comprar</a>
+      <a href="imoveis.html?purpose=rent"><span>02</span> Alugar</a>
+      <a href="anuncie.html"><span>03</span> Anuncie</a>
+      <a href="sobre.html"><span>04</span> Institucional</a>
+    </nav>
+    <a class="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
+  </div>
+
+  <main id="sobreContent">
+    <section class="catalog-hero">
+      <div class="catalog-hero-media" aria-hidden="true"><img src="assets/images/hero-sobre.jpg" alt="" fetchpriority="high"></div>
+      <div class="catalog-hero-scrim" aria-hidden="true"></div>
+      <div class="shell">
+        <nav class="breadcrumbs" aria-label="Navegação estrutural"><a href="index.html">Início</a><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon><span>A Tamada</span></nav>
+        <div class="catalog-hero-grid">
+          <div>
+            <p class="eyebrow"><span></span> <span>Institucional</span></p>
+            <h1>A imobiliária<br><em>do seu bairro.</em></h1>
+          </div>
+          <div class="catalog-hero-aside">
+            <p>Venda, locação e administração de imóveis em São Paulo e região — com gente que conhece a rua, o prédio e o vizinho.</p>
+            <dl><div><dt>93</dt><dd>imóveis locais</dd></div><div><dt>12</dt><dd>regiões em destaque</dd></div><div><dt>01</dt><dd>atendimento próximo</dd></div></dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section section" id="heroTransition">
+      <div class="about-image scroll-fill" style="clip-path:inset(0 0 100% 0)"><img src="assets/images/about-sobre-1.jpg" alt="Recepção da Tamada Imóveis"><span>Atendimento humano<br>do primeiro contato à chave</span></div>
+      <div class="about-copy scroll-fill" style="opacity:0;transform:translateY(40px)">
+        <p class="eyebrow"><span>01</span> Quem somos</p>
+        <h2>Uma imobiliária<br><em>que conhece a rua.</em></h2>
+        <p>A Tamada nasceu perto de casa — e continua assim. Trabalhamos venda, locação e administração de imóveis com uma equipe que atua na mesma região há anos, entende os bairros de verdade e trata cada negócio com a atenção que ele merece, do primeiro contato à entrega das chaves.</p>
+        <p>Não somos um portal, nem um call center. Somos uma imobiliária de bairro, com corretores que você pode conhecer pelo nome.</p>
+      </div>
+    </section>
+
+    <section class="about-section section">
+      <div class="about-copy reveal">
+        <p class="eyebrow"><span>02</span> Nossos valores</p>
+        <h2>Transparência<br><em>em cada negociação.</em></h2>
+        <p>Preço justo, contrato claro e nada de letra miúda. Você entende cada etapa do negócio antes de assinar — e continua acompanhado depois, seja como comprador, locatário ou proprietário.</p>
+        <p>Atuamos sempre dentro da lei e da ética do mercado imobiliário, com registro CRECI e responsabilidade em cada etapa do processo.</p>
+      </div>
+      <div class="about-image reveal"><img src="assets/images/about-sobre-2.jpg" alt="Chave e mapa de bairro sobre mesa de madeira" loading="lazy"><span>Do contrato<br>à entrega das chaves</span></div>
+    </section>
+
+    <section class="announce-benefits section">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow"><span>03</span> Diferenciais</p><h2>Por que escolher<br><em>a Tamada.</em></h2></div>
+          <p>O que muda quando uma imobiliária é de bairro, e não de sistema.</p>
+        </div>
+        <div class="benefit-grid">
+          <article class="benefit-card reveal">
+            <div class="benefit-icon"><iconify-icon icon="solar:map-point-linear"></iconify-icon></div>
+            <h3>Atendimento local</h3>
+            <p>Conhecemos cada bairro que atendemos — não é só um endereço em uma planilha.</p>
+          </article>
+          <article class="benefit-card reveal reveal-delay-1">
+            <div class="benefit-icon"><iconify-icon icon="solar:buildings-2-linear"></iconify-icon></div>
+            <h3>Presença de bairro</h3>
+            <p>Atuação constante na mesma região, com corretores que moram perto de onde atendem.</p>
+          </article>
+          <article class="benefit-card reveal reveal-delay-2">
+            <div class="benefit-icon"><iconify-icon icon="solar:document-text-linear"></iconify-icon></div>
+            <h3>Transparência</h3>
+            <p>Contratos claros, sem letras miúdas — você entende cada etapa antes de assinar.</p>
+          </article>
+          <article class="benefit-card reveal reveal-delay-3">
+            <div class="benefit-icon"><iconify-icon icon="solar:shield-check-linear"></iconify-icon></div>
+            <h3>CRECI licenciado</h3>
+            <p>Corretores registrados, atuando dentro da lei e da ética do mercado imobiliário.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="space-section section">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow"><span>04</span> Nosso espaço</p><h2>Um escritório<br><em>pra receber você.</em></h2></div>
+          <p>Passe para conversar, assinar contrato ou só tirar uma dúvida — sem hora marcada.</p>
+        </div>
+        <div class="space-gallery">
+          <button class="space-gallery-item reveal" type="button" data-i="0" aria-label="Ampliar foto"><img src="assets/images/space-sobre-1.jpg" alt="Fachada do escritório Tamada Imóveis" loading="lazy"></button>
+          <button class="space-gallery-item reveal reveal-delay-1" type="button" data-i="1" aria-label="Ampliar foto"><img src="assets/images/space-sobre-2.jpg" alt="Sala de reunião do escritório Tamada Imóveis" loading="lazy"></button>
+          <button class="space-gallery-item reveal reveal-delay-2" type="button" data-i="2" aria-label="Ampliar foto"><img src="assets/images/space-sobre-3.jpg" alt="Recepção do escritório Tamada Imóveis" loading="lazy"></button>
+          <button class="space-gallery-item reveal" type="button" data-i="3" aria-label="Ampliar foto"><img src="assets/images/space-sobre-4.jpg" alt="Detalhe do escritório Tamada Imóveis" loading="lazy"></button>
+          <button class="space-gallery-item reveal reveal-delay-1" type="button" data-i="4" aria-label="Ampliar foto"><img src="assets/images/space-sobre-5.jpg" alt="Corredor do escritório Tamada Imóveis" loading="lazy"></button>
+          <button class="space-gallery-item reveal reveal-delay-2" type="button" data-i="5" aria-label="Ampliar foto"><img src="assets/images/space-sobre-6.jpg" alt="Vista do bairro a partir do escritório Tamada Imóveis" loading="lazy"></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="instagram-cta">
+      <div class="section-atmosphere atmosphere-red" aria-hidden="true"></div>
+      <span class="hero-word" aria-hidden="true">Insta</span>
+      <div class="shell">
+        <p class="eyebrow"><span>05</span> Siga a Tamada</p>
+        <h2>Bairro por bairro,<br><em>na sua timeline.</em></h2>
+        <p>Imóveis novos, bastidores do atendimento e novidades da região — tudo no nosso Instagram.</p>
+        <!-- Quando a conta tiver embed configurado (ex.: SnapWidget), trocar este CTA por um grid de posts ao vivo. -->
+        <a class="button button-red button-large magnetic" href="https://www.instagram.com/tamadaimoveis/" target="_blank" rel="noopener"><span>Seguir @tamadaimoveis</span><iconify-icon icon="mdi:instagram"></iconify-icon></a>
+      </div>
+    </section>
+
+    <section class="catalog-cta">
+      <div class="shell"><div><p class="eyebrow eyebrow-light"><span></span> Já conhece a Tamada</p><h2>Agora veja o<br><em>catálogo completo.</em></h2></div><div><p>Imóveis à venda e para locação em São Paulo e região, com busca por bairro, preço e características.</p><a class="button button-red button-large" href="imoveis.html">Ver catálogo <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div></div>
+    </section>
+  </main>
+
+  <footer class="site-footer catalog-footer">
+    <div class="shell footer-top">
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <div class="footer-columns">
+        <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
+        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
+        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">Locação e proprietários</a><a href="sobre.html">A Tamada</a></div>
+      </div>
+    </div>
+    <div class="shell footer-bottom"><p>© <span id="currentYear"></span> Tamada Imóveis · CRECI 21745-J</p><a href="index.html">Voltar ao início <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+  </footer>
+
+  <a class="floating-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
+
+  <!-- Lightbox pro: foto em tela cheia + controles + miniaturas (mesmo componente do imovel.html) -->
+  <div class="lightbox" id="lightbox" hidden aria-modal="true" role="dialog" aria-label="Galeria do espaço Tamada">
+    <div class="lightbox-bar">
+      <span class="lightbox-title" id="lightboxTitle"></span>
+      <span class="lightbox-counter" id="lightboxCounter"></span>
+      <div class="lightbox-tools">
+        <button id="lbZoomOut" type="button" aria-label="Diminuir zoom"><iconify-icon icon="solar:minimize-square-3-linear"></iconify-icon></button>
+        <button id="lbZoomIn" type="button" aria-label="Aumentar zoom"><iconify-icon icon="solar:maximize-square-3-linear"></iconify-icon></button>
+        <button id="lbRotate" type="button" aria-label="Girar"><iconify-icon icon="solar:refresh-square-linear"></iconify-icon></button>
+        <button id="lbReset" type="button" aria-label="Redefinir">1:1</button>
+        <button id="lbToggleThumbs" type="button" aria-label="Ocultar miniaturas"><iconify-icon icon="solar:gallery-minimalistic-linear"></iconify-icon></button>
+        <button id="lightboxClose" type="button" aria-label="Fechar galeria"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button>
+      </div>
+    </div>
+    <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Foto anterior"><iconify-icon icon="solar:alt-arrow-left-linear"></iconify-icon></button>
+    <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Próxima foto"><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon></button>
+    <div class="lightbox-stage" id="lbStage"><img id="lbImage" src="" alt="" draggable="false"></div>
+    <div class="lightbox-thumbs" id="lbThumbs"></div>
+  </div>
+
+  <script src="nav-dropdown.js?v=32"></script>
+  <script src="common.js?v=32"></script>
+  <script src="sobre.js?v=32"></script>
+</body>
+</html>

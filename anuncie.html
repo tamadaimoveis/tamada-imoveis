@@ -9,8 +9,8 @@
   <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/hero-anuncie.jpg" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="styles.css?v=18">
-  <link rel="stylesheet" href="imoveis.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="imoveis.css?v=33">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body class="catalog-page announce-page">
@@ -31,7 +31,7 @@
 
   <header class="site-header catalog-header" id="siteHeader">
     <div class="shell header-inner">
-      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"></a>
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown">
           <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
@@ -59,9 +59,6 @@
           <summary>Serviços <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
           <div>
             <a href="anuncie.html">Anuncie seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/encomende-seu-imovel-compra-ou-locacao" target="_blank" rel="noopener">Encomende seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/avalie-seu-corretor" target="_blank" rel="noopener">Avalie seu corretor</a>
-            <a href="financiamento.html">Financiamento</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadofornecedor" target="_blank" rel="noopener">Extrato do proprietário</a>
           </div>
@@ -91,8 +88,7 @@
       <a href="imoveis.html?purpose=sale"><span>01</span> Comprar</a>
       <a href="imoveis.html?purpose=rent"><span>02</span> Alugar</a>
       <a href="anuncie.html"><span>03</span> Anuncie</a>
-      <a href="financiamento.html"><span>04</span> Financiamento</a>
-      <a href="sobre.html"><span>05</span> Institucional</a>
+      <a href="sobre.html"><span>04</span> Institucional</a>
     </nav>
     <a class="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
   </div>
@@ -175,10 +171,6 @@
             <li><iconify-icon icon="solar:check-circle-linear"></iconify-icon> Retorno em até 1 dia útil</li>
             <li><iconify-icon icon="solar:check-circle-linear"></iconify-icon> Atendimento humano, sem robô</li>
           </ul>
-          <div class="announce-form-contact">
-            <iconify-icon icon="mdi:whatsapp"></iconify-icon>
-            <div><strong>Prefere falar direto?</strong><a href="https://wa.me/5511966378282" target="_blank" rel="noopener">(11) 96637-8282 — locação e proprietários</a></div>
-          </div>
         </div>
 
         <form class="announce-form" id="propertyForm" novalidate>
@@ -193,15 +185,16 @@
                   <option>Galpão</option><option>Prédio</option><option>Loja</option><option>Outro</option>
                 </select>
               </label>
-              <label class="af-field"><span>Objetivo*</span>
+              <label class="af-field"><span>Finalidade*</span>
                 <select id="afGoal" required>
                   <option value="">Selecione</option>
-                  <option>Venda</option><option>Locação</option><option>Venda ou locação</option><option>Temporada</option>
+                  <!-- Sem "Temporada": a Tamada não trabalha com esse tipo de locação. -->
+                  <option>Venda</option><option>Locação</option><option>Venda e locação</option>
                 </select>
               </label>
             </div>
             <div class="af-row af-row-3">
-              <label class="af-field"><span>Dormitórios</span>
+              <label class="af-field"><span>Quartos</span>
                 <select id="afBeds"><option value="">--</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>Acima de 5</option></select>
               </label>
               <label class="af-field"><span>Banheiros</span>
@@ -211,9 +204,18 @@
                 <select id="afGarage"><option value="">--</option><option>0</option><option>1</option><option>2</option><option>3</option><option>Acima de 3</option></select>
               </label>
             </div>
-            <div class="af-row">
+            <div class="af-row af-row-3">
               <label class="af-field"><span>Área total (m²)</span><input id="afArea" type="number" min="0" inputmode="numeric" placeholder="Ex.: 120"></label>
+              <label class="af-field"><span>CEP</span><input id="afCep" type="text" inputmode="numeric" maxlength="9" autocomplete="postal-code" placeholder="00000-000"><small id="afCepStatus" class="af-cep-status" aria-live="polite"></small></label>
               <label class="af-field"><span>Bairro / Cidade</span><input id="afLocation" type="text" placeholder="Ex.: Tatuapé, São Paulo"></label>
+            </div>
+            <div class="af-row">
+              <label class="af-field"><span>Aceita pet?</span>
+                <select id="afPet"><option value="">--</option><option>Sim</option><option>Não</option></select>
+              </label>
+              <label class="af-field"><span>Aceita financiamento?</span>
+                <select id="afFinancing"><option value="">--</option><option>Sim</option><option>Não</option></select>
+              </label>
             </div>
             <label class="af-field"><span>Endereço completo</span><input id="afAddress" type="text" placeholder="Rua, número, complemento (não será divulgado)"></label>
             <label class="af-field"><span>Informações adicionais</span><textarea id="afNotes" rows="3" placeholder="Conte diferenciais, estado do imóvel, valor pretendido…"></textarea></label>
@@ -229,29 +231,37 @@
             <label class="lead-check"><input id="afConsent" type="checkbox" required><span>Declaro que li e concordo em ser contatado pela Tamada Imóveis, de acordo com a Política de Privacidade.</span></label>
           </fieldset>
 
-          <button class="button button-red button-large" id="afSubmit" type="submit"><iconify-icon icon="mdi:whatsapp"></iconify-icon><span>Enviar e falar no WhatsApp</span></button>
-          <p class="af-note">Ao enviar, seus dados seguem para nossa equipe e você é direcionado ao WhatsApp com o resumo já preenchido.</p>
+          <button class="button button-red button-large" id="afSubmit" type="submit"><iconify-icon icon="solar:letter-linear"></iconify-icon><span>Enviar cadastro</span></button>
+          <p class="af-note">Ao enviar, seus dados seguem por e-mail para nossa equipe. Retorno em até 1 dia útil.</p>
+          <p class="af-note" id="afError" hidden role="alert"></p>
         </form>
+
+        <div class="af-success" id="afSuccess" hidden>
+          <iconify-icon icon="solar:check-circle-bold"></iconify-icon>
+          <h3>Cadastro recebido.</h3>
+          <p>Recebemos as informações do seu imóvel. Nossa equipe entra em contato em até 1 dia útil pelo telefone ou e-mail informado.</p>
+          <a class="button button-red" href="index.html"><span>Voltar ao início</span></a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer catalog-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
-        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="financiamento.html">Financiamento</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
-        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511966378282" target="_blank" rel="noopener">Locação e proprietários</a><a href="sobre.html">A Tamada</a></div>
+        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
+        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">Locação e proprietários</a><a href="sobre.html">A Tamada</a></div>
       </div>
     </div>
     <div class="shell footer-bottom"><p>© <span id="currentYear"></span> Tamada Imóveis · CRECI 21745-J</p><a href="index.html">Voltar ao início <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
   </footer>
 
-  <a class="floating-whatsapp" href="https://wa.me/5511966378282" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
+  <a class="floating-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
 
-  <script src="nav-dropdown.js"></script>
-  <script src="common.js"></script>
-  <script src="anuncie.js"></script>
+  <script src="nav-dropdown.js?v=32"></script>
+  <script src="common.js?v=32"></script>
+  <script src="anuncie.js?v=33"></script>
 </body>
 </html>

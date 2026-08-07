@@ -1,12 +1,12 @@
 .catalog-page{background:#faf9f6}
 /* Header segue o padrão da home: transparente sobre a hero (com foto), sólido no scroll */
-.catalog-page .site-header:not(.scrolled) .brand img{filter:brightness(0) invert(1)}
+.catalog-page .site-header:not(.scrolled) .brand-logo-white{opacity:1}
 .catalog-page .desktop-nav>a.active{color:#fff}
 .site-header.scrolled .desktop-nav>a.active{color:var(--red)}
 .catalog-page .desktop-nav>a.active::after{right:0;background:#fff}
 .site-header.scrolled .desktop-nav>a.active::after{background:var(--red)}
 
-.catalog-hero{position:relative;overflow:hidden;background:#151312;color:#fff;min-height:clamp(440px,58vh,560px);display:flex;align-items:center;padding:126px 0 56px;border-bottom:0}
+.catalog-hero{position:relative;overflow:hidden;background:#151312;color:#fff;min-height:clamp(440px,58vh,560px);display:flex;align-items:center;padding:138px 0 56px;border-bottom:0}
 .catalog-hero-media{position:absolute;inset:0;z-index:0}
 .catalog-hero-media img{width:100%;height:100%;object-fit:cover;animation:detailImg 1.3s var(--ease) both}
 .catalog-hero-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(133,12,18,.9) 0%,rgba(20,16,14,.78) 46%,rgba(20,16,14,.45) 100%),linear-gradient(0deg,rgba(20,16,14,.5),transparent 40%)}
@@ -29,7 +29,7 @@
 .catalog-purpose{display:flex;align-items:center;gap:4px;padding-right:22px;height:64px;scrollbar-width:none}
 .catalog-purpose::-webkit-scrollbar{display:none}
 .catalog-purpose button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:9px 13px;font-size:10px;font-weight:700;cursor:pointer;transition:.2s}.catalog-purpose button:hover{border-color:var(--red);color:var(--red)}.catalog-purpose button.active{background:var(--ink);border-color:var(--ink);color:#fff}
-.catalog-search-form>label{height:64px;border-left:1px solid var(--line);padding:0 20px;display:flex;flex-direction:column;justify-content:center;gap:6px}.catalog-search-form>label>span{font-size:8px;text-transform:uppercase;letter-spacing:.13em;font-weight:700;color:var(--muted)}
+.catalog-search-form>label{height:64px;border-left:1px solid var(--line);padding:0 26px;display:flex;flex-direction:column;justify-content:center;gap:6px}.catalog-search-form>label>span{font-size:8px;text-transform:uppercase;letter-spacing:.13em;font-weight:700;color:var(--muted)}
 .catalog-search-form label>div{display:flex;align-items:center;gap:7px}.catalog-search-form iconify-icon{font-size:17px;color:var(--red)}.catalog-search-form input,.catalog-search-form select{border:0;outline:0;background:transparent;width:100%;appearance:none;font-size:12px;color:var(--ink)}.catalog-search-form input::placeholder{color:#aaa69d}
 .catalog-submit{height:58px;min-width:115px;border:0;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;gap:13px;cursor:pointer;font-size:12px;font-weight:700;transition:.25s}.catalog-submit:hover{background:var(--red-dark);transform:translateY(-2px)}
 
@@ -57,17 +57,17 @@
 .catalog-card-media{height:265px;position:relative;overflow:hidden;background:var(--paper-deep)}.catalog-card-media>a{display:block;width:100%;height:100%}.catalog-card-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.84);transition:transform .7s var(--ease),filter .4s}.catalog-card:hover img{transform:scale(1.04);filter:saturate(1)}
 .catalog-card-purpose{position:absolute;left:11px;top:11px;background:rgba(255,255,255,.9);backdrop-filter:blur(7px);padding:6px 8px;font-size:8px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}.catalog-card-code{position:absolute;left:11px;bottom:10px;background:rgba(17,17,16,.62);color:#fff;padding:4px 7px;font-family:monospace;font-size:8px}
 .catalog-favorite{position:absolute;right:10px;top:10px;width:35px;height:35px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:17px;display:grid;place-items:center;cursor:pointer}.catalog-favorite.saved{background:var(--red);color:#fff}
-.catalog-card-copy{padding:15px 2px 0}.catalog-card-location{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin:0 0 6px}.catalog-card h2{font-family:Elicyon;font-size:23px;line-height:1.06;font-weight:400;margin:0 0 11px;letter-spacing:-.02em}.catalog-card-specs{display:flex;gap:10px;font-size:9px;color:var(--muted);min-height:19px}.catalog-card-specs span{display:flex;align-items:center;gap:3px}.catalog-card-specs iconify-icon{font-size:14px;color:var(--ink)}
+.catalog-card-copy{padding:15px 2px 0}.catalog-card-location{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin:0 0 6px}.catalog-card h2{font-family:Antique,"Helvetica Neue",Arial,sans-serif;font-size:23px;line-height:1.06;font-weight:600;margin:0 0 11px;letter-spacing:-.01em}.catalog-card-specs{display:flex;gap:10px;font-size:9px;color:var(--muted);min-height:19px}.catalog-card-specs span{display:flex;align-items:center;gap:3px}.catalog-card-specs iconify-icon{font-size:14px;color:var(--ink)}
 .catalog-card-bottom{display:flex;justify-content:space-between;align-items:end;border-top:1px solid var(--line);padding-top:11px;margin-top:10px}.catalog-card-bottom strong{font-size:14px}.catalog-card-bottom small{display:block;font-size:8px;color:var(--muted);font-weight:400}.catalog-card-bottom a{width:32px;height:32px;border:1px solid var(--line);display:grid;place-items:center;transition:.25s}.catalog-card:hover .catalog-card-bottom a{background:var(--red);border-color:var(--red);color:#fff;transform:rotate(-8deg)}
 .load-catalog{margin:55px auto 0;border:1px solid var(--line);background:#fff;min-width:245px;height:52px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;font-weight:700;cursor:pointer}.load-catalog:hover{background:var(--ink);color:#fff}.load-catalog[hidden]{display:none}
 .catalog-empty{grid-column:1/-1;border:1px solid var(--line);background:#fff;padding:90px 30px;text-align:center}.catalog-empty iconify-icon{font-size:40px;color:var(--red)}.catalog-empty h2{font-family:Elicyon;font-size:37px;font-weight:400;margin:10px 0 5px}.catalog-empty p{font-size:12px;color:var(--muted)}
 
-.catalog-map-view{display:grid;grid-template-columns:330px 1fr;gap:16px;height:720px}.catalog-map-view[hidden]{display:none}.map-results-list{overflow-y:auto;scrollbar-width:thin;padding-right:6px}.map-result-item{display:grid;grid-template-columns:100px 1fr;gap:12px;border:1px solid var(--line);background:#fff;padding:9px;margin-bottom:8px;cursor:pointer;transition:.2s}.map-result-item:hover,.map-result-item.active{border-color:var(--red);box-shadow:0 8px 22px rgba(21,21,20,.07)}.map-result-item img{width:100px;height:86px;object-fit:cover}.map-result-item p{font-size:8px;text-transform:uppercase;color:var(--red);margin:0 0 4px}.map-result-item h3{font-family:Elicyon;font-size:17px;line-height:1.05;font-weight:400;margin:0 0 6px}.map-result-item strong{font-size:10px}
+.catalog-map-view{display:grid;grid-template-columns:330px 1fr;gap:16px;height:720px}.catalog-map-view[hidden]{display:none}.map-results-list{overflow-y:auto;scrollbar-width:thin;padding-right:6px}.map-result-item{display:grid;grid-template-columns:100px 1fr;gap:12px;border:1px solid var(--line);background:#fff;padding:9px;margin-bottom:8px;cursor:pointer;transition:.2s}.map-result-item:hover,.map-result-item.active{border-color:var(--red);box-shadow:0 8px 22px rgba(21,21,20,.07)}.map-result-item img{width:100px;height:86px;object-fit:cover}.map-result-item p{font-size:8px;text-transform:uppercase;color:var(--red);margin:0 0 4px}.map-result-item h3{font-family:Antique,"Helvetica Neue",Arial,sans-serif;font-size:12.5px;line-height:1.38;font-weight:600;margin:0 0 6px;letter-spacing:-.005em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.map-result-item strong{font-size:10px}
 .catalog-map-stage{position:relative;min-width:0;overflow:hidden;border:1px solid var(--line);background:#deded7}.catalog-map{position:absolute;inset:0;z-index:2}.catalog-map.offline{display:none}.catalog-map .leaflet-control-attribution{font-size:7px!important}.catalog-map .leaflet-control-zoom{border:0!important;box-shadow:0 5px 16px rgba(0,0,0,.12)!important}.catalog-map .leaflet-control-zoom a{border:0!important;color:var(--ink)!important}.catalog-map .leaflet-control-zoom a:first-child{border-bottom:1px solid var(--line)!important}
 .catalog-pin{height:32px;min-width:42px;padding:0 8px;border-radius:20px;background:var(--red);color:#fff;display:grid;place-items:center;border:2px solid #fff;box-shadow:0 6px 16px rgba(90,8,12,.25);font-size:8px;font-weight:700;transition:.2s}.catalog-pin:hover,.catalog-pin.active{background:var(--ink);transform:scale(1.12)}
 .catalog-map-fallback{position:absolute;inset:0;z-index:1;background:linear-gradient(145deg,#e9e8e1,#d8d8d1)}.catalog-map-fallback::before{content:"";position:absolute;inset:-25%;background-image:repeating-radial-gradient(ellipse at 48% 52%,transparent 0 37px,rgba(21,21,20,.08) 38px,transparent 40px 62px);transform:rotate(18deg)}.catalog-map-fallback span{position:absolute;height:5px;background:#fff;width:80%;left:5%;top:var(--top,30%);transform:rotate(var(--rotate,18deg))}.catalog-map-fallback span:nth-child(2){--top:62%;--rotate:-25deg}.catalog-map-fallback span:nth-child(3){--top:44%;--rotate:70deg}
 .catalog-map-note{position:absolute;z-index:5;left:12px;bottom:12px;background:rgba(255,255,255,.9);padding:8px 10px;font-size:8px;text-transform:uppercase;letter-spacing:.1em}.catalog-map-note i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:5px}
-.floating-map-card{position:absolute;z-index:600;left:16px;bottom:16px;top:auto;width:320px;max-height:calc(100% - 32px);overflow:hidden;background:#fff;box-shadow:0 20px 50px rgba(21,21,20,.22);animation:catalogCardIn .35s var(--ease) both}.floating-map-card[hidden]{display:none}.floating-map-card>img{width:100%;height:150px;object-fit:cover}.floating-map-card>div{padding:15px}.floating-map-card p{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin:0 0 5px}.floating-map-card h2{font-family:Elicyon;font-size:22px;line-height:1.05;font-weight:400;margin:0 0 9px}.floating-map-card strong{display:block;font-size:13px;margin-bottom:11px}.floating-map-card a{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;font-size:9px;font-weight:700}.floating-map-card>button{position:absolute;right:8px;top:8px;width:31px;height:31px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;cursor:pointer}
+.floating-map-card{position:absolute;z-index:600;left:16px;bottom:16px;top:auto;width:320px;max-height:min(calc(100% - 32px),calc(100vh - 110px));overflow-y:auto;background:#fff;box-shadow:0 20px 50px rgba(21,21,20,.22);animation:catalogCardIn .35s var(--ease) both}.floating-map-card[hidden]{display:none}.floating-map-card>img{width:100%;height:150px;object-fit:cover}.floating-map-card>div{padding:15px}.floating-map-card p{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin:0 0 5px}.floating-map-card h2{font-family:Antique,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.4;font-weight:600;margin:0 0 9px;letter-spacing:-.01em}.floating-map-card strong{display:block;font-size:13px;margin-bottom:11px}.floating-map-card a{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;font-size:9px;font-weight:700}.floating-map-card>button{position:absolute;right:8px;top:8px;width:31px;height:31px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;cursor:pointer}
 
 .catalog-cta{background:var(--ink);color:#fff;padding:105px 0;position:relative;overflow:hidden}.catalog-cta::after{content:"T";position:absolute;right:-.05em;bottom:-.35em;font-family:Elicyon;font-size:30vw;color:rgba(255,255,255,.025)}.catalog-cta>.shell{display:grid;grid-template-columns:1.1fr .9fr;gap:100px;align-items:end;position:relative;z-index:2}.catalog-cta h2{font-family:Elicyon;font-size:clamp(50px,5vw,82px);line-height:.9;font-weight:400;margin:0}.catalog-cta>div>div:last-child p{max-width:450px;color:rgba(255,255,255,.55);font-size:14px;line-height:1.7;margin:0 0 25px}.catalog-cta h2 em{color:#ef878b}.catalog-footer{padding-top:75px}
 .filter-backdrop{position:fixed;inset:0;background:rgba(15,15,14,.5);z-index:180;opacity:0;visibility:hidden;transition:.3s}
@@ -94,7 +94,7 @@
   .catalog-purpose.at-end{-webkit-mask-image:none;mask-image:none}
   .catalog-purpose button{white-space:nowrap}.catalog-search-form>label{width:100%;border-top:1px solid var(--line);border-left:0}.catalog-submit{width:100%}
   .catalog-results-section{padding-top:28px}.catalog-toolbar{align-items:flex-start;gap:18px}.catalog-toolbar>div:last-child{flex-wrap:wrap;justify-content:flex-end}.sort-field span{display:none}.sort-field{padding:0 7px}.view-switch{order:3}.catalog-grid{grid-template-columns:1fr}.catalog-card-media{height:400px}
-  .catalog-map-stage{height:590px}.floating-map-card{left:10px;top:auto;bottom:44px;width:calc(100% - 20px);display:grid;grid-template-columns:120px 1fr}.floating-map-card>img{height:100%;min-height:150px}.floating-map-card>button{right:7px;top:7px}.floating-map-card h2{font-size:19px;padding-right:22px}
+  .catalog-map-stage{height:590px}.floating-map-card{left:10px;top:auto;bottom:44px;width:calc(100% - 20px);display:grid;grid-template-columns:120px 1fr}.floating-map-card>img{height:100%;min-height:150px}.floating-map-card>button{right:7px;top:7px}.floating-map-card h2{font-size:13.5px;padding-right:22px}
   .catalog-cta{padding:80px 0}.catalog-cta h2{font-size:48px}
 }
 
@@ -136,7 +136,11 @@
 .detail-purpose,.detail-type{display:inline-block;padding:7px 12px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .detail-purpose{background:var(--red);color:#fff}
 .detail-type{background:var(--paper-deep);color:var(--ink-soft)}
-.detail-intro h1{font-family:Elicyon,Georgia,serif;font-weight:400;font-size:clamp(38px,4.2vw,68px);line-height:.94;letter-spacing:-.04em;margin:0;max-width:760px}
+/* O título da página do imóvel é o texto mais longo do site inteiro — vem
+   integral do Gaia, com tipo, dormitórios, m², preço e bairro numa frase só.
+   Em corpo de headline (68px) virava um paredão. Fonte de texto, corpo menor
+   e entrelinha folgada: continua sendo o h1, sem exigir esforço pra ler. */
+.detail-intro h1{font-family:Antique,"Helvetica Neue",Arial,sans-serif;font-weight:600;font-size:clamp(26px,2.5vw,38px);line-height:1.25;letter-spacing:-.015em;margin:0;max-width:760px}
 .detail-location{display:flex;align-items:center;gap:8px;margin:16px 0 0;color:var(--muted);font-size:15px}
 .detail-location iconify-icon{color:var(--red);font-size:18px}
 .detail-share{margin-top:30px}
@@ -217,7 +221,7 @@
 }
 @media (max-width:620px){
   .strip-cell{flex-basis:100%}
-  .detail-intro h1{font-size:clamp(30px,8.6vw,44px);overflow-wrap:break-word}
+  .detail-intro h1{font-size:clamp(21px,5.2vw,27px);overflow-wrap:break-word}
   .pc-value{font-size:clamp(28px,8.5vw,40px)}
   .detail-pricebar{flex-direction:column;align-items:flex-start;gap:8px;margin-top:-40px}
   .detail-specs{flex-wrap:wrap;gap:16px 22px}
@@ -375,9 +379,13 @@
 .af-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2377746c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:38px}
 .af-field textarea{resize:vertical;min-height:80px;font-family:inherit}
 .af-field input:focus,.af-field select:focus,.af-field textarea:focus{outline:0;border-color:var(--red);box-shadow:0 0 0 3px rgba(178,18,24,.1)}
+.af-cep-status{display:block;margin-top:6px;font-size:11px;color:var(--muted)}
+.af-cep-status[data-state="error"]{color:var(--red)}
+.af-cep-status[data-state="ok"]{color:var(--green)}
 .announce-form .lead-check{margin:4px 0 0}
 .announce-form>.button{width:100%;margin-top:8px}
 .af-note{font-size:12px;color:var(--muted);text-align:center;margin:14px 0 0;line-height:1.6}
+.af-note#afError{color:var(--red);font-weight:700}
 
 @media (max-width:1100px){
   .benefit-grid{grid-template-columns:1fr 1fr}
@@ -507,4 +515,181 @@
   .sim-row{grid-template-columns:1fr}
   .bank-track{gap:38px}
   .sim-actions .button-red{min-width:0}
+}
+
+/* Dropdown customizado — substitui <select> nativo mantendo o original escondido/funcional */
+.elegant-select-source{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.elegant-select{position:relative;width:100%}
+.elegant-select-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:0;background:transparent;padding:0;font:inherit;font-size:12px;color:var(--ink);cursor:pointer;text-align:left}
+.elegant-select-trigger span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.elegant-select-trigger iconify-icon{font-size:15px;color:var(--red);flex:0 0 auto;transition:transform .25s var(--ease)}
+.elegant-select.is-open .elegant-select-trigger iconify-icon{transform:rotate(180deg)}
+.elegant-select-list{position:fixed;z-index:900;max-height:280px;overflow-y:auto;background:#fff;border:1px solid var(--line);box-shadow:0 24px 60px rgba(21,21,20,.16);list-style:none;margin:0;padding:8px;animation:fadeUp .2s var(--ease) both}
+.elegant-select-list li{padding:12px 14px;font-size:13px;color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:.15s}
+.elegant-select-list li:hover{background:var(--paper);color:var(--red)}
+.elegant-select-list li.active{background:var(--ink);color:#fff}
+.filter-panel .elegant-select-trigger{height:38px;padding:0 12px;border:1px solid var(--line);transition:border-color .2s}
+.filter-panel .elegant-select-trigger:hover,.filter-panel .elegant-select.is-open .elegant-select-trigger{border-color:var(--red)}
+
+/* ── Cards de altura uniforme ─────────────────────────────────────────────
+   Os títulos vindos do Gaia variam de 1 a 3 linhas, e como o card não tinha
+   altura definida cada um crescia sozinho — a régua inferior (preço) ficava
+   desalinhada entre as colunas. Card vira coluna flex de altura cheia, o
+   título é fixado em 2 linhas e o rodapé é empurrado para a base. */
+.catalog-card{display:flex;flex-direction:column;height:100%}
+.catalog-card-copy{flex:1;display:flex;flex-direction:column}
+.catalog-card h2{
+  /* Os títulos vêm do cadastro do cliente e são longos de propósito (SEO).
+     Fonte menor + 3 linhas para caber sem cortar palavra no meio. */
+  font-size:15px;
+  line-height:1.42;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+  overflow:hidden;
+  /* Altura de 3 linhas reservada mesmo em título curto — sem isso o card
+     curto encolhe e a régua de preço desalinha entre as colunas. */
+  min-height:calc(3em * 1.42);
+  margin-bottom:9px;
+}
+.catalog-card-bottom{margin-top:auto}
+
+/* ── Respiro entre os botões da foto e a barra de preço ───────────────────
+   A barra de preço sobe 58px sobre a foto (margin-top:-58px) e encostava nos
+   chips, que estavam a 24px do fundo. Sobe os chips para acima da faixa de
+   sobreposição, com folga. */
+/* Os chips continuam montados na borda de cima da caixa de preço (metade na
+   foto, metade na caixa) — só sobem o suficiente para não encostar no texto
+   "À venda por". A caixa invade 58px da foto; 46px deixa os chips cruzando
+   essa borda. Tirá-los de cima da caixa quebra o desenho. */
+.strip-badges{bottom:36px}
+@media (max-width:1180px){ .strip-badges{bottom:32px} }
+@media (max-width:760px){ .strip-badges{bottom:26px} }
+/* `display:inline-flex` no chip vence o `display:none` que o navegador aplica
+   a [hidden] — sem isto o botão de Tour aparecia em imóvel que não tem tour. */
+.strip-chip[hidden]{display:none!important}
+
+/* ── Legibilidade do menu sobre foto clara ────────────────────────────────
+   O cabeçalho é transparente antes do scroll e o texto é branco. Em imóvel
+   com foto clara (parede branca, céu estourado) o menu inteiro sumia. Um
+   gradiente escuro sutil no topo devolve o contraste sem escurecer a foto —
+   e some assim que o header vira sólido no scroll. */
+.detail-hero::before,
+.catalog-hero::after{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:210px;
+  z-index:3;
+  pointer-events:none;
+  background:linear-gradient(180deg,rgba(15,12,10,.55) 0%,rgba(15,12,10,.28) 45%,transparent 100%);
+}
+/* O scrim fica sob os chips e as setas, nunca por cima. */
+.detail-hero .strip-badges,
+.detail-hero .gallery-arrow{z-index:5}
+
+/* ── Foto do lightbox enquadrada na tela ──────────────────────────────────
+   O palco é grid com place-items:center, e a linha implícita é `auto` — ou
+   seja, dimensionada pelo conteúdo. Com isso o `max-height:100%` da imagem
+   resolvia contra a altura DELA MESMA (768px), não contra o palco (469px):
+   a foto vazava e o overflow:hidden cortava a parte de baixo, escondida atrás
+   da tira de miniaturas. minmax(0,1fr) trava a linha na altura do palco. */
+.lightbox-stage{grid-template-rows:minmax(0,1fr);grid-template-columns:minmax(0,1fr)}
+/* width/height:100% + object-fit:contain — não width/height:auto — porque
+   parte do acervo é digitalização antiga de baixa resolução (algumas com
+   ~600×430px reais). Com `auto` a foto rendeAva no tamanho físico do arquivo,
+   pequena, sobrando tela escura ao redor. `contain` amplia até preencher a
+   tela sem cortar nada; abaixo do tamanho nativo ele ainda encolhe, então
+   fotos grandes continuam se comportando como antes. */
+.lightbox-stage img{width:100%;height:100%;object-fit:contain}
+/* Com a tira oculta a foto ganha a altura toda — é o comportamento esperado
+   ao clicar em "ocultar miniaturas". */
+.lightbox.thumbs-off .lightbox-stage{padding-bottom:18px}
+
+/* ── Barra do lightbox em uma linha ───────────────────────────────────────
+   O título repetia o nome do imóvel que o usuário acabou de clicar — e por ser
+   longo quebrava em 2 linhas, comendo ~50px de altura da foto. Some da tela,
+   mas fica no DOM para leitor de tela, que perde o contexto sem ele. */
+.lightbox-title{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+.lightbox-bar{padding:10px 18px}
+.lightbox-counter{margin-right:auto}
+
+/* ── Modal de vídeo / tour 360° ───────────────────────────────────────────
+   Mesma linguagem do lightbox de fotos (fundo escuro, barra fina no topo),
+   mas sem as ferramentas de imagem. */
+.media-modal[hidden]{display:none!important}
+.media-modal{position:fixed;inset:0;z-index:200;background:rgba(10,8,7,.97);display:flex;flex-direction:column;animation:lbFade .3s ease}
+.media-modal-bar{display:flex;align-items:center;gap:16px;padding:10px 18px}
+.media-modal-title{color:rgba(255,255,255,.72);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.media-modal-bar button{margin-left:auto;border:0;background:rgba(255,255,255,.1);color:#fff;width:44px;height:44px;border-radius:8px;display:grid;place-items:center;cursor:pointer;transition:background .2s,transform .2s}
+.media-modal-bar button:hover{background:var(--red);transform:rotate(90deg)}
+.media-modal-bar iconify-icon{font-size:22px}
+.media-modal-stage{flex:1;min-height:0;display:grid;place-items:center;padding:0 18px 18px}
+/* 16:9 limitado pela altura disponível — vídeo nunca vaza a tela. */
+.media-modal-stage iframe{width:100%;max-width:calc((100vh - 120px) * 16 / 9);aspect-ratio:16/9;max-height:100%;border:0;border-radius:10px;background:#000}
+/* O tour 360° é navegação, não vídeo: ocupa a área toda. */
+.media-modal.is-tour .media-modal-stage iframe{max-width:100%;aspect-ratio:auto;height:100%}
+/* Sem destaque: o chip de vídeo usa a mesma cor dos demais (regra de
+   .strip-chip). Vermelho o colocava acima de "fotos" e "mapa" na hierarquia
+   sem motivo. */
+
+/* ── Formulário acompanha o scroll ────────────────────────────────────────
+   O card de contato gruda abaixo do cabeçalho enquanto a coluna da esquerda
+   (título, descrição, características, ficha) rola, e para sozinho ao chegar
+   no fim da seção — `sticky` é limitado pela altura do pai, então não precisa
+   de JS nem de cálculo de posição.
+
+   O `align-items:start` do .detail-intro-grid é o que faz funcionar: com
+   `stretch` (padrão) a coluna teria a altura da irmã e não sobraria caminho
+   para grudar. Já está start, mantido de propósito.
+
+   112px = 92px do header fixo + 20px de respiro. */
+@media (min-width: 981px) {
+  .detail-intro-form{
+    position:sticky;
+    top:112px;
+    /* Formulário mais alto que a tela rolaria sem nunca mostrar o botão de
+       enviar. Nesse caso ele rola por dentro em vez de travar. */
+    max-height:calc(100vh - 132px);
+    overflow-y:auto;
+    scrollbar-width:thin;
+  }
+  /* A sombra do card cortaria rente à borda ao rolar por dentro. */
+  .detail-intro-form::-webkit-scrollbar{width:6px}
+  .detail-intro-form::-webkit-scrollbar-thumb{background:rgba(24,18,15,.18);border-radius:99px}
+}
+
+/* ── Lightbox no celular: foto no maior tamanho possível ──────────────────
+   Numa tela estreita, barra + miniaturas comiam ~230px de altura, e como a
+   imagem é 4:3 a altura restante limitava também a LARGURA — a foto ficava
+   pequena com tarja preta dos dois lados. Aqui a foto tem prioridade: barra
+   numa linha só, miniaturas menores, e o palco ocupando o resto. */
+@media (max-width: 760px) {
+  .lightbox-bar{
+    flex-wrap:nowrap;
+    padding:8px 10px;
+    gap:8px;
+  }
+  .lightbox-tools{width:auto;gap:4px}
+  .lightbox-tools button{min-width:38px;height:38px;padding:0 8px}
+  .lightbox-tools iconify-icon{font-size:19px}
+  .lightbox-counter{font-size:11px}
+
+  /* Sem padding lateral: a largura da tela é o recurso escasso no retrato. */
+  .lightbox-stage{padding:0}
+  .lightbox-stage img{max-width:100vw}
+
+  .lightbox-thumbs{padding:8px 10px 10px;gap:6px}
+  .lb-thumb{flex:0 0 58px;height:44px}
+
+  /* As setas ficam sobre a foto — encolhem e recuam para não cobrir a imagem. */
+  .lb-nav{width:38px;height:38px;background:rgba(0,0,0,.42)}
+  .lb-prev{left:4px}
+  .lb-next{right:4px}
+}
+
+/* Tela muito baixa (celular deitado): a tira some e a foto pega tudo. */
+@media (max-width: 900px) and (max-height: 460px) {
+  .lightbox-thumbs{display:none}
 }

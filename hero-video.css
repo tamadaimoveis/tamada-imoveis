@@ -1,0 +1,92 @@
+/* Hero em vídeo — usada apenas por sobre-video.html (clone de teste).
+
+   Arquivo separado e tudo escopado em .video-hero-page porque .catalog-hero é compartilhada
+   com imoveis.html, anuncie.html e a sobre.html de produção. Nada aqui vaza pra elas. */
+
+/* A seção ocupa a tela inteira, descontando a barra utilitária que fica acima dela.
+   Assim não sobra faixa nenhuma embaixo.
+
+   Sobre o corte: object-fit:cover corta no eixo em que a caixa é mais "apertada" que o vídeo.
+   O vídeo é 2,2:1. Numa caixa MAIS LARGA que isso (a hero antiga, com min-height baixo) ele
+   perde topo e base. Numa caixa MAIS ALTA — que é o caso agora, tela cheia — ele perde só as
+   laterais. Por isso a altura de tela cheia resolve as duas queixas de uma vez: preenche a
+   seção e para de cortar embaixo. */
+.video-hero-page .hero-video{
+  /* Dois botões de ajuste do clima da hero. Ficam aqui em cima de propósito: dá pra calibrar
+     sem reencodar o vídeo. Escurecer é o que dá contraste ao texto; dessaturar tira o excesso
+     de cor do material original, que é vivo demais para servir de fundo. */
+  --hero-escuro:.42;        /* 0 = vídeo cru, 1 = preto */
+  --hero-saturacao:.78;     /* 1 = cor original */
+
+  min-height:0;
+  height:calc(100svh - 34px);
+  padding:0;
+  display:flex;
+  align-items:flex-end;
+  background:#151312;
+}
+@media (max-width:900px){
+  .video-hero-page .hero-video{ height:calc(100svh - 31px); }  /* barra utilitária menor */
+}
+
+.video-hero-page .hero-video .catalog-hero-media{ position:absolute; inset:0; z-index:0; }
+
+.video-hero-page .hero-video .catalog-hero-media img,
+.video-hero-page .hero-video .catalog-hero-media video{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  display:block;
+}
+.video-hero-page .hero-video .catalog-hero-media img{ z-index:0; animation:none; }
+.video-hero-page .hero-video .catalog-hero-media video{ z-index:1; }
+
+/* Dessaturar antes de escurecer: só baixar o brilho deixa a cor viva num tom sujo.
+   Tirando saturação primeiro, o resultado lê como fundo, não como vídeo apagado. */
+.video-hero-page .hero-video .catalog-hero-media img,
+.video-hero-page .hero-video .catalog-hero-media video{
+  filter:saturate(var(--hero-saturacao)) contrast(1.03);
+}
+
+/* O scrim original é um degradê vermelho de canto a canto, feito para uma hero de foto parada.
+   Sobre vídeo ele encobre demais. Aqui: escurece o topo o suficiente para o header branco e a
+   base para a copy, deixando o meio do vídeo limpo. */
+.video-hero-page .hero-video .catalog-hero-scrim{
+  z-index:2;
+  background:
+    /* topo: segura o header branco */
+    linear-gradient(180deg,rgba(12,10,9,.52) 0%,rgba(12,10,9,.10) 24%,transparent 44%),
+    /* base: segura o título e os números */
+    linear-gradient(0deg,rgba(12,10,9,.78) 0%,rgba(12,10,9,.30) 28%,transparent 54%),
+    /* véu uniforme: é o que faz o texto destacar no meio do quadro, onde não há degradê */
+    linear-gradient(0deg,rgba(10,9,8,var(--hero-escuro)),rgba(10,9,8,var(--hero-escuro)));
+}
+
+.video-hero-page .hero-video>.shell{
+  z-index:3; width:var(--shell);
+  padding-bottom:clamp(78px,11vh,128px);   /* sobe o bloco: encostado na borda ele some no rodapé */
+}
+
+/* O botão flutuante do WhatsApp mora no canto inferior direito e estava por cima do terceiro
+   número ("12 REGIÕES EM DES..."). A coluna da direita recua para passar longe dele. */
+@media (min-width:901px){
+  .video-hero-page .hero-video .catalog-hero-aside{ padding-right:104px; }
+}
+
+/* Janela baixa (notebook com abas e favoritos): tudo tem de continuar na primeira dobra,
+   então o título cede tamanho em vez de empurrar os números para fora. */
+@media (max-height:760px){
+  .video-hero-page .hero-video h1{ font-size:clamp(42px,4.6vw,68px); }
+  .video-hero-page .hero-video .breadcrumbs{ margin-bottom:20px; }
+  .video-hero-page .hero-video .catalog-hero-aside>p{ margin-bottom:18px; font-size:13.5px; }
+  .video-hero-page .hero-video>.shell{ padding-bottom:clamp(64px,8vh,92px); }
+}
+@media (max-height:640px){
+  .video-hero-page .hero-video h1{ font-size:clamp(34px,3.8vw,52px); }
+  .video-hero-page .hero-video .catalog-hero-aside>p{ display:none; }  /* números e título vencem o parágrafo */
+  .video-hero-page .hero-video .catalog-hero-grid{ gap:48px; }
+}
+
+/* Quem pediu menos movimento fica só com o pôster. */
+@media (prefers-reduced-motion:reduce){
+  .video-hero-page .hero-video .catalog-hero-media video{ display:none; }
+}

@@ -3,97 +3,46 @@
  * Dados abaixo normalizados dos snapshots locais em ../clean/assets/data.
  * Coordenadas representam centros aproximados de bairro, nunca endereços exatos.
  */
-const featuredProperties = [
-  {
-    ref: 'AP7842-EIU', title: 'Apartamento com 3 quartos, 119 m²', type: 'APARTMENT',
-    neighborhood: 'Quarta Parada', city: 'São Paulo', sale: 1850000, rent: 0,
-    area: 119, beds: 3, baths: 4, garages: 2, image: 'assets/images/ap7842-interior.jpg',
-    lat: -23.5515, lng: -46.5880,
-    url: '/imovel/apartamento-sao-paulo-3-quartos-119-m/AP7842-EIU'
-  },
-  {
-    ref: 'AP9008-EIU', title: 'Apartamento com 3 quartos, 88 m²', type: 'APARTMENT',
-    neighborhood: 'Vila Bela', city: 'São Paulo', sale: 819000, rent: 0,
-    area: 88, beds: 3, baths: 1, garages: 2, image: 'assets/images/ap9008-interior.jpg',
-    lat: -23.5910, lng: -46.5562,
-    url: '/imovel/apartamento-sao-paulo-3-quartos-88-m/AP9008-EIU'
-  },
-  {
-    ref: 'AP8974-EIU', title: 'Apartamento com 2 quartos, 59 m²', type: 'APARTMENT',
-    neighborhood: 'São Mateus', city: 'São Paulo', sale: 240000, rent: 0,
-    area: 59, beds: 2, baths: 1, garages: 1, image: 'assets/images/ap8974-lazer.jpg',
-    lat: -23.6125, lng: -46.4768,
-    url: '/imovel/apartamento-sao-paulo-2-quartos-59-m/AP8974-EIU'
-  },
-  {
-    ref: 'AP5402-EIU', title: 'Apartamento com 1 quarto, 36 m²', type: 'APARTMENT',
-    neighborhood: 'Vila Granada', city: 'São Paulo', sale: 0, rent: 1500,
-    area: 35.95, beds: 1, baths: 1, garages: 0, image: 'assets/images/ap5402-vila-granada.jpg',
-    lat: -23.5247, lng: -46.5106,
-    url: '/imovel/apartamento-sao-paulo-1-quarto-36-m/AP5402-EIU'
-  },
-  {
-    ref: 'AP8934-EIU', title: 'Apartamento com 1 quarto, 25 m²', type: 'APARTMENT',
-    neighborhood: 'Belenzinho', city: 'São Paulo', sale: 239900, rent: 0,
-    area: 25, beds: 1, baths: 1, garages: 0, image: 'assets/images/ap8934-belenzinho.jpg',
-    lat: -23.5390, lng: -46.5907,
-    url: '/imovel/apartamento-sao-paulo-1-quarto-25-m/AP8934-EIU'
-  },
-  {
-    ref: 'AP6692-EIU', title: 'Apartamento com 2 quartos, 33 m²', type: 'APARTMENT',
-    neighborhood: 'Cidade A. E. Carvalho', city: 'São Paulo', sale: 250000, rent: 0,
-    area: 33, beds: 2, baths: 1, garages: 0, image: 'assets/images/ap6692-lancamento.jpg',
-    lat: -23.5260, lng: -46.4746,
-    url: '/imovel/apartamento-sao-paulo-2-quartos-33-m/AP6692-EIU'
-  },
-  {
-    ref: 'SL0446-EIU', title: 'Salão comercial, 350 m²', type: 'HALL',
-    neighborhood: 'Maranhão', city: 'São Paulo', sale: 0, rent: 25000,
-    area: 350, beds: 0, baths: 4, garages: 2, image: 'assets/images/sl0446-comercial.jpg',
-    lat: -23.5398, lng: -46.5655,
-    url: '/imovel/salao-sao-paulo-350-m/SL0446-EIU'
-  },
-  {
-    ref: 'SO7729-EIU', title: 'Sobrado com 6 quartos, 600 m²', type: 'TWO_STORY_HOUSE',
-    neighborhood: 'Jardim Imperial Hills III', city: 'Arujá', sale: 4800000, rent: 28000,
-    area: 600, beds: 6, baths: 6, garages: 10, image: 'assets/images/so7729-aruja.jpg',
-    lat: -23.4020, lng: -46.3270,
-    url: '/imovel/sobrado-aruja-6-quartos-600-m/SO7729-EIU'
-  },
-  {
-    ref: 'AP5842-EIU', title: 'Apartamento com 3 quartos, 76 m²', type: 'APARTMENT',
-    neighborhood: 'Vila Domitila', city: 'São Paulo', sale: 0, rent: 2800,
-    area: 76, beds: 3, baths: 1, garages: 2, image: 'assets/images/ap5842-vila-domitila.jpg',
-    lat: -23.5165, lng: -46.5010,
-    url: '/imovel/apartamento-sao-paulo-3-quartos-76-m/AP5842-EIU'
-  },
-  {
-    ref: 'SO6951-EIU', title: 'Sobrado com 3 quartos, 177 m²', type: 'TWO_STORY_HOUSE',
-    neighborhood: 'Vila Rio Branco', city: 'São Paulo', sale: 795000, rent: 0,
-    area: 177, beds: 3, baths: 4, garages: 4, image: 'assets/images/so6951-vila-rio-branco.jpg',
-    lat: -23.5124, lng: -46.4898,
-    url: '/imovel/sobrado-sao-paulo-3-quartos-177-m/SO6951-EIU'
-  },
-  {
-    ref: 'TE1181-EIU', title: 'Terreno, 400 m²', type: 'LAND',
-    neighborhood: 'Vila Granada', city: 'São Paulo', sale: 2500000, rent: 0,
-    area: 400, beds: 0, baths: 0, garages: 0, image: 'assets/images/te1181-vila-granada.jpg',
-    lat: -23.5276, lng: -46.5080,
-    url: '/imovel/terreno-sao-paulo-400-m/TE1181-EIU'
-  },
-  {
-    ref: 'CA3287-EIU', title: 'Casa com 3 quartos, 100 m²', type: 'HOUSE',
-    neighborhood: 'Engenheiro Goulart', city: 'São Paulo', sale: 880000, rent: 0,
-    area: 100, beds: 3, baths: 2, garages: 2, image: 'assets/images/ca3287-engenheiro-goulart.jpg',
-    lat: -23.4988, lng: -46.5159,
-    url: '/imovel/casa-sao-paulo-3-quartos-100-m/CA3287-EIU'
-  }
-];
-
+/* Destaques da home: vêm do Sanity (campo "Destaque na Página Inicial" do
+   imóvel). Antes eram 12 imóveis escritos à mão aqui, com foto local e
+   coordenada fixa — o cliente não conseguia trocar sem mexer no código, e o
+   mapa e a lista de bairros saíam desses mesmos 12.
+   Sem nenhum marcado, cai nos mais recentes com foto, para a home nunca
+   aparecer vazia. */
 const catalogProperties = Array.isArray(window.TAMADA_CATALOG) ? window.TAMADA_CATALOG : [];
+const marcados = catalogProperties.filter(p => p.featured);
+const featuredProperties = (marcados.length ? marcados : catalogProperties.filter(p => p.image)).slice(0, 12);
+
 const featuredRefs = new Set(featuredProperties.map(property => property.ref));
 const properties = [...featuredProperties, ...catalogProperties.filter(property => !featuredRefs.has(property.ref))];
-const mapProperties = featuredProperties;
+
+/* ── Mapa ────────────────────────────────────────────────────────────────
+   Antes o mapa desenhava os mesmos 12 imóveis fixos, sempre nos mesmos
+   bairros. Agora usa os bairros de MAIOR VOLUME reais, um imóvel
+   representando cada um — assim os pinos se espalham pela cidade e a lista
+   de bairros bate com o estoque.
+
+   As coordenadas vêm de `TAMADA_BAIRROS`, calculadas na geração como a média
+   das coordenadas dos imóveis de cada bairro. É o CENTRO do bairro, nunca o
+   endereço de um imóvel. */
+const bairrosComMapa = Array.isArray(window.TAMADA_BAIRROS) ? window.TAMADA_BAIRROS : [];
+const centroDoBairro = new Map(bairrosComMapa.map(b => [normalize(b.nome), b]));
+
+/* O mapa mostra UM bairro por vez, com vários pinos espalhados dentro dele.
+   `mapProperties` é o bairro atualmente selecionado — trocado a cada clique. */
+let mapProperties = [];
+let bairroAtual = null;
+
+// Teto de pinos por bairro: acima disso vira mancha e pesa o Leaflet sem
+// acrescentar informação. Penha de França tem 241; 60 já preenche o bairro.
+const MAX_PINOS = 60;
+// Raio do espalhamento. Bairro em SP tem ~1–2 km de extensão; 700 m em volta
+// do centro cobre a área sem vazar para o vizinho.
+const RAIO_ESPALHAMENTO = 700;
+
+function imoveisDoBairro(nome) {
+  return properties.filter(p => normalize(p.neighborhood) === normalize(nome));
+}
 
 const liveBase = 'https://www.tamadaimoveis.com.br';
 const typeLabels = {
@@ -108,7 +57,7 @@ const state = {
   maxPrice: 0,
   minBeds: 0,
   features: new Set(),
-  activeMapIndex: 0
+  activeMapIndex: -1
 };
 
 let visibleLimit = 12;
@@ -162,7 +111,9 @@ function matchesFilters(property, filters = state) {
   const text = normalize(`${property.neighborhood} ${property.city} ${property.ref} ${property.title}`);
   if (filters.location && !text.includes(normalize(filters.location))) return false;
   if (filters.type && property.type !== filters.type) return false;
-  if (filters.minBeds && property.beds < filters.minBeds) return false;
+  if (filters.minBeds) {
+    if (filters.minBedsExact ? property.beds !== filters.minBeds : property.beds < filters.minBeds) return false;
+  }
 
   if (filters.purpose === 'sale' && !property.sale) return false;
   if (filters.purpose === 'rent' && !property.rent) return false;
@@ -194,10 +145,20 @@ function saveFavorites() {
   catch { /* visual preference only */ }
 }
 
+function syncFavoriteButtons(container) {
+  container?.querySelectorAll('[data-favorite]').forEach(button => {
+    const saved = favorites.has(button.dataset.favorite);
+    button.classList.toggle('saved', saved);
+    button.setAttribute('aria-label', saved ? 'Remover dos favoritos' : 'Salvar imóvel');
+    button.innerHTML = `<iconify-icon icon="solar:heart-${saved ? 'bold' : 'linear'}"></iconify-icon>`;
+  });
+}
+
 function toggleFavorite(ref) {
   favorites.has(ref) ? favorites.delete(ref) : favorites.add(ref);
   saveFavorites();
   renderProperties();
+  syncFavoriteButtons(domRent.grid);
   updateMapFavorite();
 }
 
@@ -226,7 +187,7 @@ function propertyCard(property) {
       </div>
       <div class="property-copy">
         <p class="property-location"><span>${property.neighborhood} · ${property.city}</span><span>${typeLabels[property.type] || 'Imóvel'}</span></p>
-        <h3>${property.title}</h3>
+        <h3><a href="imovel.html?ref=${property.ref}"><span>${property.title}</span></a></h3>
         <div class="property-specs">${specsMarkup(property)}</div>
         <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}</strong><a href="imovel.html?ref=${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
       </div>
@@ -236,9 +197,21 @@ function propertyCard(property) {
 function renderProperties() {
   const result = properties.filter(property => matchesFilters(property));
   dom.count.textContent = result.length;
+  const visiveis = result.slice(0, visibleLimit);
+  // Duplica a sequência para o loop infinito. Só faz sentido se houver cards
+  // suficientes para encher a tela — com 2 ou 3 o loop fica esquisito.
+  const cardsHtml = visiveis.map(propertyCard).join('');
+  const duplicar = visiveis.length >= 4;
   dom.grid.innerHTML = result.length
-    ? result.slice(0, visibleLimit).map(propertyCard).join('')
+    ? (duplicar ? cardsHtml + cardsHtml.replace(/data-ref="/g, 'aria-hidden="true" data-clone data-ref="') : cardsHtml)
     : `<div class="empty-results"><iconify-icon icon="solar:map-point-search-linear"></iconify-icon><h3>Nenhum imóvel nesta combinação.</h3><p>Tente ampliar a localização ou remover um filtro.</p><button class="button button-ink" type="button" data-reset-inline>Limpar busca</button></div>`;
+
+  // Os cards clonados do loop são aria-hidden. Link dentro de conteúdo oculto
+  // para leitor de tela não pode receber foco por Tab — senão o teclado "some"
+  // dentro de uma cópia invisível. Continuam clicáveis pelo mouse.
+  dom.grid.querySelectorAll('[data-clone] a, [data-clone] button').forEach(el => {
+    el.setAttribute('tabindex', '-1');
+  });
 
   dom.grid.querySelectorAll('[data-favorite]').forEach(button => {
     button.addEventListener('click', () => toggleFavorite(button.dataset.favorite));
@@ -246,25 +219,107 @@ function renderProperties() {
   dom.grid.querySelector('[data-reset-inline]')?.addEventListener('click', resetSearch);
   const loadMore = document.querySelector('#loadMore');
   if (loadMore) {
-    loadMore.hidden = result.length <= visibleLimit;
-    loadMore.querySelector('span').textContent = `Mostrar mais ${Math.min(12, Math.max(0, result.length - visibleLimit))} imóveis`;
+    // Antes dizia sempre "Mostrar mais 12" — o incremento, não o que resta.
+    // Com 4.429 imóveis isso parecia que o acervo tinha 12.
+    const restante = Math.max(0, result.length - visibleLimit);
+    loadMore.hidden = restante === 0;
+    loadMore.querySelector('span').textContent = restante > 12
+      ? `Mostrar mais 12 de ${restante.toLocaleString('pt-BR')} imóveis`
+      : `Mostrar mais ${restante} ${restante === 1 ? 'imóvel' : 'imóveis'}`;
   }
-  requestAnimationFrame(() => updatePropertyCarousel(true));
+  requestAnimationFrame(() => {
+    updatePropertyCarousel(true);
+    autoplayPausas = 0;
+    iniciarAutoplay();
+  });
+}
+
+/* O carrossel é infinito: os cards são duplicados no DOM e, quando a rolagem
+   passa da primeira cópia, volta em silêncio para o começo. Como as duas
+   cópias são idênticas, o salto não aparece.
+   Sem contador de posição — são imóveis escolhidos a dedo pela imobiliária,
+   e mostrar "01 / 12" dava a impressão de que o acervo inteiro tem 12. */
+function metadeDoCarrossel() {
+  const g = dom.grid;
+  return g ? g.scrollWidth / 2 : 0;
 }
 
 function updatePropertyCarousel(reset = false) {
   const viewport = dom.propertyViewport;
-  if (!viewport || !dom.propertyPrev || !dom.propertyNext || !dom.propertyPosition) return;
+  if (!viewport || !dom.propertyPrev || !dom.propertyNext) return;
   if (reset) viewport.scrollTo({ left: 0, behavior: 'auto' });
-  const cards = [...dom.grid.querySelectorAll('.property-card')];
-  const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth - 2);
-  const firstCard = cards[0];
-  const gap = firstCard ? parseFloat(getComputedStyle(dom.grid).columnGap || getComputedStyle(dom.grid).gap || '20') : 20;
-  const step = firstCard ? firstCard.getBoundingClientRect().width + gap : viewport.clientWidth;
-  const active = cards.length ? Math.min(cards.length, Math.max(1, Math.round(viewport.scrollLeft / Math.max(step, 1)) + 1)) : 0;
-  dom.propertyPrev.disabled = viewport.scrollLeft <= 2;
-  dom.propertyNext.disabled = viewport.scrollLeft >= maxScroll;
-  dom.propertyPosition.textContent = cards.length ? `${String(active).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}` : '00 / 00';
+  // Setas nunca desabilitam: sendo infinito, sempre há para onde ir.
+  dom.propertyPrev.disabled = false;
+  dom.propertyNext.disabled = false;
+  if (dom.propertyPosition) dom.propertyPosition.textContent = '';
+}
+
+/* Recoloca a rolagem dentro da primeira cópia. Chamado durante a rolagem —
+   por isso usa 'auto', para o reposicionamento não ser animado e ficar
+   invisível. */
+function normalizarLoop() {
+  const viewport = dom.propertyViewport;
+  const metade = metadeDoCarrossel();
+  if (!viewport || metade <= 0) return;
+  if (viewport.scrollLeft >= metade) viewport.scrollLeft -= metade;
+  else if (viewport.scrollLeft < 0) viewport.scrollLeft += metade;
+}
+
+/* ── Autoplay do carrossel ────────────────────────────────────────────────
+   Rolagem contínua e lenta, não salto de card em card: com salto o olho perde
+   a referência a cada troca. Para no hover, no foco por teclado e enquanto o
+   usuário arrasta; volta sozinho depois.
+   Respeita "reduzir movimento" do sistema — quem pediu menos animação não
+   deve receber um carrossel andando sozinho. */
+const VELOCIDADE_AUTOPLAY = 26; // px por segundo
+const ESPERA_APOS_INTERACAO = 2600; // ms
+const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+let autoplayFrame = null;
+let autoplayUltimoTempo = 0;
+let autoplayPausas = 0;
+let autoplayTimer = null;
+
+function passoAutoplay(agora) {
+  const viewport = dom.propertyViewport;
+  if (!viewport) return;
+  const delta = autoplayUltimoTempo ? (agora - autoplayUltimoTempo) / 1000 : 0;
+  autoplayUltimoTempo = agora;
+  // Passo por tempo, não por quadro: a velocidade fica igual em 60 e 120 Hz.
+  viewport.scrollLeft += VELOCIDADE_AUTOPLAY * Math.min(delta, 0.05);
+  normalizarLoop();
+  autoplayFrame = requestAnimationFrame(passoAutoplay);
+}
+
+function iniciarAutoplay() {
+  if (autoplayFrame || autoplayPausas > 0 || semMovimento.matches) return;
+  if (!dom.propertyViewport || metadeDoCarrossel() <= 0) return;
+  autoplayUltimoTempo = 0;
+  autoplayFrame = requestAnimationFrame(passoAutoplay);
+}
+
+function pausarAutoplay() {
+  autoplayPausas++;
+  clearTimeout(autoplayTimer);
+  if (autoplayFrame) {
+    cancelAnimationFrame(autoplayFrame);
+    autoplayFrame = null;
+  }
+}
+
+function liberarAutoplay() {
+  autoplayPausas = Math.max(0, autoplayPausas - 1);
+  if (autoplayPausas === 0) iniciarAutoplay();
+}
+
+/* Depois de arrastar ou clicar na seta, espera um tempo antes de voltar —
+   retomar na hora dá a sensação de o carrossel "lutar" com o usuário. */
+function retomarAutoplayDepois() {
+  clearTimeout(autoplayTimer);
+  autoplayTimer = setTimeout(() => {
+    autoplayPausas = 0;
+    iniciarAutoplay();
+  }, ESPERA_APOS_INTERACAO);
 }
 
 function movePropertyCarousel(direction) {
@@ -279,27 +334,159 @@ if (dom.propertyViewport) {
   let scrollFrame;
   dom.propertyViewport.addEventListener('scroll', () => {
     cancelAnimationFrame(scrollFrame);
-    scrollFrame = requestAnimationFrame(() => updatePropertyCarousel());
+    scrollFrame = requestAnimationFrame(() => {
+      normalizarLoop();
+      updatePropertyCarousel();
+    });
   }, { passive: true });
+
+  /* Arrasto com o mouse.
+     O `setPointerCapture` ficava ativo já no pointerdown, então o navegador
+     tratava QUALQUER clique como arrasto e engolia o link do card — clicar num
+     imóvel na home não fazia nada. Agora a captura só começa depois de 4px de
+     movimento real; abaixo disso é clique e passa direto. */
+  const LIMIAR_ARRASTO = 4;
+  let arrasto = null;
+
   dom.propertyViewport.addEventListener('pointerdown', event => {
     if (event.pointerType !== 'mouse' || event.button !== 0) return;
-    dom.propertyViewport.dataset.dragStart = String(event.clientX);
-    dom.propertyViewport.dataset.dragScroll = String(dom.propertyViewport.scrollLeft);
-    dom.propertyViewport.classList.add('is-dragging');
-    dom.propertyViewport.setPointerCapture(event.pointerId);
+    arrasto = {x: event.clientX, scroll: dom.propertyViewport.scrollLeft, ativo: false, id: event.pointerId};
   });
+
   dom.propertyViewport.addEventListener('pointermove', event => {
-    if (!dom.propertyViewport.classList.contains('is-dragging')) return;
-    const startX = Number(dom.propertyViewport.dataset.dragStart || event.clientX);
-    const startScroll = Number(dom.propertyViewport.dataset.dragScroll || dom.propertyViewport.scrollLeft);
-    dom.propertyViewport.scrollLeft = startScroll - (event.clientX - startX);
+    if (!arrasto) return;
+    const dx = event.clientX - arrasto.x;
+    if (!arrasto.ativo) {
+      if (Math.abs(dx) < LIMIAR_ARRASTO) return;
+      arrasto.ativo = true;
+      dom.propertyViewport.classList.add('is-dragging');
+      dom.propertyViewport.setPointerCapture(arrasto.id);
+      pausarAutoplay();
+    }
+    dom.propertyViewport.scrollLeft = arrasto.scroll - dx;
   });
-  const stopPropertyDrag = () => dom.propertyViewport.classList.remove('is-dragging');
-  dom.propertyViewport.addEventListener('pointerup', stopPropertyDrag);
-  dom.propertyViewport.addEventListener('pointercancel', stopPropertyDrag);
-  dom.propertyPrev.addEventListener('click', () => movePropertyCarousel(-1));
-  dom.propertyNext.addEventListener('click', () => movePropertyCarousel(1));
+
+  const encerrarArrasto = () => {
+    if (arrasto?.ativo) {
+      dom.propertyViewport.classList.remove('is-dragging');
+      retomarAutoplayDepois();
+    }
+    arrasto = null;
+  };
+  dom.propertyViewport.addEventListener('pointerup', encerrarArrasto);
+  dom.propertyViewport.addEventListener('pointercancel', encerrarArrasto);
+  // Clique que veio de um arrasto não deve abrir o imóvel.
+  dom.propertyViewport.addEventListener('click', event => {
+    if (dom.propertyViewport.classList.contains('is-dragging')) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
+
+  dom.propertyPrev.addEventListener('click', () => { movePropertyCarousel(-1); pausarAutoplay(); retomarAutoplayDepois(); });
+  dom.propertyNext.addEventListener('click', () => { movePropertyCarousel(1); pausarAutoplay(); retomarAutoplayDepois(); });
+
+  // Para no hover e no foco por teclado; volta ao sair.
+  dom.propertyViewport.addEventListener('mouseenter', pausarAutoplay);
+  dom.propertyViewport.addEventListener('mouseleave', liberarAutoplay);
+  dom.propertyViewport.addEventListener('focusin', pausarAutoplay);
+  dom.propertyViewport.addEventListener('focusout', liberarAutoplay);
+  // No celular, o toque pausa enquanto dura.
+  dom.propertyViewport.addEventListener('touchstart', pausarAutoplay, {passive: true});
+  dom.propertyViewport.addEventListener('touchend', retomarAutoplayDepois, {passive: true});
+  // Aba em segundo plano: não gasta bateria animando o que ninguém vê.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pausarAutoplay();
+    else { autoplayPausas = 0; iniciarAutoplay(); }
+  });
   addEventListener('resize', () => updatePropertyCarousel());
+}
+
+/* Segunda fileira, fixa em imóveis para locação — independente dos filtros de cima */
+const rentProperties = properties.filter(property => property.rent).slice(0, 12);
+const domRent = {
+  grid: document.querySelector('#propertyGridRent'),
+  viewport: document.querySelector('#propertyViewportRent'),
+  prev: document.querySelector('#propertyPrevRent'),
+  next: document.querySelector('#propertyNextRent'),
+  position: document.querySelector('#propertyPositionRent')
+};
+
+function renderRentRow() {
+  if (!domRent.grid) return;
+  domRent.grid.innerHTML = rentProperties.map(propertyCard).join('');
+  domRent.grid.querySelectorAll('[data-favorite]').forEach(button => {
+    button.addEventListener('click', () => toggleFavorite(button.dataset.favorite));
+  });
+  requestAnimationFrame(() => updateRentCarousel(true));
+}
+
+function updateRentCarousel(reset = false) {
+  const viewport = domRent.viewport;
+  if (!viewport || !domRent.prev || !domRent.next || !domRent.position) return;
+  if (reset) viewport.scrollTo({ left: 0, behavior: 'auto' });
+  const cards = [...domRent.grid.querySelectorAll('.property-card')];
+  const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth - 2);
+  const firstCard = cards[0];
+  const gap = firstCard ? parseFloat(getComputedStyle(domRent.grid).columnGap || getComputedStyle(domRent.grid).gap || '20') : 20;
+  const step = firstCard ? firstCard.getBoundingClientRect().width + gap : viewport.clientWidth;
+  const active = cards.length ? Math.min(cards.length, Math.max(1, Math.round(viewport.scrollLeft / Math.max(step, 1)) + 1)) : 0;
+  domRent.prev.disabled = viewport.scrollLeft <= 2;
+  domRent.next.disabled = viewport.scrollLeft >= maxScroll;
+  domRent.position.textContent = cards.length ? `${String(active).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}` : '00 / 00';
+}
+
+function moveRentCarousel(direction) {
+  const viewport = domRent.viewport;
+  const firstCard = domRent.grid?.querySelector('.property-card');
+  if (!viewport || !firstCard) return;
+  const gap = parseFloat(getComputedStyle(domRent.grid).columnGap || getComputedStyle(domRent.grid).gap || '20');
+  viewport.scrollBy({ left: direction * (firstCard.getBoundingClientRect().width + gap), behavior: 'smooth' });
+}
+
+if (domRent.viewport) {
+  let rentScrollFrame;
+  domRent.viewport.addEventListener('scroll', () => {
+    cancelAnimationFrame(rentScrollFrame);
+    rentScrollFrame = requestAnimationFrame(() => updateRentCarousel());
+  }, { passive: true });
+  /* Mesmo bug do carrossel de vendas: setPointerCapture ativo já no
+     pointerdown fazia o navegador tratar todo clique como arrasto e engolir
+     o link do card. Captura só começa depois de 4px de movimento real. */
+  const LIMIAR_ARRASTO_RENT = 4;
+  let arrastoRent = null;
+
+  domRent.viewport.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'mouse' || event.button !== 0) return;
+    arrastoRent = {x: event.clientX, scroll: domRent.viewport.scrollLeft, ativo: false, id: event.pointerId};
+  });
+  domRent.viewport.addEventListener('pointermove', event => {
+    if (!arrastoRent) return;
+    const dx = event.clientX - arrastoRent.x;
+    if (!arrastoRent.ativo) {
+      if (Math.abs(dx) < LIMIAR_ARRASTO_RENT) return;
+      arrastoRent.ativo = true;
+      domRent.viewport.classList.add('is-dragging');
+      domRent.viewport.setPointerCapture(arrastoRent.id);
+    }
+    domRent.viewport.scrollLeft = arrastoRent.scroll - dx;
+  });
+  const stopRentDrag = () => {
+    if (arrastoRent?.ativo) domRent.viewport.classList.remove('is-dragging');
+    arrastoRent = null;
+  };
+  domRent.viewport.addEventListener('pointerup', stopRentDrag);
+  domRent.viewport.addEventListener('pointercancel', stopRentDrag);
+  domRent.viewport.addEventListener('click', event => {
+    if (domRent.viewport.classList.contains('is-dragging')) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
+  domRent.prev.addEventListener('click', () => moveRentCarousel(-1));
+  domRent.next.addEventListener('click', () => moveRentCarousel(1));
+  addEventListener('resize', () => updateRentCarousel());
+  renderRentRow();
 }
 
 function selectQuickFilter(filter) {
@@ -313,10 +500,19 @@ function selectQuickFilter(filter) {
 }
 
 document.querySelectorAll('.filter-chip').forEach(button => button.addEventListener('click', () => selectQuickFilter(button.dataset.filter)));
-document.querySelectorAll('[data-quick-filter]').forEach(button => button.addEventListener('click', () => {
-  selectQuickFilter(button.dataset.quickFilter);
-  document.querySelector('#imoveis').scrollIntoView({ behavior: 'smooth' });
-}));
+document.querySelectorAll('[data-quick-filter]').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    selectQuickFilter(trigger.dataset.quickFilter);
+    document.querySelector('#imoveis').scrollIntoView({ behavior: 'smooth' });
+  });
+  if (trigger.getAttribute('role') === 'button') {
+    trigger.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      trigger.click();
+    });
+  }
+});
 
 function priceOptions(purpose, target) {
   const rent = purpose === 'rent' || purpose === 'commercial';
@@ -378,6 +574,7 @@ function modalFilters() {
     type: dom.modalType.value,
     maxPrice: Number(dom.modalPrice.value || 0),
     minBeds: Number(document.querySelector('#bedroomChips .active')?.dataset.value || 0),
+    minBedsExact: !('min' in (document.querySelector('#bedroomChips .active')?.dataset || {})),
     features: new Set([...document.querySelectorAll('.feature-chips input:checked')].map(input => input.value))
   };
 }
@@ -443,15 +640,77 @@ let map;
 let markers = [];
 let tileErrors = 0;
 
+/* Posição do pino: centro do bairro + espalhamento derivado do código do
+   imóvel. É uma posição APROXIMADA dentro do bairro, não o endereço — o
+   endereço real não sai do Sanity (ver o bloco sobre privacidade no gerador).
+   O mapa avisa isso e tem teto de zoom, então ninguém usa o pino para chegar
+   numa porta.
+   Derivado do `ref` e não aleatório: o pino fica no mesmo lugar toda vez que a
+   página abre, senão o imóvel "pula" de posição a cada visita. */
 function fuzzyCoords(property) {
+  const centro = centroDoBairro.get(normalize(property.neighborhood || ''));
+  if (!centro) return null;
   let hash = 0;
-  for (let index = 0; index < property.ref.length; index++) hash = (Math.imul(31, hash) + property.ref.charCodeAt(index)) | 0;
-  const angle = ((hash >>> 0) % 360) * Math.PI / 180;
-  const meters = 130 + ((hash >>> 7) % 140);
+  const chave = property.ref || property.neighborhood || '';
+  for (let index = 0; index < chave.length; index++) hash = (Math.imul(31, hash) + chave.charCodeAt(index)) | 0;
+  const h = hash >>> 0;
+  const angle = (h % 3600) / 3600 * 2 * Math.PI;
+  // Raiz quadrada na distância: sem ela os pinos se acumulam no centro, porque
+  // a área de um anel cresce com o raio.
+  const meters = RAIO_ESPALHAMENTO * Math.sqrt(((h >>> 9) % 1000) / 1000);
   return [
-    property.lat + (meters / 111000) * Math.cos(angle),
-    property.lng + (meters / (111000 * Math.cos(property.lat * Math.PI / 180))) * Math.sin(angle)
+    centro.lat + (meters / 111000) * Math.cos(angle),
+    centro.lng + (meters / (111000 * Math.cos(centro.lat * Math.PI / 180))) * Math.sin(angle)
   ];
+}
+
+/* Troca o bairro exibido: limpa os pinos antigos, desenha os do bairro novo e
+   enquadra. É o que faltava — antes os 12 pinos eram fixos e clicar num bairro
+   só trocava o card. */
+function mostrarBairroNoMapa(nome, focar = true) {
+  if (!map) return;
+  const centro = centroDoBairro.get(normalize(nome));
+  if (!centro) return;
+  bairroAtual = nome;
+
+  markers.forEach(m => map.removeLayer(m));
+  markers.length = 0;
+  // Zera o índice: sem isto, trocar de bairro e cair de novo no pino 0 bateria
+  // na guarda de "já é o ativo" do activateMapProperty e o card continuaria
+  // mostrando o imóvel do bairro anterior.
+  state.activeMapIndex = -1;
+
+  mapProperties = imoveisDoBairro(nome).slice(0, MAX_PINOS);
+  const pontos = [];
+  mapProperties.forEach((property, index) => {
+    const coord = fuzzyCoords(property);
+    if (!coord) return;
+    const marker = window.L.marker(coord, {icon: pinIcon(index, index === 0), keyboard: false}).addTo(map);
+    marker.on('click mouseover', () => activateMapProperty(index));
+    markers.push(marker);
+    pontos.push(coord);
+  });
+
+  document.querySelectorAll('[data-neighborhood], [data-map-neighborhood]').forEach(b => {
+    const alvo = b.dataset.neighborhood || b.dataset.mapNeighborhood;
+    b.classList.toggle('active', normalize(alvo) === normalize(nome));
+  });
+
+  log(`bairro "${nome}": ${mapProperties.length} imóveis, ${pontos.length} pinos, visível=${map.getContainer().offsetWidth > 0}`);
+  if (mapProperties.length) activateMapProperty(0, false);
+
+  if (!pontos.length) return;
+  // O mapa nasce escondido (a seção abre na lista de bairros) e o Leaflet não
+  // desenha nada com o container de tamanho zero. Enquanto estiver oculto,
+  // posiciona sem animar; a animação só vale quando há o que ver.
+  const visivel = map.getContainer().offsetWidth > 0;
+  if (!visivel) {
+    map.setView([centro.lat, centro.lng], 15, {animate: false});
+    return;
+  }
+  map.invalidateSize();
+  if (focar) map.flyTo([centro.lat, centro.lng], 15, {duration: .8});
+  else map.setView([centro.lat, centro.lng], 15, {animate: false});
 }
 
 function pinIcon(index, active = false) {
@@ -462,10 +721,45 @@ function pinIcon(index, active = false) {
   });
 }
 
+/* Diagnóstico sob demanda: só liga com ?debug=1 na URL. Existe porque erro de
+   JavaScript numa página estática é invisível — some no console de quem está
+   olhando, e quem precisa ver não está com o console aberto. */
+const DEBUG = new URLSearchParams(location.search).has('debug');
+if (DEBUG) {
+  const painel = document.createElement('pre');
+  painel.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99999;max-height:42vh;overflow:auto;margin:0;padding:10px 14px;background:#140f0e;color:#7ef7a0;font:11px/1.5 ui-monospace,monospace;white-space:pre-wrap';
+  const escrever = (texto, cor) => {
+    const linha = document.createElement('div');
+    if (cor) linha.style.color = cor;
+    linha.textContent = texto;
+    painel.appendChild(linha);
+  };
+  window.__log = escrever;
+  document.addEventListener('DOMContentLoaded', () => document.body.appendChild(painel));
+  window.addEventListener('error', e => escrever(`ERRO: ${e.message}  (${e.filename}:${e.lineno})`, '#ff8a8a'));
+  window.addEventListener('unhandledrejection', e => escrever(`PROMISE: ${e.reason}`, '#ff8a8a'));
+}
+const log = (m, c) => { if (DEBUG && window.__log) window.__log(m, c); };
+
 function initMap() {
   const mapElement = document.querySelector('#propertyMap');
+  log(`initMap: Leaflet=${!!window.L} elemento=${!!mapElement} bairros=${bairrosComMapa.length}`);
   if (!window.L || !mapElement) return;
-  map = window.L.map(mapElement, { center: [-23.555, -46.525], zoom: 11, zoomControl: false, scrollWheelZoom: false, attributionControl: false });
+  map = window.L.map(mapElement, {
+    center: [-23.555, -46.525],
+    zoom: 12,
+    // Controles pedidos: botões +/- e zoom pela roda do mouse.
+    zoomControl: true,
+    scrollWheelZoom: true,
+    attributionControl: false,
+    // Teto de zoom: os pinos são posições aproximadas dentro do bairro. Deixar
+    // chegar em nível de rua sugeriria uma precisão que o dado não tem.
+    maxZoom: 16,
+    minZoom: 10,
+  });
+  // `zoomControl: true` acima já cria os botões +/-. Uma segunda chamada a
+  // L.control.zoom aqui derrubava o initMap, e como o tileLayer só é adicionado
+  // DEPOIS, o mapa ficava sem nenhum tile — a área beje que aparecia.
   const tiles = window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     subdomains: 'abcd',
@@ -475,54 +769,100 @@ function initMap() {
     tileErrors += 1;
     if (tileErrors > 5) mapElement.classList.add('offline');
   });
+  // Os tiles entram ANTES de qualquer outra coisa: se algo abaixo falhar, o
+  // mapa base já está desenhado em vez de ficar em branco.
   tiles.addTo(map);
-  window.L.control.attribution({ prefix: false, position: 'bottomright' }).addTo(map);
 
-  mapProperties.forEach((property, index) => {
-    const marker = window.L.marker(fuzzyCoords(property), { icon: pinIcon(index, index === 0) }).addTo(map);
-    marker.on('click mouseover', () => activateMapProperty(index));
-    markers.push(marker);
-  });
-  const bounds = window.L.latLngBounds(mapProperties.map(fuzzyCoords));
-  map.fitBounds(bounds, { padding: [46, 46], maxZoom: 12 });
+  try {
+    window.L.control.attribution({prefix: false, position: 'bottomright'}).addTo(map);
+  } catch (e) {
+    console.warn('[mapa] atribuição não pôde ser adicionada:', e);
+  }
+
+  // Abre já num bairro (o de maior volume), com os pinos dele espalhados.
+  // O container começa escondido (a seção abre na lista), então aqui só
+  // posiciona; o desenho de verdade acontece no showAtlasMap.
+  try {
+    if (bairrosComMapa.length) mostrarBairroNoMapa(bairrosComMapa[0].nome, false);
+  } catch (e) {
+    console.warn('[mapa] falha ao desenhar os pinos iniciais:', e);
+  }
+
+  // A altura do mapa vem do viewport (100svh - header), então redimensionar a
+  // janela muda o container sem o Leaflet perceber.
+  addEventListener('resize', () => map?.invalidateSize());
 }
 
 function activateMapProperty(index, pan = false) {
-  state.activeMapIndex = index;
   const property = mapProperties[index];
+  // `mapProperties` muda a cada troca de bairro e pode ficar vazio entre uma e
+  // outra. Sem esta guarda, um índice velho derrubava a página inteira.
+  if (!property) return;
+  // Sair cedo quando já é o pino ativo. `setIcon` troca o elemento do marcador;
+  // o novo nasce embaixo do cursor e dispara `mouseover` de novo, o que
+  // realimentava esta função e fazia o card piscar sem parar.
+  if (state.activeMapIndex === index) return;
+  state.activeMapIndex = index;
   const image = document.querySelector('#mapCardImage');
   image.style.opacity = '0';
   setTimeout(() => { image.src = property.image; image.alt = `${property.title} em ${property.neighborhood}`; image.style.opacity = '1'; }, 150);
-  document.querySelector('#mapIndex').textContent = `${String(index + 1).padStart(2, '0')} / ${String(mapProperties.length).padStart(2, '0')}`;
+  // Era "01 / 12" — parecia dizer que o acervo tem 12 imóveis. Passa a mostrar
+  // quantos imóveis existem NAQUELE bairro, que é o número que interessa.
+  const totalNoBairro = centroDoBairro.get(normalize(property.neighborhood))?.total;
+  document.querySelector('#mapIndex').textContent = totalNoBairro
+    ? `${totalNoBairro} ${totalNoBairro === 1 ? 'imóvel' : 'imóveis'} no bairro`
+    : '';
   document.querySelector('#mapCardPurpose').textContent = purposeLabel(property);
   document.querySelector('#mapCardLocation').textContent = `${property.neighborhood} · ${property.city}`;
   document.querySelector('#mapCardTitle').textContent = property.title;
   document.querySelector('#mapCardFeatures').innerHTML = specsMarkup(property);
   document.querySelector('#mapCardPrice').textContent = displayPrice(property, property.rent && !property.sale ? 'rent' : 'sale');
   document.querySelector('#mapCardLink').href = `imovel.html?ref=${property.ref}`;
-  markers.forEach((marker, markerIndex) => marker.setIcon(pinIcon(markerIndex, markerIndex === index)));
+  // Alterna a classe no elemento que já existe em vez de recriar o ícone:
+  // `setIcon` substituiria o DOM dos 60 pinos, reiniciando a transição de
+  // cada um e piscando o que estivesse sob o cursor.
+  markers.forEach((marker, markerIndex) => {
+    const pino = marker.getElement()?.querySelector('.tamada-pin');
+    if (pino) pino.classList.toggle('active', markerIndex === index);
+    else marker.setIcon(pinIcon(markerIndex, markerIndex === index));
+  });
   updateMapFavorite();
   document.querySelectorAll('[data-map-neighborhood]').forEach(item => item.classList.toggle('active', normalize(item.dataset.mapNeighborhood) === normalize(property.neighborhood)));
   if (map && pan) map.flyTo(fuzzyCoords(property), Math.max(map.getZoom(), 13), { duration: .7 });
 }
 
+/* Mesma guarda do activateMapProperty: entre uma troca de bairro e outra a
+   lista pode estar vazia, e ler `.ref` de undefined quebrava a página. */
+function imovelAtivoNoMapa() {
+  return mapProperties[state.activeMapIndex] || null;
+}
+
 function updateMapFavorite() {
   const button = document.querySelector('#mapFavorite');
-  const saved = favorites.has(mapProperties[state.activeMapIndex].ref);
+  const ativo = imovelAtivoNoMapa();
+  if (!button || !ativo) return;
+  const saved = favorites.has(ativo.ref);
   button.classList.toggle('saved', saved);
   button.innerHTML = `<iconify-icon icon="solar:heart-${saved ? 'bold' : 'linear'}"></iconify-icon>`;
 }
 
-document.querySelector('#mapFavorite').addEventListener('click', () => toggleFavorite(mapProperties[state.activeMapIndex].ref));
+document.querySelector('#mapFavorite').addEventListener('click', () => {
+  const ativo = imovelAtivoNoMapa();
+  if (ativo) toggleFavorite(ativo.ref);
+});
 document.querySelector('#mapZoomIn').addEventListener('click', () => map?.zoomIn());
 document.querySelector('#mapZoomOut').addEventListener('click', () => map?.zoomOut());
 
-const mapNeighborhoods = [...new Set(mapProperties.map(property => property.neighborhood))].slice(0, 6);
-document.querySelector('#mapNeighborhoods').innerHTML = mapNeighborhoods.map((name, index) => `<button type="button" data-map-neighborhood="${name}" class="${index === 0 ? 'active' : ''}">${name}</button>`).join('');
+/* Bairros com mais imóveis no estoque, com a contagem real. Antes eram os
+   bairros dos 12 imóveis fixos — 6 nomes que não representavam o acervo. */
+/* Chips de bairro dentro do mapa: os 8 de maior volume, com a contagem.
+   Vêm do estoque, não de `mapProperties` — que agora é só o bairro aberto. */
+document.querySelector('#mapNeighborhoods').innerHTML = bairrosComMapa.slice(0, 8).map((b, index) =>
+  `<button type="button" data-map-neighborhood="${b.nome}" class="${index === 0 ? 'active' : ''}">${b.nome} <i>${b.total}</i></button>`
+).join('');
+// Chips dentro do próprio mapa: mesma troca de bairro, sem sair da visão.
 document.querySelectorAll('[data-map-neighborhood]').forEach(button => button.addEventListener('click', () => {
-  const index = mapProperties.findIndex(property => property.neighborhood === button.dataset.mapNeighborhood);
-  document.querySelectorAll('[data-map-neighborhood]').forEach(item => item.classList.toggle('active', item === button));
-  activateMapProperty(index, true);
+  mostrarBairroNoMapa(button.dataset.mapNeighborhood, true);
 }));
 
 /* Atlas: alterna entre a lista de bairros e o mapa, na mesma seção */
@@ -535,12 +875,16 @@ function scrollTargetForAtlasTop() {
   return atlasSection.getBoundingClientRect().top + window.scrollY - 90;
 }
 
-function scrollTargetToCenter(element) {
-  const rect = element.getBoundingClientRect();
-  const headerOffset = 100;
-  const extraSpace = window.innerHeight - rect.height - headerOffset;
-  const gap = extraSpace > 0 ? extraSpace / 2 : 0;
-  return rect.top + window.scrollY - headerOffset - gap;
+/* O mapa encosta na base do header e ocupa o resto da tela. A altura já é
+   100svh menos o header (CSS), então basta alinhar o topo — centralizar, como
+   era antes, deixava margem em cima e cortava embaixo quando o bloco passava
+   da altura da tela. */
+function alturaDoHeaderFixo() {
+  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-fixo')) || 92;
+}
+
+function scrollTargetUnderHeader(element) {
+  return element.getBoundingClientRect().top + window.scrollY - alturaDoHeaderFixo();
 }
 
 function swapAtlasView(from, to, { getScrollTarget, onShow } = {}) {
@@ -559,9 +903,16 @@ function swapAtlasView(from, to, { getScrollTarget, onShow } = {}) {
   }, 280);
 }
 
-function showAtlasMap() {
+/* `aoMostrar` roda DEPOIS que o mapa já está visível e com tamanho.
+   Desenhar os pinos antes disso não funciona: o Leaflet ignora tudo enquanto o
+   container tem tamanho zero. */
+function showAtlasMap(aoMostrar) {
   swapAtlasView(atlasViewList, atlasViewMap, {
-    getScrollTarget: () => scrollTargetToCenter(document.querySelector('.map-shell'))
+    getScrollTarget: () => scrollTargetUnderHeader(document.querySelector('.map-layout')),
+    onShow: () => {
+      map?.invalidateSize();
+      aoMostrar?.();
+    }
   });
 }
 
@@ -571,11 +922,30 @@ function showAtlasList() {
 
 document.querySelectorAll('#atlasBack, [data-atlas-back]').forEach(button => button.addEventListener('click', showAtlasList));
 
+/* Lista de bairros do atlas.
+   Estava escrita à mão no index.html: 6 bairros com número de POSIÇÃO (02, 03…)
+   que parecia contagem de imóveis. Agora vem do estoque real — os de maior
+   volume, com a quantidade de verdade. As descrições editoriais existentes são
+   preservadas por nome; bairro novo entra sem descrição. */
+const listaBairros = document.querySelector('[data-neighborhood]')?.parentElement;
+if (listaBairros && bairrosComMapa.length) {
+  const descricoes = {};
+  listaBairros.querySelectorAll('[data-neighborhood]').forEach(b => {
+    const texto = b.querySelector('small')?.textContent?.trim();
+    if (texto) descricoes[normalize(b.dataset.neighborhood)] = texto;
+  });
+
+  listaBairros.innerHTML = bairrosComMapa.slice(0, 8).map((bairro, i) => {
+    const desc = descricoes[normalize(bairro.nome)] || `${bairro.cidade}`;
+    return `<button type="button" data-neighborhood="${bairro.nome}"${i === 0 ? ' class="active"' : ''}>`
+      + `<span>${bairro.nome}</span><small>${desc}</small>`
+      + `<b>${bairro.total}</b></button>`;
+  }).join('');
+}
+
 document.querySelectorAll('[data-neighborhood]').forEach(button => button.addEventListener('click', () => {
-  document.querySelectorAll('[data-neighborhood]').forEach(item => item.classList.toggle('active', item === button));
-  const found = mapProperties.findIndex(property => normalize(property.neighborhood).includes(normalize(button.dataset.neighborhood)));
-  showAtlasMap();
-  if (found >= 0) activateMapProperty(found, true);
+  // Os pinos só são desenhados depois que o mapa aparece — ver showAtlasMap.
+  showAtlasMap(() => mostrarBairroNoMapa(button.dataset.neighborhood, true));
 }));
 
 /* Header, mobile navigation and motion */
@@ -646,7 +1016,10 @@ if (window.matchMedia('(pointer:fine)').matches) {
 
 document.querySelector('#currentYear').textContent = new Date().getFullYear();
 renderProperties();
-activateMapProperty(0);
+// O card do mapa é preenchido por mostrarBairroNoMapa, dentro do initMap.
+// Havia aqui um activateMapProperty(0) do tempo em que os 12 imóveis existiam
+// desde o início; agora `mapProperties` começa vazio e essa chamada lançava
+// TypeError, abortando todo o resto do script.
 window.addEventListener('load', initMap, { once: true });
 
 const filterChipsScroller = document.querySelector('.filter-chips');

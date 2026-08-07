@@ -9,8 +9,8 @@
   <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=18">
-  <link rel="stylesheet" href="imoveis.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="stylesheet" href="imoveis.css?v=33">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body class="catalog-page">
@@ -31,7 +31,7 @@
 
   <header class="site-header catalog-header" id="siteHeader">
     <div class="shell header-inner">
-      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"></a>
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown active">
           <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
@@ -58,9 +58,6 @@
           <summary>Serviços <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
           <div>
             <a href="anuncie.html">Anuncie seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/encomende-seu-imovel-compra-ou-locacao" target="_blank" rel="noopener">Encomende seu imóvel</a>
-            <a href="https://www.tamadaimoveis.com.br/avalie-seu-corretor" target="_blank" rel="noopener">Avalie seu corretor</a>
-            <a href="financiamento.html">Financiamento</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a>
             <a href="https://tmdconsultoriai.superlogica.net/clients/areadofornecedor" target="_blank" rel="noopener">Extrato do proprietário</a>
           </div>
@@ -90,8 +87,7 @@
       <a href="imoveis.html?purpose=sale"><span>01</span> Comprar</a>
       <a href="imoveis.html?purpose=rent"><span>02</span> Alugar</a>
       <a href="anuncie.html"><span>03</span> Anuncie</a>
-      <a href="financiamento.html"><span>04</span> Financiamento</a>
-      <a href="sobre.html"><span>05</span> Institucional</a>
+      <a href="sobre.html"><span>04</span> Institucional</a>
     </nav>
     <a class="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
   </div>
@@ -118,14 +114,13 @@
     <section class="catalog-search" aria-label="Busca de imóveis">
       <form class="shell catalog-search-form" id="catalogSearch">
         <div class="catalog-purpose" role="group" aria-label="Finalidade">
-          <button class="active" type="button" data-purpose="all">Todos</button>
           <button type="button" data-purpose="sale">Comprar</button>
           <button type="button" data-purpose="rent">Alugar</button>
           <button type="button" data-purpose="commercial">Comercial</button>
         </div>
         <label class="catalog-query"><span>Localização ou código</span><div><iconify-icon icon="solar:map-point-linear"></iconify-icon><input id="catalogQuery" type="search" placeholder="Ex.: Tatuapé, Arujá ou AP7842-EIU" autocomplete="off"></div></label>
-        <label><span>Tipo</span><select id="catalogType"><option value="">Todos os tipos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="HALL">Comercial</option><option value="LAND">Terreno</option></select></label>
-        <label><span>Valor máximo</span><select id="catalogMaxPrice"><option value="">Sem limite</option><option value="260000">R$ 260 mil</option><option value="500000">R$ 500 mil</option><option value="900000">R$ 900 mil</option><option value="2000000">R$ 2 milhões</option><option value="5000000">R$ 5 milhões</option></select></label>
+        <label><span>Tipo</span><select id="catalogType" data-elegant><option value="">Todos os tipos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="LAND">Terreno</option><option value="HALL">Salão comercial</option><option value="ROOM">Sala comercial</option><option value="BUILDING">Prédio</option><option value="OUTHOUSE">Galpão</option><option value="SMALL_FARM">Chácara</option></select></label>
+        <label><span>Valor máximo</span><select id="catalogMaxPrice" data-elegant><option value="">Sem limite</option><option value="260000">R$ 260 mil</option><option value="500000">R$ 500 mil</option><option value="900000">R$ 900 mil</option><option value="2000000">R$ 2 milhões</option><option value="5000000">R$ 5 milhões</option></select></label>
         <button class="catalog-submit" type="submit"><span>Buscar</span><iconify-icon icon="solar:magnifer-linear"></iconify-icon></button>
       </form>
     </section>
@@ -144,8 +139,9 @@
         <aside class="filter-panel" id="filterPanel" aria-label="Filtros avançados">
           <div class="filter-panel-head"><div><span>Busca avançada</span><strong>Refine sua escolha</strong></div><button type="button" id="closeFilters" aria-label="Fechar filtros"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
           <fieldset><legend>Finalidade</legend><div class="filter-purpose"><label><input type="radio" name="sidePurpose" value="all" checked><span>Todos</span></label><label><input type="radio" name="sidePurpose" value="sale"><span>Comprar</span></label><label><input type="radio" name="sidePurpose" value="rent"><span>Alugar</span></label></div></fieldset>
-          <fieldset><legend>Dormitórios</legend><div class="side-number-chips" id="sideBedrooms"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1+</button><button type="button" data-value="2">2+</button><button type="button" data-value="3">3+</button><button type="button" data-value="4">4+</button></div></fieldset>
-          <fieldset><legend>Vagas</legend><div class="side-number-chips" id="sideGarages"><button class="active" type="button" data-value="0">Todas</button><button type="button" data-value="1">1+</button><button type="button" data-value="2">2+</button><button type="button" data-value="3">3+</button></div></fieldset>
+          <fieldset><legend>Tipo de imóvel</legend><select id="sideType" data-elegant><option value="">Todos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="LAND">Terreno</option><option value="HALL">Salão comercial</option><option value="ROOM">Sala comercial</option><option value="BUILDING">Prédio</option><option value="OUTHOUSE">Galpão</option><option value="SMALL_FARM">Chácara</option></select></fieldset>
+          <fieldset><legend>Dormitórios</legend><div class="side-number-chips" id="sideBedrooms"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3">3</button><button type="button" data-value="4" data-min="">4+</button></div></fieldset>
+          <fieldset><legend>Vagas</legend><div class="side-number-chips" id="sideGarages"><button class="active" type="button" data-value="0">Todas</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3" data-min="">3+</button></div></fieldset>
           <fieldset><legend>Faixa de área</legend><div class="range-grid"><label><span>Mínima</span><input id="minArea" type="number" min="0" step="10" placeholder="0 m²"></label><label><span>Máxima</span><input id="maxArea" type="number" min="0" step="10" placeholder="Qualquer"></label></div></fieldset>
           <fieldset><legend>Características</legend><div class="side-checks"><label><input id="onlyAffordable" type="checkbox"><span><i></i>Até R$ 260 mil</span></label><label><input id="onlyCommercial" type="checkbox"><span><i></i>Uso comercial</span></label><label><input id="onlyGarage" type="checkbox"><span><i></i>Com vaga</span></label></div></fieldset>
           <button class="clear-all" id="clearCatalogFilters" type="button"><iconify-icon icon="solar:restart-linear"></iconify-icon> Limpar todos os filtros</button>
@@ -176,17 +172,17 @@
     </section>
 
     <section class="catalog-cta">
-      <div class="shell"><div><p class="eyebrow eyebrow-light"><span></span> Encomende seu imóvel</p><h2>Não apareceu aqui?<br><em>A gente procura com você.</em></h2></div><div><p>Conte bairro, faixa de preço e o que é indispensável. A equipe Tamada continua a busca fora dos filtros.</p><a class="button button-red button-large" href="https://www.tamadaimoveis.com.br/encomende-seu-imovel-compra-ou-locacao" target="_blank" rel="noopener">Encomendar meu imóvel <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div></div>
+      <div class="shell"><div><p class="eyebrow eyebrow-light"><span></span> Busca personalizada</p><h2>Não apareceu aqui?<br><em>A gente procura com você.</em></h2></div><div><p>Conte bairro, faixa de preço e o que é indispensável. A equipe Tamada continua a busca fora dos filtros.</p><a class="button button-red button-large" href="https://wa.me/5511965935749?text=Ol%C3%A1%21%20N%C3%A3o%20encontrei%20no%20site%20o%20im%C3%B3vel%20que%20procuro.%20Podem%20me%20ajudar%20na%20busca%3F" target="_blank" rel="noopener">Falar com a equipe <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div></div>
     </section>
   </main>
 
   <footer class="site-footer catalog-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="#catalogSearch">Busca avançada</a></div>
-        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="financiamento.html">Financiamento</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
-        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511966378282" target="_blank" rel="noopener">Locação e proprietários</a><a href="sobre.html">A Tamada</a></div>
+        <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
+        <div><h3>Contato</h3><a href="tel:01126822320">(11) 2682-2320</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">WhatsApp novos clientes</a><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">Locação e proprietários</a><a href="sobre.html">A Tamada</a></div>
       </div>
     </div>
     <div class="shell footer-bottom"><p>© <span id="currentYear"></span> Tamada Imóveis · CRECI 21745-J</p><a href="index.html">Voltar ao início <iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
@@ -196,9 +192,10 @@
   <div class="filter-backdrop" id="filterBackdrop"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="catalog-data.js"></script>
-  <script src="nav-dropdown.js"></script>
-  <script src="common.js"></script>
-  <script src="imoveis.js"></script>
+  <script src="catalog-data.js?v=32"></script>
+  <script src="nav-dropdown.js?v=32"></script>
+  <script src="common.js?v=32"></script>
+  <script src="elegant-select.js?v=32"></script>
+  <script src="imoveis.js?v=32"></script>
 </body>
 </html>

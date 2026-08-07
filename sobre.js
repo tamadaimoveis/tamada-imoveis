@@ -1,27 +1,42 @@
 /* sobre.js — lightbox da galeria "Nosso espaço" (array fixo, sem lógica de catálogo)
-   + reveal ligado ao scroll na transição hero -> "Quem somos" (some a foto/texto no topo,
-   preenche conforme rola, acomoda quando termina — só nessa seção, o resto usa .reveal normal).
+   + reveal de foto ligado ao scroll nas duas transições hero->conteúdo (#heroTransition
+   e #valuesTransition) — só a foto abre conforme rola, o resto da página usa .reveal normal.
    Menu/scroll/reveal/magnetic/ano vêm de common.js. */
 
 (() => {
-  const section = document.querySelector('#heroTransition');
-  if (!section) return;
-  const img = section.querySelector('.about-image');
-  const copy = section.querySelector('.about-copy');
+  const semAnimacao = window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof gsap === 'undefined';
+  if (!semAnimacao) gsap.registerPlugin(ScrollTrigger);
 
-  const REVEAL_DISTANCE = 550; // px de scroll ate revelar 100% — carrega em branco (scrollY=0 => progresso 0)
-  const onScroll = () => {
-    let progress = window.scrollY / REVEAL_DISTANCE;
-    progress = Math.min(1, Math.max(0, progress));
+  /* Nada de pin: quando a seção é mais alta que a tela do usuário, travar
+     ela corta o que não cabe (a foto some no escuro, sem jeito de rolar até
+     o resto) e a troca de "rolando normal" pra "travado" no meio do caminho
+     dá o solavanco. Sem pin a página nunca fica presa — o que não coube na
+     tela ainda dá pra ver rolando mais um pouco, como qualquer página normal.
+     start:'top bottom' começa assim que a seção aparece por baixo; end:'top
+     top' termina quando ela alinha no topo — ainda inteira na tela, não some
+     antes de completar. */
+  function fotoAoRolar(section) {
+    if (!section) return;
+    const img = section.querySelector('.about-image');
+    if (!img) return;
 
-    img.style.clipPath = `inset(0 0 ${(1 - progress) * 100}% 0)`;
-    copy.style.opacity = progress;
-    copy.style.transform = `translateY(${(1 - progress) * 40}px)`;
+    if (semAnimacao) { img.style.clipPath = 'inset(0 0 0% 0)'; return; }
 
-    if (progress >= 1) window.removeEventListener('scroll', onScroll);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+    gsap.timeline({
+      scrollTrigger: { trigger: section, start: 'top bottom', end: 'top top', scrub: 0.6 }
+    }).fromTo(img, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', ease: 'none' });
+  }
+
+  const heroTransition = document.querySelector('#heroTransition');
+  if (heroTransition) {
+    // Só nesta seção o texto ao lado fica parado (visível desde já) — pedido
+    // específico daqui; na segunda seção o texto usa o .reveal normal do site.
+    const copy = heroTransition.querySelector('.about-copy');
+    copy.style.opacity = '1';
+    copy.style.transform = 'none';
+  }
+
+  [heroTransition, document.querySelector('#valuesTransition')].forEach(fotoAoRolar);
 })();
 
 const SPACE_PHOTOS = [
