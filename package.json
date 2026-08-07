@@ -1,0 +1,11 @@
+{
+  "name": "tamada-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Site publico da Tamada Imoveis. O catalogo e gerado do Sanity a cada build.",
+  "scripts": {
+    "build": "node scripts/gerar-catalogo.mjs && node scripts/limpar-rascunhos.mjs",
+    "catalogo": "node scripts/gerar-catalogo.mjs",
+    "catalogo:teste": "node scripts/gerar-catalogo.mjs --dry-run"
+  }
+}

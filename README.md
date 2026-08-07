@@ -32,6 +32,33 @@ A homepage usa `assets/images/hero-brand-atlas.png`, uma peça conceitual gerada
 
 O mapa usa Leaflet e tiles claros da CARTO/OpenStreetMap. Somente os 12 destaques editoriais recebem marcadores. As coordenadas são aproximadas e deslocadas de forma determinística para não expor endereços exatos.
 
-## Próxima integração
+## Catálogo: de onde vêm os imóveis
 
-O catálogo local é um snapshot. Para publicação, recomenda-se substituir `catalog-data.js` por uma consulta ao CRM/API atual da imobiliária mantendo a mesma estrutura de dados usada em `script.js`.
+O catálogo não é escrito à mão. `catalog-data.js` e a pasta `imovel/` são
+**gerados** a partir do Sanity a cada publicação — por isso os dois estão no
+`.gitignore`. Editar qualquer um deles na mão é trabalho perdido: a próxima
+publicação sobrescreve.
+
+O caminho do dado é: **CRM → Sanity → build → site**. Entram no site apenas
+imóveis com `publicarSite == true` e `status == "ativo"`.
+
+Para gerar na mão:
+
+```powershell
+npm run catalogo          # gera de verdade
+npm run catalogo:teste    # só mostra o que sairia, sem escrever
+```
+
+O gerador acha as credenciais no `.env.local` desta pasta ou no do Studio em
+`../site/.env.local`. Não precisa de nenhuma dependência npm — só Node.
+
+## Publicação
+
+`npm run build` é o que a Vercel roda: gera o catálogo e depois remove da pasta
+publicada os arquivos listados no `.vercelignore` (rascunhos como
+`sobre.html.ORIGINAL-antes-do-video`). Essa limpeza **só age dentro da Vercel** —
+rodando na sua máquina ela não apaga nada.
+
+Cuidado ao mexer: por muito tempo o deploy foi feito por CLI direto da pasta,
+sem passar pelo git. Isso deixou o repositório 11 dias atrás do que estava no
+ar. Commite o que publicar.
