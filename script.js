@@ -176,7 +176,7 @@ function propertyCard(property) {
     <article class="property-card" data-ref="${property.ref}">
       <div class="property-media">
         <a href="imovel.html?ref=${property.ref}" aria-label="Conhecer ${property.title}">
-          <img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy">
+          <img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400">
         </a>
         <span class="property-purpose">${purposeLabel(property)}</span>
         <span class="property-code">${property.ref}</span>

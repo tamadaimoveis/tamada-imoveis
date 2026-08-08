@@ -147,7 +147,7 @@ function card(property) {
   const saved = favorites.has(property.ref);
   return `<article class="catalog-card" data-ref="${property.ref}">
     <div class="catalog-card-media">
-      <a href="imovel.html?ref=${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy"></a>
+      <a href="imovel.html?ref=${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400"></a>
       <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>
       <button class="catalog-favorite ${saved ? 'saved' : ''}" type="button" data-favorite="${property.ref}" aria-label="${saved ? 'Remover dos favoritos' : 'Salvar imóvel'}"><iconify-icon icon="solar:heart-${saved ? 'bold' : 'linear'}"></iconify-icon></button>
     </div>
