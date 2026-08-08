@@ -8,9 +8,15 @@
   <title>Tamada Imóveis — Seu lugar na cidade</title>
   <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/images/hero-cidade.jpg" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=32">
+  <link rel="preload" as="image" type="image/webp" imagesrcset="assets/images/hero-cidade-640.webp 640w, assets/images/hero-cidade-960.webp 960w, assets/images/hero-cidade-1344.webp 1344w" imagesizes="100vw" fetchpriority="high">
+  <!-- O mapa do Atlas fica na seção 02, abaixo da dobra — preload+swap evita
+       que o navegador trave a primeira pintura esperando um CDN externo
+       (unpkg.com) responder. Sem isso, um unpkg.com lento deixava a página
+       aparecer sem CSS aplicado por um instante: o "flash" de logo duplicada
+       reportado. -->
+  <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style" crossorigin="" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""></noscript>
+  <link rel="stylesheet" href="styles.css?v=35">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body>
@@ -33,7 +39,7 @@
   <header class="site-header" id="siteHeader">
     <div class="shell header-inner">
       <a class="brand" href="#inicio" aria-label="Tamada Imóveis — início">
-        <img src="assets/images/tamada-logo.png" alt="Tamada Imóveis">
+        <img src="assets/images/tamada-logo.png" alt="Tamada Imóveis" width="400" height="148">
       </a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown">
@@ -106,7 +112,10 @@
   <main id="conteudo">
     <section class="hero" id="inicio">
       <div class="hero-media" aria-hidden="true">
-        <img src="assets/images/hero-cidade.jpg" alt="" fetchpriority="high">
+        <picture>
+          <source type="image/webp" srcset="assets/images/hero-cidade-640.webp 640w, assets/images/hero-cidade-960.webp 960w, assets/images/hero-cidade-1344.webp 1344w" sizes="100vw">
+          <img src="assets/images/hero-cidade-1344.jpg" srcset="assets/images/hero-cidade-640.jpg 640w, assets/images/hero-cidade-960.jpg 960w, assets/images/hero-cidade-1344.jpg 1344w" sizes="100vw" alt="" fetchpriority="high" width="1344" height="768">
+        </picture>
         <div class="hero-scrim"></div>
         <svg class="hero-route" viewBox="0 0 1344 768" fill="none" preserveAspectRatio="xMidYMid slice">
           <defs>
@@ -204,21 +213,6 @@
             <div class="property-grid" id="propertyGrid" aria-live="polite"></div>
           </div>
           <div class="property-carousel-foot"><span>Deslize para explorar</span><i></i><span>Uma faixa de possibilidades</span></div>
-        </div>
-
-        <div class="property-carousel property-carousel-rent" aria-label="Imóveis para locação">
-          <div class="property-carousel-head">
-            <div><span>PARA QUEM QUER ALUGAR</span><strong>Encontre seu<br><em>próximo aluguel.</em></strong></div>
-            <div class="property-carousel-controls">
-              <span id="propertyPositionRent" aria-live="polite">00 / 00</span>
-              <button id="propertyPrevRent" type="button" aria-label="Imóveis anteriores" disabled><iconify-icon icon="solar:arrow-left-linear"></iconify-icon></button>
-              <button id="propertyNextRent" type="button" aria-label="Próximos imóveis" disabled><iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
-            </div>
-          </div>
-          <div class="property-carousel-window" id="propertyViewportRent">
-            <div class="property-grid" id="propertyGridRent" aria-live="polite"></div>
-          </div>
-          <div class="property-carousel-foot"><span>Deslize para explorar</span><i></i><span>Chaves na mão, sem burocracia</span></div>
         </div>
 
         <div class="property-footer reveal">
@@ -421,7 +415,7 @@
 
   <footer class="site-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="#inicio"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="#inicio"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis" width="400" height="148"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
         <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a></div>
@@ -455,7 +449,7 @@
           <label class="modal-field full"><span>Localização ou código</span><div><iconify-icon icon="solar:map-point-linear"></iconify-icon><input id="modalLocation" type="search" placeholder="Ex.: Vila Granada ou AP7842-EIU"></div></label>
           <label class="modal-field"><span>Tipo do imóvel</span><select id="modalType"><option value="">Todos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="HALL">Comercial</option><option value="LAND">Terreno</option></select></label>
           <label class="modal-field"><span>Valor máximo</span><select id="modalPrice"><option value="">Sem limite</option><option value="260000">R$ 260 mil</option><option value="500000">R$ 500 mil</option><option value="900000">R$ 900 mil</option><option value="2000000">R$ 2 milhões</option><option value="5000000">R$ 5 milhões</option></select></label>
-          <fieldset class="modal-field full"><legend>Dormitórios</legend><div class="number-chips" id="bedroomChips"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3">3</button><button type="button" data-value="4" data-min="">4+</button></div></fieldset>
+          <fieldset class="modal-field full"><legend>Quartos</legend><div class="number-chips" id="bedroomChips"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3">3</button><button type="button" data-value="4" data-min="">4+</button></div></fieldset>
           <fieldset class="modal-field full"><legend>Características</legend><div class="feature-chips"><label><input type="checkbox" value="garage"><span>Com vaga</span></label><label><input type="checkbox" value="apartment"><span>Condomínio</span></label><label><input type="checkbox" value="affordable"><span>Até R$ 260 mil</span></label><label><input type="checkbox" value="commercial"><span>Uso comercial</span></label></div></fieldset>
         </div>
       </div>
@@ -466,10 +460,13 @@
     </form>
   </dialog>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="catalog-data.js?v=32"></script>
-  <script src="elegant-select.js?v=32"></script>
-  <script src="nav-dropdown.js?v=32"></script>
-  <script src="script.js?v=32"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+  <!-- defer: catalog-data.js tem 2,2 MB — sem isto, o navegador trava a
+       primeira pintura da home em cima da execução desse arquivo. Ordem
+       relativa preservada. -->
+  <script src="catalog-data.js?v=32" defer></script>
+  <script src="elegant-select.js?v=32" defer></script>
+  <script src="nav-dropdown.js?v=32" defer></script>
+  <script src="script.js?v=33" defer></script>
 </body>
 </html>

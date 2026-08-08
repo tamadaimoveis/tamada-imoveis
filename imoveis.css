@@ -48,6 +48,7 @@
 .filter-purpose{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.filter-purpose input,.side-checks input{position:absolute;opacity:0;pointer-events:none}.filter-purpose span{display:grid;place-items:center;height:34px;border:1px solid var(--line);font-size:9px;cursor:pointer}.filter-purpose input:checked+span{background:var(--ink);color:#fff;border-color:var(--ink)}
 .side-number-chips{display:flex;gap:4px;flex-wrap:wrap}.side-number-chips button{height:34px;min-width:39px;padding:0 8px;border:1px solid var(--line);background:#fff;font-size:9px;cursor:pointer}.side-number-chips button.active{background:var(--red);color:#fff;border-color:var(--red)}
 .range-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.range-grid label span{display:block;font-size:8px;color:var(--muted);margin-bottom:4px}.range-grid input{width:100%;height:38px;border:1px solid var(--line);padding:0 8px;outline:0;font-size:9px}.range-grid input:focus{border-color:var(--red)}
+.filter-panel-search{width:100%;height:38px;border:1px solid var(--line);padding:0 10px;outline:0;font-size:10px}.filter-panel-search:focus{border-color:var(--red)}
 .side-checks{display:flex;flex-direction:column;gap:9px}.side-checks label span{display:flex;align-items:center;gap:8px;font-size:10px;cursor:pointer}.side-checks i{width:16px;height:16px;border:1px solid var(--line);display:grid;place-items:center}.side-checks input:checked+span i{background:var(--red);border-color:var(--red)}.side-checks input:checked+span i::after{content:"✓";color:#fff;font-size:9px}
 .clear-all{border:0;background:transparent;padding:0;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer}.clear-all:hover{color:var(--red)}
 .filter-contact{margin:24px -8px -11px;background:var(--paper);padding:15px;display:grid;grid-template-columns:auto 1fr;gap:9px}.filter-contact>iconify-icon{font-size:20px;color:var(--red)}.filter-contact p{margin:0;display:flex;flex-direction:column;line-height:1.35}.filter-contact strong{font-size:9px}.filter-contact span{font-size:8px;color:var(--muted)}.filter-contact a{grid-column:2;font-size:9px;font-weight:700;color:var(--red)}
@@ -102,6 +103,10 @@
 
 /* ===== Página do imóvel ===== */
 /* Hero: tira de fotos (3 por vez) + card de preço grande sobreposto */
+/* Sem altura reservada, o <main> fica com 0px enquanto o catálogo (2,2 MB)
+   carrega e executa — o rodapé, que já foi parseado, aparece colado embaixo
+   do cabeçalho até o conteúdo real chegar. Reserva o espaço de antemão. */
+#detailContent{min-height:100vh}
 .detail-hero{position:relative;height:clamp(420px,56vh,600px);background:#151312;overflow:hidden}
 .detail-filmstrip{display:flex;height:100%;transition:transform .6s var(--ease)}
 .strip-cell{flex:0 0 33.3333%;height:100%;border:0;padding:0;background:#0e0b0a;border-right:2px solid rgba(12,9,8,.9);position:relative;cursor:pointer;overflow:hidden}
@@ -372,6 +377,7 @@
 .announce-form fieldset{border:0;padding:0;margin:0 0 30px}
 .announce-form legend{font-family:Elicyon;font-size:22px;font-weight:400;padding:0;margin-bottom:20px;letter-spacing:-.01em}
 .af-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.af-row[hidden]{display:none}
 .af-row-3{grid-template-columns:1fr 1fr 1fr}
 .af-field{display:block;margin-bottom:16px}
 .af-field>span{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:7px}
@@ -385,7 +391,7 @@
 .announce-form .lead-check{margin:4px 0 0}
 .announce-form>.button{width:100%;margin-top:8px}
 .af-note{font-size:12px;color:var(--muted);text-align:center;margin:14px 0 0;line-height:1.6}
-.af-note#afError{color:var(--red);font-weight:700}
+.af-note#afError,.af-note#rcError{color:var(--red);font-weight:700}
 
 @media (max-width:1100px){
   .benefit-grid{grid-template-columns:1fr 1fr}
@@ -530,6 +536,9 @@
 .elegant-select-list li.active{background:var(--ink);color:#fff}
 .filter-panel .elegant-select-trigger{height:38px;padding:0 12px;border:1px solid var(--line);transition:border-color .2s}
 .filter-panel .elegant-select-trigger:hover,.filter-panel .elegant-select.is-open .elegant-select-trigger{border-color:var(--red)}
+/* Mesma altura/borda dos inputs de texto ao lado, pra não destoar no formulário. */
+.af-field .elegant-select-trigger{border:1px solid var(--line);background:#fdfcfa;padding:13px 14px;font-size:15px;transition:border-color .2s}
+.af-field .elegant-select-trigger:hover,.af-field .elegant-select.is-open .elegant-select-trigger{border-color:var(--red)}
 
 /* ── Cards de altura uniforme ─────────────────────────────────────────────
    Os títulos vindos do Gaia variam de 1 a 3 linhas, e como o card não tinha

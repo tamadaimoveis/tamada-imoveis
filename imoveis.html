@@ -8,9 +8,18 @@
   <title>Imóveis — Tamada Imóveis</title>
   <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <!-- O mapa só aparece se o visitante clicar em "Ver no mapa" — preload+swap
+       evita que o navegador trave a primeira pintura esperando um CDN
+       externo (unpkg.com) responder. Sem isso, um unpkg.com lento deixava a
+       página aparecer sem CSS aplicado por um instante: o "flash" de logo
+       duplicada reportado. -->
+  <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style" crossorigin="" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""></noscript>
   <link rel="stylesheet" href="styles.css?v=32">
-  <link rel="stylesheet" href="imoveis.css?v=33">
+  <link rel="stylesheet" href="imoveis.css?v=37">
+  <!-- Sem defer/async, de propósito: precisa existir antes do <body> ser
+       desenhado. Fonte única do hero por finalidade — ver hero-copy.js. -->
+  <script src="hero-copy.js?v=1"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body class="catalog-page">
@@ -31,7 +40,7 @@
 
   <header class="site-header catalog-header" id="siteHeader">
     <div class="shell header-inner">
-      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis" width="400" height="148"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown active">
           <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
@@ -105,10 +114,29 @@
           </div>
           <div class="catalog-hero-aside">
             <p id="heroSubtitle">Compra, locação e imóveis comerciais reunidos em uma busca que começa pela sua vida — não apenas pelos filtros.</p>
-            <dl><div><dt id="heroResultCount">93</dt><dd>imóveis locais</dd></div><div><dt>12</dt><dd>regiões em destaque</dd></div><div><dt>01</dt><dd>atendimento próximo</dd></div></dl>
+            <dl><div><dt id="heroResultCount">93</dt><dd>imóveis disponíveis</dd></div><div><dt>12</dt><dd>regiões em destaque</dd></div><div><dt>100%</dt><dd>atendimento dedicado</dd></div></dl>
           </div>
         </div>
       </div>
+      <script>
+        /* O <h1>/<img>/etc. acima nascem com o texto e a foto da aba "Comprar"
+           — placeholder pra existir algo antes do JS de baixo carregar. Em
+           ?purpose=rent ou =commercial isso piscava: primeiro o hero de
+           "Comprar", depois o certo, todo santo refresh. Esse script roda no
+           meio do parse do HTML, antes da página terminar de desenhar, e já
+           corrige — sem esperar imoveis.js. Lê window.HERO_COPY, carregado
+           bloqueante no <head> (hero-copy.js): fonte única, sem duplicar
+           texto — mudou hero, muda só lá. */
+        (function () {
+          var purpose = new URLSearchParams(location.search).get('purpose');
+          var c = window.HERO_COPY[purpose] || window.HERO_COPY.all;
+          document.getElementById('heroEyebrow').textContent = c.eyebrow;
+          document.getElementById('heroTitle').innerHTML = c.title;
+          document.getElementById('heroSubtitle').textContent = c.sub;
+          var img = document.querySelector('.catalog-hero-media img');
+          if (img) img.src = c.img;
+        })();
+      </script>
     </section>
 
     <section class="catalog-search" aria-label="Busca de imóveis">
@@ -138,12 +166,14 @@
       <div class="shell catalog-layout">
         <aside class="filter-panel" id="filterPanel" aria-label="Filtros avançados">
           <div class="filter-panel-head"><div><span>Busca avançada</span><strong>Refine sua escolha</strong></div><button type="button" id="closeFilters" aria-label="Fechar filtros"><iconify-icon icon="solar:close-circle-linear"></iconify-icon></button></div>
+          <fieldset><legend>Região, bairro ou cidade</legend><input class="filter-panel-search" id="sideQuery" type="search" placeholder="Ex.: Tatuapé, São Paulo"></fieldset>
           <fieldset><legend>Finalidade</legend><div class="filter-purpose"><label><input type="radio" name="sidePurpose" value="all" checked><span>Todos</span></label><label><input type="radio" name="sidePurpose" value="sale"><span>Comprar</span></label><label><input type="radio" name="sidePurpose" value="rent"><span>Alugar</span></label></div></fieldset>
           <fieldset><legend>Tipo de imóvel</legend><select id="sideType" data-elegant><option value="">Todos</option><option value="APARTMENT">Apartamento</option><option value="HOUSE">Casa</option><option value="TWO_STORY_HOUSE">Sobrado</option><option value="LAND">Terreno</option><option value="HALL">Salão comercial</option><option value="ROOM">Sala comercial</option><option value="BUILDING">Prédio</option><option value="OUTHOUSE">Galpão</option><option value="SMALL_FARM">Chácara</option></select></fieldset>
-          <fieldset><legend>Dormitórios</legend><div class="side-number-chips" id="sideBedrooms"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3">3</button><button type="button" data-value="4" data-min="">4+</button></div></fieldset>
+          <fieldset><legend>Quartos</legend><div class="side-number-chips" id="sideBedrooms"><button class="active" type="button" data-value="0">Todos</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3">3</button><button type="button" data-value="4" data-min="">4+</button></div></fieldset>
           <fieldset><legend>Vagas</legend><div class="side-number-chips" id="sideGarages"><button class="active" type="button" data-value="0">Todas</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3" data-min="">3+</button></div></fieldset>
+          <fieldset><legend>Valores</legend><select id="sideMaxPrice" data-elegant><option value="">Sem limite</option></select></fieldset>
           <fieldset><legend>Faixa de área</legend><div class="range-grid"><label><span>Mínima</span><input id="minArea" type="number" min="0" step="10" placeholder="0 m²"></label><label><span>Máxima</span><input id="maxArea" type="number" min="0" step="10" placeholder="Qualquer"></label></div></fieldset>
-          <fieldset><legend>Características</legend><div class="side-checks"><label><input id="onlyAffordable" type="checkbox"><span><i></i>Até R$ 260 mil</span></label><label><input id="onlyCommercial" type="checkbox"><span><i></i>Uso comercial</span></label><label><input id="onlyGarage" type="checkbox"><span><i></i>Com vaga</span></label></div></fieldset>
+          <fieldset><legend>Características</legend><div class="side-checks"><label><input id="onlyAffordable" type="checkbox"><span><i></i><b id="affordableLabel">Até R$ 260 mil</b></span></label><label><input id="onlyCommercial" type="checkbox"><span><i></i>Uso comercial</span></label><label><input id="onlyGarage" type="checkbox"><span><i></i>Com vaga</span></label></div></fieldset>
           <button class="clear-all" id="clearCatalogFilters" type="button"><iconify-icon icon="solar:restart-linear"></iconify-icon> Limpar todos os filtros</button>
           <div class="filter-contact"><iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon><p><strong>Busca muito específica?</strong><span>Um corretor pode procurar por você.</span></p><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">Conversar</a></div>
         </aside>
@@ -178,7 +208,7 @@
 
   <footer class="site-footer catalog-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis" width="400" height="148"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="#catalogSearch">Busca avançada</a></div>
         <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
@@ -191,11 +221,14 @@
   <a class="floating-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
   <div class="filter-backdrop" id="filterBackdrop"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="catalog-data.js?v=32"></script>
-  <script src="nav-dropdown.js?v=32"></script>
-  <script src="common.js?v=32"></script>
-  <script src="elegant-select.js?v=32"></script>
-  <script src="imoveis.js?v=32"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+  <!-- defer: catalog-data.js tem 2,2 MB — sem isto, o navegador trava a
+       primeira pintura do catálogo em cima da execução desse arquivo. Ordem
+       relativa preservada. -->
+  <script src="catalog-data.js?v=32" defer></script>
+  <script src="nav-dropdown.js?v=32" defer></script>
+  <script src="common.js?v=32" defer></script>
+  <script src="elegant-select.js?v=32" defer></script>
+  <script src="imoveis.js?v=35" defer></script>
 </body>
 </html>

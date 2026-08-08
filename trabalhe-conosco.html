@@ -10,7 +10,7 @@
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/hero-trabalhe.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="styles.css?v=32">
-  <link rel="stylesheet" href="imoveis.css?v=32">
+  <link rel="stylesheet" href="imoveis.css?v=37">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body class="catalog-page">
@@ -31,7 +31,7 @@
 
   <header class="site-header catalog-header" id="siteHeader">
     <div class="shell header-inner">
-      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis" width="400" height="148"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown">
           <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
@@ -105,55 +105,28 @@
             <h1>A carteira já existe.<br><em>Falta o corretor.</em></h1>
           </div>
           <div class="catalog-hero-aside">
-            <p>Junte-se à Tamada como corretor parceiro — carteira ativa, leads que já chegam e a estrutura de uma imobiliária de bairro por trás de você.</p>
-            <dl><div><dt>93</dt><dd>imóveis na carteira ativa</dd></div><div><dt>55</dt><dd>bairros com presença</dd></div><div><dt>805&nbsp;mil</dt><dd>ticket médio de venda</dd></div></dl>
+            <p>Junte-se à Tamada e conte com carteira ativa, leads qualificados e o suporte de uma imobiliária que conhece a região.</p>
+            <dl><div><dt id="statCarteira">—</dt><dd>imóveis na carteira ativa</dd></div><div><dt id="statBairros">—</dt><dd>bairros com presença</dd></div><div><dt id="statTicket">—</dt><dd>ticket médio de venda</dd></div></dl>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="property-section section">
-      <div class="shell">
-        <div class="section-heading reveal">
-          <div><p class="eyebrow"><span>01</span> O que você vai vender</p><h2>O catálogo<br><em>já existe.</em></h2></div>
-          <p>93 imóveis ativos, 55 bairros com presença Tamada. Aqui vão 3 exemplos reais do que está na carteira agora.</p>
-        </div>
-        <div class="catalog-grid" id="recruitShowcase"></div>
-        <div class="showcase-more reveal">
-          <a class="button button-ink button-large" href="imoveis.html"><span>Ver catálogo completo</span><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="announce-steps section">
-      <div class="shell">
-        <div class="section-heading reveal">
-          <div><p class="eyebrow"><span>02</span> Como funciona</p><h2>Da candidatura<br><em>à primeira venda.</em></h2></div>
-          <p>Processo direto, sem burocracia — você conversa com gente de verdade, não com um formulário automático.</p>
-        </div>
-        <ol class="steps-grid">
-          <li class="step-card reveal"><span class="step-num">01</span><h3>Você se candidata</h3><p>Manda seus dados e um pouco da sua experiência — tem CRECI ou não, tanto faz.</p></li>
-          <li class="step-card reveal reveal-delay-1"><span class="step-num">02</span><h3>A gente conversa</h3><p>Alinhamos expectativa e, se precisar, te apoiamos a tirar o CRECI.</p></li>
-          <li class="step-card reveal reveal-delay-2"><span class="step-num">03</span><h3>Você entra na carteira</h3><p>Acesso aos imóveis ativos, aos leads que já chegam pelo site e WhatsApp, e à retaguarda do escritório pra fechar.</p></li>
-        </ol>
       </div>
     </section>
 
     <section class="announce-benefits section">
       <div class="shell">
         <div class="section-heading reveal">
-          <div><p class="eyebrow"><span>03</span> O que você ganha</p><h2>Estrutura pronta,<br><em>comissão sua.</em></h2></div>
+          <div><p class="eyebrow"><span>01</span> O que você ganha</p><h2>Estrutura pronta,<br><em>comissão sua.</em></h2></div>
           <p>Estrutura de comissão competitiva — detalhamos na conversa. O resto, é isso aqui:</p>
         </div>
         <div class="benefit-grid">
           <article class="benefit-card reveal">
             <div class="benefit-icon"><iconify-icon icon="solar:case-minimalistic-linear"></iconify-icon></div>
             <h3>Carteira pronta</h3>
-            <p>93 imóveis ativos agora — você não começa do zero procurando cliente.</p>
+            <p><span id="statCarteira3">—</span> imóveis ativos agora — você não começa do zero procurando cliente.</p>
           </article>
           <article class="benefit-card reveal reveal-delay-1">
             <div class="benefit-icon"><iconify-icon icon="solar:medal-ribbon-star-linear"></iconify-icon></div>
-            <h3>Marca em 55 bairros</h3>
+            <h3>Marca em <span id="statBairros3">—</span> bairros</h3>
             <p>Você negocia com o peso de uma imobiliária já presente na região.</p>
           </article>
           <article class="benefit-card reveal reveal-delay-2">
@@ -189,6 +162,15 @@
         <form class="announce-form" id="recruitForm" novalidate>
           <fieldset>
             <legend>Seus dados</legend>
+            <label class="af-field"><span>Vaga de interesse*</span>
+              <select id="rcRole" required data-elegant>
+                <option value="">Selecione</option>
+                <option>Corretor autônomo</option>
+                <option>Captador</option>
+                <option>Administrativo</option>
+                <option>Outro</option>
+              </select>
+            </label>
             <div class="af-row">
               <label class="af-field"><span>Nome completo*</span><input id="rcName" type="text" autocomplete="name" required placeholder="Seu nome"></label>
               <label class="af-field"><span>Telefone / WhatsApp*</span><input id="rcPhone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(11) 90000-0000"></label>
@@ -198,9 +180,11 @@
 
           <fieldset>
             <legend>Sobre sua experiência</legend>
-            <div class="af-row">
+            <!-- Só faz sentido pra quem se candidata a corretor. JS mostra/esconde
+                 e liga/desliga o required em rcStatus conforme a Vaga de interesse. -->
+            <div class="af-row" id="rcCorretorFields">
               <label class="af-field"><span>Já é corretor?*</span>
-                <select id="rcStatus" required>
+                <select id="rcStatus" data-elegant>
                   <option value="">Selecione</option>
                   <option>Sim, tenho CRECI ativo</option>
                   <option>Estou tirando o CRECI</option>
@@ -209,19 +193,39 @@
               </label>
               <label class="af-field"><span>CRECI</span><input id="rcCreci" type="text" placeholder="Se já tiver"></label>
             </div>
-            <label class="af-field"><span>Região de interesse</span><input id="rcRegion" type="text" placeholder="Bairro, cidade ou região que você conhece bem"></label>
-            <label class="af-field"><span>Conte um pouco da sua experiência</span><textarea id="rcExperience" rows="3" placeholder="Tempo de mercado, imóveis que já negociou, o que você busca..."></textarea></label>
+            <!-- Só faz sentido pra quem NÃO é corretor — pra corretor autônomo o que
+                 importa é CRECI/experiência de mercado, não faculdade. -->
+            <div id="rcFormacaoFields" hidden>
+              <div class="af-row">
+                <label class="af-field"><span>É formado(a)?</span>
+                  <select id="rcFormado" data-elegant>
+                    <option value="">Selecione</option>
+                    <option>Sim</option>
+                    <option>Cursando</option>
+                    <option>Não</option>
+                  </select>
+                </label>
+                <label class="af-field"><span>Ano de conclusão</span><input id="rcAnoConclusao" type="text" inputmode="numeric" placeholder="Ex.: 2022"></label>
+              </div>
+              <div class="af-row">
+                <label class="af-field"><span>Faculdade / instituição</span><input id="rcFaculdade" type="text" placeholder="Se já tiver ou estiver cursando"></label>
+                <label class="af-field"><span>Curso</span><input id="rcCurso" type="text" placeholder="Ex.: Administração, Gestão Imobiliária..."></label>
+              </div>
+            </div>
+            <label class="af-field"><span id="rcExperienceLabel">Conte um pouco da sua experiência</span><textarea id="rcExperience" rows="3" placeholder="Tempo de mercado, imóveis que já negociou, o que você busca..."></textarea></label>
+            <label class="af-field"><span>Currículo (opcional)</span><input id="rcResume" type="file" accept=".pdf,.doc,.docx"></label>
             <label class="lead-check"><input id="rcConsent" type="checkbox" required><span>Declaro que li e concordo em ser contatado pela Tamada Imóveis, de acordo com a Política de Privacidade.</span></label>
           </fieldset>
 
           <button class="button button-red button-large" id="rcSubmit" type="submit"><iconify-icon icon="solar:arrow-right-linear"></iconify-icon><span>Enviar candidatura</span></button>
           <p class="af-note">Seus dados ficam guardados e nosso time analisa — sem processo automático, sem spam.</p>
+          <p class="af-note" id="rcError" hidden role="alert"></p>
         </form>
 
         <div class="announce-form af-success" id="recruitSuccess" hidden>
           <iconify-icon icon="solar:check-circle-bold"></iconify-icon>
           <h3>Recebemos seu interesse!</h3>
-          <p>Nosso time vai olhar seu perfil e entra em contato em breve. Enquanto isso, já dá pra conhecer o que você entraria pra vender.</p>
+          <p>Nosso time vai olhar seu perfil e entra em contato em breve.</p>
           <a class="button button-red button-large" href="imoveis.html"><span>Ver catálogo completo</span><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a>
         </div>
       </div>
@@ -230,7 +234,7 @@
 
   <footer class="site-footer catalog-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis" width="400" height="148"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
         <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
@@ -242,9 +246,13 @@
 
   <a class="floating-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
 
-  <script src="catalog-data.js?v=32"></script>
-  <script src="nav-dropdown.js?v=32"></script>
-  <script src="common.js?v=32"></script>
-  <script src="trabalhe-conosco.js?v=32"></script>
+  <!-- defer: catalog-data.js tem 2,2 MB — sem isto, o navegador trava a
+       primeira pintura da página em cima da execução desse arquivo. Ordem
+       relativa preservada. -->
+  <script src="catalog-data.js?v=32" defer></script>
+  <script src="nav-dropdown.js?v=32" defer></script>
+  <script src="common.js?v=32" defer></script>
+  <script src="elegant-select.js?v=32" defer></script>
+  <script src="trabalhe-conosco.js?v=36" defer></script>
 </body>
 </html>

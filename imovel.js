@@ -1,4 +1,3 @@
-const inventory = Array.isArray(window.TAMADA_CATALOG) ? window.TAMADA_CATALOG : [];
 const liveBase = 'https://www.tamadaimoveis.com.br';
 const commercialTypes = new Set(['HALL', 'ROOM', 'BUILDING', 'OUTHOUSE']);
 const typeLabels = {
@@ -230,6 +229,12 @@ function similarCard(property) {
 }
 
 function pickSimilar(property) {
+  // Lido aqui, não capturado no topo do arquivo: catalog-data.js (2,2 MB)
+  // agora carrega depois de imovel.js de propósito (ver imovel.html), então
+  // window.TAMADA_CATALOG só existe a partir deste ponto — capturar antes
+  // sempre pegaria vazio. Se ainda não chegou, a seção de parecidos some
+  // (comportamento já existente mais abaixo), sem quebrar nada.
+  const inventory = Array.isArray(window.TAMADA_CATALOG) ? window.TAMADA_CATALOG : [];
   const others = inventory.filter(item => item.ref !== property.ref);
   const sameHood = others.filter(item => item.neighborhood === property.neighborhood);
   const sameType = others.filter(item => item.type === property.type && item.neighborhood !== property.neighborhood);
@@ -244,22 +249,25 @@ function sized(src, w) {
   return `${src.split('?')[0]}?w=${w}&auto=format&fit=max`;
 }
 
-/* Registro completo do imóvel: arquivo estático gerado por
-   site/scripts/gerar-catalogo.mjs. Traz fotos, descrição, comodidades,
-   acabamentos e ficha técnica.
+/* Registro completo do imóvel — arquivo estático gerado por
+   site/scripts/gerar-catalogo.mjs, um por imóvel (poucos KB). Fonte ÚNICA
+   desta página: título, preço, specs, fotos, descrição, comodidades, ficha
+   técnica — tudo. Só window.TAMADA_CATALOG (2,2 MB) fica de fora, usado
+   depois, exclusivamente para sugerir "imóveis parecidos".
 
    Não consulta o Sanity direto porque o navegador esbarraria em CORS (a origem
    do site precisaria ser liberada no projeto) e somaria latência a cada
    abertura. E não cabe no catalog-data.js: descrição + 22 fotos + comodidades
    de 4.429 imóveis dariam dezenas de MB para todo visitante. */
 async function carregarImovel(ref) {
+  // window.__imovelPromise (script inline no <body>) já disparou este mesmo
+  // fetch bem mais cedo — reaproveita em vez de pedir de novo.
+  if (window.__imovelPromise) return window.__imovelPromise;
   try {
     const res = await fetch(`imovel/${encodeURIComponent(ref)}.json`);
     if (!res.ok) return null;
     return await res.json();
   } catch {
-    // Falha no carregamento não pode derrubar a página — cai no que o
-    // catálogo já tem (foto de capa, preço, specs básicas).
     return null;
   }
 }
@@ -569,28 +577,18 @@ function render(property) {
   }
 }
 
+/* Antes: achava o imóvel em window.TAMADA_CATALOG (2,2 MB, 4.429 imóveis)
+   e SÓ DEPOIS buscava imovel/{ref}.json — ou seja, o caminho rápido ficava
+   preso atrás do lento, mesmo sem precisar dele: o ref já vem pronto na
+   URL. Desde que imovel/{ref}.json passou a trazer título/preço/specs (não
+   só fotos/descrição), essa página não depende mais do catálogo grande pra
+   nada essencial — só pra sugerir "imóveis parecidos" (ver pickSimilar). */
 const ref = (new URLSearchParams(location.search).get('ref') || '').toUpperCase().trim();
-const property = inventory.find(item => item.ref.toUpperCase() === ref);
-if (property) {
-  // Carrega o registro completo antes de renderizar. Se falhar, a página ainda
-  // abre com o que o catálogo tem.
-  carregarImovel(property.ref).then(dados => {
-    if (dados) {
-      property.photos = dados.fotos || [];
-      property.descricao = dados.descricao || '';
-      property.comodidades = dados.comodidades || [];
-      property.acabamentos = dados.acabamentos || [];
-      property.garantias = dados.garantias || [];
-      property.pagamento = dados.pagamento || [];
-      property.ficha = dados.ficha || {};
-      property.video = dados.video;
-      property.videoInstitucional = dados.videoInstitucional;
-      property.tour = dados.tour;
-      property.corretor = dados.corretor;
-    }
+carregarImovel(ref).then(property => {
+  if (property && property.title) {
     render(property);
-  });
-} else {
-  document.title = 'Imóvel não encontrado — Tamada Imóveis';
-  document.querySelector('#detailNotFound').hidden = false;
-}
+  } else {
+    document.title = 'Imóvel não encontrado — Tamada Imóveis';
+    document.querySelector('#detailNotFound').hidden = false;
+  }
+});

@@ -34,6 +34,9 @@ const el = {
   query: document.querySelector('#catalogQuery'),
   type: document.querySelector('#catalogType'),
   maxPrice: document.querySelector('#catalogMaxPrice'),
+  sideMaxPrice: document.querySelector('#sideMaxPrice'),
+  sideQuery: document.querySelector('#sideQuery'),
+  affordableLabel: document.querySelector('#affordableLabel'),
   sort: document.querySelector('#catalogSort'),
   sideType: document.querySelector('#sideType'),
   load: document.querySelector('#loadCatalog'),
@@ -105,7 +108,7 @@ function matches(property) {
   }
   if (state.minArea && Number(property.area) < state.minArea) return false;
   if (state.maxArea && Number(property.area) > state.maxArea) return false;
-  if (state.affordable && !(property.sale && property.sale <= 260000)) return false;
+  if (state.affordable && !(price && price <= affordableThreshold())) return false;
   if (state.commercial && !commercialTypes.has(property.type)) return false;
   if (state.garage && !Number(property.garages)) return false;
   return true;
@@ -182,23 +185,37 @@ function updateUrl() {
   history.replaceState(null, '', `${location.pathname}${params.size ? `?${params}` : ''}`);
 }
 
+// Limite do checkbox "Até R$ ..." em Características — o mesmo valor usado
+// nos cards de "Oportunidades" da home (compra até 260 mil, locação até 1.500/mês).
+function affordableThreshold() {
+  return state.purpose === 'rent' ? 1500 : 260000;
+}
+
 function updatePriceOptions() {
   const current = String(state.maxPrice || '');
   const rent = state.purpose === 'rent' || state.purpose === 'commercial';
   const options = rent
     ? [['', 'Sem limite'], ['1500', 'R$ 1.500/mês'], ['3000', 'R$ 3.000/mês'], ['5000', 'R$ 5.000/mês'], ['10000', 'R$ 10.000/mês'], ['30000', 'R$ 30.000/mês']]
     : [['', 'Sem limite'], ['260000', 'R$ 260 mil'], ['500000', 'R$ 500 mil'], ['900000', 'R$ 900 mil'], ['2000000', 'R$ 2 milhões'], ['5000000', 'R$ 5 milhões']];
-  el.maxPrice.innerHTML = options.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
-  if ([...el.maxPrice.options].some(option => option.value === current)) el.maxPrice.value = current;
-  else { state.maxPrice = 0; el.maxPrice.value = ''; }
+  const optionsHtml = options.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+
+  [el.maxPrice, el.sideMaxPrice].forEach(select => {
+    if (!select) return;
+    select.innerHTML = optionsHtml;
+    select.value = [...select.options].some(option => option.value === current) ? current : '';
+  });
+  if (![...el.maxPrice.options].some(option => option.value === current)) state.maxPrice = 0;
+
+  // "clico em Alugar mas o filtro ainda fica em Até R$ 260 mil" — o rótulo
+  // seguia fixo pro valor da venda mesmo trocando a finalidade.
+  if (el.affordableLabel) {
+    el.affordableLabel.textContent = state.purpose === 'rent' ? 'Até R$ 1.500/mês' : 'Até R$ 260 mil';
+  }
 }
 
-const HERO_COPY = {
-  all: { eyebrow: 'Catálogo Tamada', title: 'Encontre um lugar<br><em>para chamar de seu.</em>', sub: 'Compra, locação e imóveis comerciais reunidos em uma busca que começa pela sua vida — não apenas pelos filtros.', img: 'assets/images/hero-catalogo.jpg' },
-  sale: { eyebrow: 'Imóveis à venda', title: 'O próximo endereço<br><em>pode ser este.</em>', sub: 'Casas, apartamentos, sobrados e terrenos à venda em São Paulo e região — com curadoria e atendimento local.', img: 'assets/images/hero-comprar.jpg' },
-  rent: { eyebrow: 'Imóveis para alugar', title: 'Alugue sem<br><em>complicação.</em>', sub: 'Opções para locação em bairros que você conhece, com processo simples e apoio de quem entende da região.', img: 'assets/images/hero-alugar.jpg' },
-  commercial: { eyebrow: 'Imóveis comerciais', title: 'O ponto certo<br><em>para o seu negócio.</em>', sub: 'Salas, salões, galpões e prédios para locação e venda — o espaço ideal para a sua operação crescer.', img: 'assets/images/hero-comercial.jpg' }
-};
+// Fonte única em hero-copy.js (carregado no <head>) — usado também pelo
+// script inline do hero, que roda antes deste arquivo pra evitar o flash.
+const HERO_COPY = window.HERO_COPY;
 
 function updateHero() {
   const c = HERO_COPY[state.purpose] || HERO_COPY.all;
@@ -223,6 +240,7 @@ function updateHero() {
 function syncControls() {
   updateHero();
   el.query.value = state.query;
+  if (el.sideQuery) el.sideQuery.value = state.query;
   el.type.value = state.type;
   updatePriceOptions();
   el.sort.value = state.sort;
@@ -301,6 +319,27 @@ el.sideType.addEventListener('change', () => {
   state.limit = 18;
   syncControls();
   render();
+});
+
+// Espelha o campo de localização da barra de cima — os dois escrevem no
+// mesmo state.query, then debounce igual ao de área pra não filtrar a cada tecla.
+let queryTimer;
+if (el.sideQuery) el.sideQuery.addEventListener('input', () => {
+  clearTimeout(queryTimer);
+  queryTimer = setTimeout(() => {
+    state.query = el.sideQuery.value.trim();
+    el.query.value = state.query;
+    state.limit = 18;
+    render();
+  }, 220);
+});
+
+if (el.sideMaxPrice) el.sideMaxPrice.addEventListener('change', () => {
+  state.maxPrice = Number(el.sideMaxPrice.value || 0);
+  el.maxPrice.value = el.sideMaxPrice.value;
+  state.limit = 18;
+  render();
+  if (window.refreshElegantSelects) window.refreshElegantSelects();
 });
 
 let areaTimer;

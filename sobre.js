@@ -104,3 +104,18 @@ document.addEventListener('keydown', e => {
   if (e.key === '-') { zoom = Math.max(1, zoom - .3); applyTransform(); }
   if (e.key.toLowerCase() === 'r') { rot = (rot + 90) % 360; applyTransform(); }
 });
+
+/* Alguns navegadores embutidos (WhatsApp, Instagram) bloqueiam autoplay mesmo
+   com muted+playsinline — o vídeo fica parado no pôster sem nenhum aviso.
+   Se play() falhar, mostra um botão pra iniciar manualmente. */
+(() => {
+  const video = document.querySelector('#heroVideo');
+  const playButton = document.querySelector('#heroVideoPlay');
+  if (!video || !playButton) return;
+
+  video.play()?.catch(() => { playButton.hidden = false; });
+
+  playButton.addEventListener('click', () => {
+    video.play().then(() => { playButton.hidden = true; }).catch(() => {});
+  });
+})();

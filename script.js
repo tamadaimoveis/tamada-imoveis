@@ -158,7 +158,6 @@ function toggleFavorite(ref) {
   favorites.has(ref) ? favorites.delete(ref) : favorites.add(ref);
   saveFavorites();
   renderProperties();
-  syncFavoriteButtons(domRent.grid);
   updateMapFavorite();
 }
 
@@ -400,93 +399,6 @@ if (dom.propertyViewport) {
     else { autoplayPausas = 0; iniciarAutoplay(); }
   });
   addEventListener('resize', () => updatePropertyCarousel());
-}
-
-/* Segunda fileira, fixa em imóveis para locação — independente dos filtros de cima */
-const rentProperties = properties.filter(property => property.rent).slice(0, 12);
-const domRent = {
-  grid: document.querySelector('#propertyGridRent'),
-  viewport: document.querySelector('#propertyViewportRent'),
-  prev: document.querySelector('#propertyPrevRent'),
-  next: document.querySelector('#propertyNextRent'),
-  position: document.querySelector('#propertyPositionRent')
-};
-
-function renderRentRow() {
-  if (!domRent.grid) return;
-  domRent.grid.innerHTML = rentProperties.map(propertyCard).join('');
-  domRent.grid.querySelectorAll('[data-favorite]').forEach(button => {
-    button.addEventListener('click', () => toggleFavorite(button.dataset.favorite));
-  });
-  requestAnimationFrame(() => updateRentCarousel(true));
-}
-
-function updateRentCarousel(reset = false) {
-  const viewport = domRent.viewport;
-  if (!viewport || !domRent.prev || !domRent.next || !domRent.position) return;
-  if (reset) viewport.scrollTo({ left: 0, behavior: 'auto' });
-  const cards = [...domRent.grid.querySelectorAll('.property-card')];
-  const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth - 2);
-  const firstCard = cards[0];
-  const gap = firstCard ? parseFloat(getComputedStyle(domRent.grid).columnGap || getComputedStyle(domRent.grid).gap || '20') : 20;
-  const step = firstCard ? firstCard.getBoundingClientRect().width + gap : viewport.clientWidth;
-  const active = cards.length ? Math.min(cards.length, Math.max(1, Math.round(viewport.scrollLeft / Math.max(step, 1)) + 1)) : 0;
-  domRent.prev.disabled = viewport.scrollLeft <= 2;
-  domRent.next.disabled = viewport.scrollLeft >= maxScroll;
-  domRent.position.textContent = cards.length ? `${String(active).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}` : '00 / 00';
-}
-
-function moveRentCarousel(direction) {
-  const viewport = domRent.viewport;
-  const firstCard = domRent.grid?.querySelector('.property-card');
-  if (!viewport || !firstCard) return;
-  const gap = parseFloat(getComputedStyle(domRent.grid).columnGap || getComputedStyle(domRent.grid).gap || '20');
-  viewport.scrollBy({ left: direction * (firstCard.getBoundingClientRect().width + gap), behavior: 'smooth' });
-}
-
-if (domRent.viewport) {
-  let rentScrollFrame;
-  domRent.viewport.addEventListener('scroll', () => {
-    cancelAnimationFrame(rentScrollFrame);
-    rentScrollFrame = requestAnimationFrame(() => updateRentCarousel());
-  }, { passive: true });
-  /* Mesmo bug do carrossel de vendas: setPointerCapture ativo já no
-     pointerdown fazia o navegador tratar todo clique como arrasto e engolir
-     o link do card. Captura só começa depois de 4px de movimento real. */
-  const LIMIAR_ARRASTO_RENT = 4;
-  let arrastoRent = null;
-
-  domRent.viewport.addEventListener('pointerdown', event => {
-    if (event.pointerType !== 'mouse' || event.button !== 0) return;
-    arrastoRent = {x: event.clientX, scroll: domRent.viewport.scrollLeft, ativo: false, id: event.pointerId};
-  });
-  domRent.viewport.addEventListener('pointermove', event => {
-    if (!arrastoRent) return;
-    const dx = event.clientX - arrastoRent.x;
-    if (!arrastoRent.ativo) {
-      if (Math.abs(dx) < LIMIAR_ARRASTO_RENT) return;
-      arrastoRent.ativo = true;
-      domRent.viewport.classList.add('is-dragging');
-      domRent.viewport.setPointerCapture(arrastoRent.id);
-    }
-    domRent.viewport.scrollLeft = arrastoRent.scroll - dx;
-  });
-  const stopRentDrag = () => {
-    if (arrastoRent?.ativo) domRent.viewport.classList.remove('is-dragging');
-    arrastoRent = null;
-  };
-  domRent.viewport.addEventListener('pointerup', stopRentDrag);
-  domRent.viewport.addEventListener('pointercancel', stopRentDrag);
-  domRent.viewport.addEventListener('click', event => {
-    if (domRent.viewport.classList.contains('is-dragging')) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  }, true);
-  domRent.prev.addEventListener('click', () => moveRentCarousel(-1));
-  domRent.next.addEventListener('click', () => moveRentCarousel(1));
-  addEventListener('resize', () => updateRentCarousel());
-  renderRentRow();
 }
 
 function selectQuickFilter(filter) {

@@ -230,6 +230,24 @@ const registros = result
   .map((p) => ({
     ref: p.ref,
     codigo: p.codigo,
+    // Campos básicos duplicados do catalog-data.js — de propósito. Antes
+    // imovel.html precisava esperar o catálogo inteiro (2,2 MB, 4.429
+    // imóveis) carregar e ser varrido só para achar ESTE imóvel, mesmo tendo
+    // o ref pronto na URL. Com os básicos aqui, a página renderiza só com
+    // este arquivo (poucos KB); o catálogo grande vira opcional, usado
+    // depois, só para sugerir imóveis parecidos.
+    title: p.title,
+    type: TIPO[p.tipo] || 'HOUSE',
+    neighborhood: p.neighborhood || '',
+    city: p.city || 'São Paulo',
+    sale: p.sale || 0,
+    rent: p.rent || 0,
+    area: p.area || 0,
+    beds: p.beds || 0,
+    baths: p.baths || 0,
+    garages: p.garages || 0,
+    image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
+    url: `/imovel/${p.slug}/${p.ref}`,
     fotos: [p.img, ...(p.fotos || [])].filter(Boolean),
     descricao: p.description || '',
     // Rótulos já resolvidos: o site não precisa conhecer os slugs do Sanity.

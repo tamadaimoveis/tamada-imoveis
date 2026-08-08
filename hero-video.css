@@ -86,7 +86,23 @@
   .video-hero-page .hero-video .catalog-hero-grid{ gap:48px; }
 }
 
-/* Quem pediu menos movimento fica só com o pôster. */
-@media (prefers-reduced-motion:reduce){
-  .video-hero-page .hero-video .catalog-hero-media video{ display:none; }
+/* Antes escondia o vídeo pra quem tem "reduzir movimento" ligado no sistema —
+   causa real de "o vídeo virou uma foto estática" num computador específico,
+   sem erro nenhum no console: a regra fazia exatamente o que foi escrita pra
+   fazer. Essa preferência existe pra evitar efeito que desorienta (parallax,
+   flash, scroll brusco) — os efeitos de scroll deste site já respeitam ela
+   em sobre.js. Um loop ambiente parado (plano fixo, sem corte, sem zoom) não
+   é o tipo de movimento que a preferência pretende bloquear, então aqui ela
+   passou a ser ignorada: o vídeo toca pra todo mundo. */
+
+/* Botão de play: some por padrão, sobre.js só mostra se o autoplay for
+   bloqueado (comum em navegador embutido de WhatsApp/Instagram). */
+.hero-video-play{
+  position:absolute; z-index:5; inset:0; margin:auto; width:76px; height:76px;
+  border:2px solid rgba(255,255,255,.75); border-radius:50%;
+  background:rgba(20,16,14,.45); backdrop-filter:blur(4px);
+  color:#fff; font-size:26px; display:grid; place-items:center; cursor:pointer;
+  transition:transform .25s, background .25s;
 }
+.hero-video-play[hidden]{ display:none; }
+.hero-video-play:hover{ background:var(--red); border-color:var(--red); transform:scale(1.06); }

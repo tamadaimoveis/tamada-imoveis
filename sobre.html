@@ -6,12 +6,25 @@
   <meta name="description" content="Conheça a Tamada Imóveis — uma imobiliária de bairro em São Paulo, com atendimento próximo, transparência e CRECI licenciado.">
   <meta name="theme-color" content="#b21218">
   <title>A Tamada — Tamada Imóveis</title>
+  <!-- Sem isso, WhatsApp/Instagram/Telegram não têm o que mostrar ao
+       compartilhar o link — nenhum mensageiro toca vídeo na prévia, só
+       imagem estática, então aponta pro pôster do hero. -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tamada-atlas-hero.vercel.app/sobre.html">
+  <meta property="og:title" content="A Tamada — Tamada Imóveis">
+  <meta property="og:description" content="Conheça a Tamada Imóveis — uma imobiliária de bairro em São Paulo, com atendimento próximo, transparência e CRECI licenciado.">
+  <meta property="og:image" content="https://tamada-atlas-hero.vercel.app/assets/images/tamada-hero-poster.jpg">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A Tamada — Tamada Imóveis">
+  <meta name="twitter:description" content="Conheça a Tamada Imóveis — uma imobiliária de bairro em São Paulo, com atendimento próximo, transparência e CRECI licenciado.">
+  <meta name="twitter:image" content="https://tamada-atlas-hero.vercel.app/assets/images/tamada-hero-poster.jpg">
   <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/tamada-hero-poster.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="styles.css?v=32">
-  <link rel="stylesheet" href="imoveis.css?v=33">
-  <link rel="stylesheet" href="hero-video.css?v=6">
+  <link rel="stylesheet" href="imoveis.css?v=37">
+  <link rel="stylesheet" href="hero-video.css?v=8">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body class="catalog-page video-hero-page">
@@ -32,7 +45,7 @@
 
   <header class="site-header catalog-header" id="siteHeader">
     <div class="shell header-inner">
-      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis" width="400" height="148"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown">
           <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
@@ -103,12 +116,17 @@
     <section class="catalog-hero hero-video">
       <div class="catalog-hero-media" aria-hidden="true">
         <img src="assets/images/tamada-hero-poster.jpg" alt="" fetchpriority="high">
-        <video autoplay muted loop playsinline preload="auto" poster="assets/images/tamada-hero-poster.jpg">
+        <video autoplay muted loop playsinline preload="auto" poster="assets/images/tamada-hero-poster.jpg" id="heroVideo">
           <source src="assets/video/tamada-hero-mobile.mp4" type="video/mp4" media="(max-width:860px)">
           <source src="assets/video/tamada-hero.mp4" type="video/mp4">
         </video>
       </div>
       <div class="catalog-hero-scrim" aria-hidden="true"></div>
+      <!-- Alguns navegadores embutidos (WhatsApp, Instagram) bloqueiam autoplay mesmo
+           com muted+playsinline. Some pra todo mundo; o JS só mostra se o play() falhar. -->
+      <button class="hero-video-play" id="heroVideoPlay" type="button" hidden aria-label="Reproduzir vídeo">
+        <iconify-icon icon="solar:play-bold"></iconify-icon>
+      </button>
       <div class="shell">
         <nav class="breadcrumbs" aria-label="Navegação estrutural"><a href="index.html">Início</a><iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon><span>A Tamada</span></nav>
         <div class="catalog-hero-grid">
@@ -118,7 +136,7 @@
           </div>
           <div class="catalog-hero-aside">
             <p>Sede própria em São Paulo, equipe que atua nas mesmas ruas há duas décadas e atendimento presencial de verdade — da primeira visita à entrega das chaves.</p>
-            <dl><div><dt>20</dt><dd>anos de sede própria</dd></div><div><dt>93</dt><dd>imóveis locais</dd></div><div><dt>12</dt><dd>regiões em destaque</dd></div></dl>
+            <dl><div><dt>20</dt><dd>anos de sede própria</dd></div><div><dt>93</dt><dd>imóveis disponíveis</dd></div><div><dt>12</dt><dd>regiões em destaque</dd></div></dl>
           </div>
         </div>
       </div>
@@ -211,7 +229,7 @@
 
   <footer class="site-footer catalog-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis" width="400" height="148"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
         <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
@@ -243,11 +261,12 @@
     <div class="lightbox-thumbs" id="lbThumbs"></div>
   </div>
 
-  <script src="nav-dropdown.js?v=32"></script>
-  <script src="common.js?v=32"></script>
-  <!-- Só nesta página: dá o scrub da foto/texto na transição hero -> "Quem somos". -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
-  <script src="sobre.js?v=38"></script>
+  <script src="nav-dropdown.js?v=32" defer></script>
+  <script src="common.js?v=32" defer></script>
+  <!-- Só nesta página: dá o scrub da foto/texto na transição hero -> "Quem somos".
+       defer preserva a ordem — sobre.js só roda depois do GSAP carregar. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" defer></script>
+  <script src="sobre.js?v=39" defer></script>
 </body>
 </html>

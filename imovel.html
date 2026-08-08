@@ -8,12 +8,27 @@
   <title>Imóvel — Tamada Imóveis</title>
   <link rel="preload" href="assets/fonts/elicyon.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/antique-legacy.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <!-- O mapa fica abaixo da dobra nesta página — preload+swap evita que o
+       navegador trave a primeira pintura esperando um CDN externo (unpkg.com)
+       responder. Sem isso, um unpkg.com lento deixava a página aparecer sem
+       CSS aplicado por um instante: o "flash" de logo duplicada reportado. -->
+  <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style" crossorigin="" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""></noscript>
   <link rel="stylesheet" href="styles.css?v=32">
-  <link rel="stylesheet" href="imoveis.css?v=33">
+  <link rel="stylesheet" href="imoveis.css?v=37">
   <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 <body class="catalog-page detail-page">
+  <script>
+    /* Dispara a busca do imóvel AGORA — antes de imovel.js sequer terminar de
+       baixar/executar. Sem isto, o fetch só começava depois que imovel.js
+       (deferred, no fim da página) rodasse, perdendo tempo à toa: o ref já
+       está pronto na URL, não precisa esperar nada. imovel.js reaproveita
+       esta mesma promise em vez de repetir o fetch. */
+    window.__imovelPromise = fetch(`imovel/${encodeURIComponent(new URLSearchParams(location.search).get('ref') || '')}.json`)
+      .then(res => res.ok ? res.json() : null)
+      .catch(() => null);
+  </script>
   <a class="skip-link" href="#detailContent">Pular para o conteúdo</a>
   <div class="page-grain" aria-hidden="true"></div>
 
@@ -31,7 +46,7 @@
 
   <header class="site-header catalog-header" id="siteHeader">
     <div class="shell header-inner">
-      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
+      <a class="brand" href="index.html" aria-label="Tamada Imóveis — início"><img src="assets/images/tamada-logo.png" alt="Tamada Imóveis" width="400" height="148"><img class="brand-logo-white" src="assets/images/tamada-logo-white.png" alt="" aria-hidden="true"></a>
       <nav class="desktop-nav" aria-label="Navegação principal">
         <details class="nav-dropdown">
           <summary>Comprar <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon></summary>
@@ -257,7 +272,7 @@
 
   <footer class="site-footer catalog-footer">
     <div class="shell footer-top">
-      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
+      <a class="footer-brand" href="index.html"><img src="assets/images/tamada-logo-white.png" alt="Tamada Imóveis" width="400" height="148"><span>Venda, locação e administração<br>de imóveis em São Paulo e região.</span></a>
       <div class="footer-columns">
         <div><h3>Encontrar</h3><a href="imoveis.html?purpose=sale">Comprar</a><a href="imoveis.html?purpose=rent">Alugar</a><a href="imoveis.html?view=map">Buscar no mapa</a><a href="imoveis.html">Busca avançada</a></div>
         <div><h3>Serviços</h3><a href="anuncie.html">Anuncie seu imóvel</a><a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">2ª via de boleto</a><a href="trabalhe-conosco.html">Trabalhe conosco</a></div>
@@ -269,10 +284,17 @@
 
   <a class="floating-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener" aria-label="Falar com a Tamada no WhatsApp"><span></span><iconify-icon icon="mdi:whatsapp"></iconify-icon></a>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="catalog-data.js?v=32"></script>
-  <script src="nav-dropdown.js?v=32"></script>
-  <script src="common.js?v=32"></script>
-  <script src="imovel.js?v=32"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+  <!-- catalog-data.js por ÚLTIMO, de propósito: são 2,2 MB (4.429 imóveis)
+       e imovel.js não precisa mais dele pro conteúdo principal — o ref já
+       vem na URL, e imovel/{ref}.json (poucos KB) tem tudo que a página
+       mostra. O catálogo grande fica só pra sugerir "imóveis parecidos"
+       (pickSimilar), então pode chegar depois sem travar nada essencial.
+       defer: o navegador pinta a página antes de gastar tempo nesses
+       arquivos; ordem de execução preservada entre eles. -->
+  <script src="nav-dropdown.js?v=32" defer></script>
+  <script src="common.js?v=32" defer></script>
+  <script src="imovel.js?v=32" defer></script>
+  <script src="catalog-data.js?v=32" defer></script>
 </body>
 </html>
