@@ -248,7 +248,7 @@ const registros = result
     garages: p.garages || 0,
     image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
     url: `/imovel/${p.slug}/${p.ref}`,
-    fotos: [p.img, ...(p.fotos || [])].filter(Boolean),
+    photos: [p.img, ...(p.fotos || [])].filter(Boolean),
     descricao: p.description || '',
     // Rótulos já resolvidos: o site não precisa conhecer os slugs do Sanity.
     comodidades: rotular(p.amenities, COMODIDADES),
@@ -303,7 +303,7 @@ const registros = result
     // tão bem quanto a rua e o número. O mapa usa aproximação por bairro.
   }))
 
-const totalFotos = registros.reduce((s, r) => s + r.fotos.length, 0)
+const totalFotos = registros.reduce((s, r) => s + r.photos.length, 0)
 const semDescricao = registros.filter((r) => !r.descricao).length
 const semComodidades = registros.filter((r) => !r.comodidades.length).length
 console.log(`registros: ${registros.length} arquivos · ${totalFotos} fotos`)
