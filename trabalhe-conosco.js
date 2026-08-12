@@ -1,23 +1,23 @@
 /* trabalhe-conosco.js — stats reais da carteira + formulario de candidatura.
    Menu/scroll/reveal/magnetic/ano vem de common.js. */
 
-/* Os números da carteira eram fixos no HTML (93 imóveis, 55 bairros, 805 mil
-   de ticket médio) — congelados no dia em que a página foi escrita, sem
-   ligação nenhuma com o catálogo real. Calculados aqui a partir do mesmo
-   window.TAMADA_CATALOG/TAMADA_BAIRROS que abastece imoveis.html — o catálogo
-   é regerado do Sanity a cada deploy (npm run build), então esses números
-   acompanham o estoque de verdade sozinhos, sem precisar editar a página. */
+/* Os números da carteira eram fixos no HTML (93 imóveis, 55 bairros) —
+   congelados no dia em que a página foi escrita, sem ligação nenhuma com o
+   catálogo real. Calculados aqui a partir do mesmo window.TAMADA_CATALOG/
+   TAMADA_BAIRROS que abastece imoveis.html — o catálogo é regerado do Sanity
+   a cada deploy (npm run build), então esses números acompanham o estoque de
+   verdade sozinhos, sem precisar editar a página.
+   Tinha um terceiro stat de "ticket médio de venda", média de todas as
+   vendas do catálogo — real, mas puxada pra cima por imóveis de alto padrão
+   e destoando do ticket típico. Virou texto fixo sobre cultura da empresa em
+   vez de número que confundia mais do que ajudava. */
 function renderStats() {
   const inventory = Array.isArray(window.TAMADA_CATALOG) ? window.TAMADA_CATALOG : [];
   const bairros = Array.isArray(window.TAMADA_BAIRROS) ? window.TAMADA_BAIRROS : [];
   if (!inventory.length) return;
 
-  const vendas = inventory.map(p => p.sale).filter(Boolean);
-  const ticketMedio = vendas.length ? Math.round(vendas.reduce((a, b) => a + b, 0) / vendas.length / 1000) : 0;
-
   const carteira = String(inventory.length);
   const totalBairros = String(bairros.length);
-  const ticket = `${ticketMedio} mil`;
 
   ['statCarteira', 'statCarteira3'].forEach(id => {
     const el = document.getElementById(id);
@@ -27,8 +27,6 @@ function renderStats() {
     const el = document.getElementById(id);
     if (el) el.textContent = totalBairros;
   });
-  const ticketEl = document.getElementById('statTicket');
-  if (ticketEl) ticketEl.textContent = ticket;
 }
 renderStats();
 
