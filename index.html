@@ -192,33 +192,29 @@
 
         <div class="property-toolbar reveal">
           <div class="filter-chips" role="group" aria-label="Filtrar imóveis">
-            <button class="filter-chip" type="button" data-filter="sale">À venda</button>
-            <button class="filter-chip" type="button" data-filter="rent">Para alugar</button>
-            <button class="filter-chip" type="button" data-filter="affordable">Até R$ 260 mil</button>
-            <button class="filter-chip" type="button" data-filter="commercial">Para seu negócio</button>
+            <a class="filter-chip" href="imoveis.html?purpose=sale">À venda</a>
+            <a class="filter-chip" href="imoveis.html?purpose=rent">Para alugar</a>
+            <a class="filter-chip" href="imoveis.html?purpose=sale&amp;max=260000">Até R$ 260 mil</a>
+            <a class="filter-chip" href="imoveis.html?purpose=sale&amp;commercial=1">Para seu negócio</a>
           </div>
-          <p><strong id="resultsCount">12</strong> imóveis nesta seleção</p>
+          <p><strong id="resultsCount">0</strong> imóveis no catálogo</p>
         </div>
 
-        <div class="property-carousel" aria-label="Seleção de imóveis em destaque">
+        <!-- Antes carrossel infinito com autoplay/arrasto; o cliente quer só
+             2 linhas fixas de 4 imóveis em destaque (marcados no Sanity), sem
+             navegação nenhuma aqui — quem quer ver mais vai pro catálogo. -->
+        <div class="property-carousel" aria-label="Imóveis em destaque">
           <div class="property-carousel-head">
-            <div><span>CURADORIA DE ENDEREÇOS</span><strong>Para morar, investir<br>e <em>crescer.</em></strong></div>
-            <div class="property-carousel-controls">
-              <span id="propertyPosition" aria-live="polite">00 / 00</span>
-              <button id="propertyPrev" type="button" aria-label="Imóveis anteriores" disabled><iconify-icon icon="solar:arrow-left-linear"></iconify-icon></button>
-              <button id="propertyNext" type="button" aria-label="Próximos imóveis" disabled><iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
-            </div>
+            <div><span>IMÓVEIS EM DESTAQUE</span><strong>Para morar, investir<br>e <em>crescer.</em></strong></div>
           </div>
-          <div class="property-carousel-window" id="propertyViewport">
+          <div class="property-carousel-window">
             <div class="property-grid" id="propertyGrid" aria-live="polite"></div>
           </div>
-          <div class="property-carousel-foot"><span>Deslize para explorar</span><i></i><span>Uma faixa de possibilidades</span></div>
         </div>
 
         <div class="property-footer reveal">
           <p>Não encontrou o que procura? Conte para a gente — buscamos com você.</p>
           <div>
-            <button class="button button-ghost" id="loadMore" type="button"><span>Mostrar mais imóveis</span><iconify-icon icon="solar:add-circle-linear"></iconify-icon></button>
             <button class="button button-ink magnetic" type="button" data-open-search><span>Explorar busca completa</span><iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>
           </div>
         </div>

@@ -11,7 +11,7 @@
    aparecer vazia. */
 const catalogProperties = Array.isArray(window.TAMADA_CATALOG) ? window.TAMADA_CATALOG : [];
 const marcados = catalogProperties.filter(p => p.featured);
-const featuredProperties = (marcados.length ? marcados : catalogProperties.filter(p => p.image)).slice(0, 12);
+const featuredProperties = (marcados.length ? marcados : catalogProperties.filter(p => p.image)).slice(0, 8);
 
 const featuredRefs = new Set(featuredProperties.map(property => property.ref));
 const properties = [...featuredProperties, ...catalogProperties.filter(property => !featuredRefs.has(property.ref))];
@@ -60,15 +60,9 @@ const state = {
   activeMapIndex: -1
 };
 
-let visibleLimit = 12;
-
 const dom = {
   header: document.querySelector('#siteHeader'),
   grid: document.querySelector('#propertyGrid'),
-  propertyViewport: document.querySelector('#propertyViewport'),
-  propertyPrev: document.querySelector('#propertyPrev'),
-  propertyNext: document.querySelector('#propertyNext'),
-  propertyPosition: document.querySelector('#propertyPosition'),
   count: document.querySelector('#resultsCount'),
   modal: document.querySelector('#searchModal'),
   heroLocation: document.querySelector('#heroLocation'),
@@ -157,7 +151,7 @@ function syncFavoriteButtons(container) {
 function toggleFavorite(ref) {
   favorites.has(ref) ? favorites.delete(ref) : favorites.add(ref);
   saveFavorites();
-  renderProperties();
+  renderFeaturedGrid();
   updateMapFavorite();
 }
 
@@ -193,238 +187,15 @@ function propertyCard(property) {
     </article>`;
 }
 
-function renderProperties() {
-  const result = properties.filter(property => matchesFilters(property));
-  dom.count.textContent = result.length;
-  const visiveis = result.slice(0, visibleLimit);
-  // Duplica a sequência para o loop infinito. Só faz sentido se houver cards
-  // suficientes para encher a tela — com 2 ou 3 o loop fica esquisito.
-  const cardsHtml = visiveis.map(propertyCard).join('');
-  const duplicar = visiveis.length >= 4;
-  dom.grid.innerHTML = result.length
-    ? (duplicar ? cardsHtml + cardsHtml.replace(/data-ref="/g, 'aria-hidden="true" data-clone data-ref="') : cardsHtml)
-    : `<div class="empty-results"><iconify-icon icon="solar:map-point-search-linear"></iconify-icon><h3>Nenhum imóvel nesta combinação.</h3><p>Tente ampliar a localização ou remover um filtro.</p><button class="button button-ink" type="button" data-reset-inline>Limpar busca</button></div>`;
-
-  // Os cards clonados do loop são aria-hidden. Link dentro de conteúdo oculto
-  // para leitor de tela não pode receber foco por Tab — senão o teclado "some"
-  // dentro de uma cópia invisível. Continuam clicáveis pelo mouse.
-  dom.grid.querySelectorAll('[data-clone] a, [data-clone] button').forEach(el => {
-    el.setAttribute('tabindex', '-1');
-  });
-
+// Grade fixa dos imóveis em destaque (marcados no Sanity): 2 linhas de 4, sem
+// carrossel, sem paginação. O cliente não quer navegação aqui — quem quer ver
+// mais vai pro catálogo completo (imoveis.html).
+function renderFeaturedGrid() {
+  dom.grid.innerHTML = featuredProperties.map(propertyCard).join('');
   dom.grid.querySelectorAll('[data-favorite]').forEach(button => {
     button.addEventListener('click', () => toggleFavorite(button.dataset.favorite));
   });
-  dom.grid.querySelector('[data-reset-inline]')?.addEventListener('click', resetSearch);
-  const loadMore = document.querySelector('#loadMore');
-  if (loadMore) {
-    // Antes dizia sempre "Mostrar mais 12" — o incremento, não o que resta.
-    // Com 4.429 imóveis isso parecia que o acervo tinha 12.
-    const restante = Math.max(0, result.length - visibleLimit);
-    loadMore.hidden = restante === 0;
-    loadMore.querySelector('span').textContent = restante > 12
-      ? `Mostrar mais 12 de ${restante.toLocaleString('pt-BR')} imóveis`
-      : `Mostrar mais ${restante} ${restante === 1 ? 'imóvel' : 'imóveis'}`;
-  }
-  requestAnimationFrame(() => {
-    updatePropertyCarousel(true);
-    autoplayPausas = 0;
-    iniciarAutoplay();
-  });
 }
-
-/* O carrossel é infinito: os cards são duplicados no DOM e, quando a rolagem
-   passa da primeira cópia, volta em silêncio para o começo. Como as duas
-   cópias são idênticas, o salto não aparece.
-   Sem contador de posição — são imóveis escolhidos a dedo pela imobiliária,
-   e mostrar "01 / 12" dava a impressão de que o acervo inteiro tem 12. */
-function metadeDoCarrossel() {
-  const g = dom.grid;
-  return g ? g.scrollWidth / 2 : 0;
-}
-
-function updatePropertyCarousel(reset = false) {
-  const viewport = dom.propertyViewport;
-  if (!viewport || !dom.propertyPrev || !dom.propertyNext) return;
-  if (reset) viewport.scrollTo({ left: 0, behavior: 'auto' });
-  // Setas nunca desabilitam: sendo infinito, sempre há para onde ir.
-  dom.propertyPrev.disabled = false;
-  dom.propertyNext.disabled = false;
-  if (dom.propertyPosition) dom.propertyPosition.textContent = '';
-}
-
-/* Recoloca a rolagem dentro da primeira cópia. Chamado durante a rolagem —
-   por isso usa 'auto', para o reposicionamento não ser animado e ficar
-   invisível. */
-function normalizarLoop() {
-  const viewport = dom.propertyViewport;
-  const metade = metadeDoCarrossel();
-  if (!viewport || metade <= 0) return;
-  if (viewport.scrollLeft >= metade) viewport.scrollLeft -= metade;
-  else if (viewport.scrollLeft < 0) viewport.scrollLeft += metade;
-}
-
-/* ── Autoplay do carrossel ────────────────────────────────────────────────
-   Rolagem contínua e lenta, não salto de card em card: com salto o olho perde
-   a referência a cada troca. Para no hover, no foco por teclado e enquanto o
-   usuário arrasta; volta sozinho depois.
-   Respeita "reduzir movimento" do sistema — quem pediu menos animação não
-   deve receber um carrossel andando sozinho. */
-const VELOCIDADE_AUTOPLAY = 26; // px por segundo
-const ESPERA_APOS_INTERACAO = 2600; // ms
-const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-let autoplayFrame = null;
-let autoplayUltimoTempo = 0;
-let autoplayPausas = 0;
-let autoplayTimer = null;
-
-function passoAutoplay(agora) {
-  const viewport = dom.propertyViewport;
-  if (!viewport) return;
-  const delta = autoplayUltimoTempo ? (agora - autoplayUltimoTempo) / 1000 : 0;
-  autoplayUltimoTempo = agora;
-  // Passo por tempo, não por quadro: a velocidade fica igual em 60 e 120 Hz.
-  viewport.scrollLeft += VELOCIDADE_AUTOPLAY * Math.min(delta, 0.05);
-  normalizarLoop();
-  autoplayFrame = requestAnimationFrame(passoAutoplay);
-}
-
-function iniciarAutoplay() {
-  if (autoplayFrame || autoplayPausas > 0 || semMovimento.matches) return;
-  if (!dom.propertyViewport || metadeDoCarrossel() <= 0) return;
-  autoplayUltimoTempo = 0;
-  autoplayFrame = requestAnimationFrame(passoAutoplay);
-}
-
-function pausarAutoplay() {
-  autoplayPausas++;
-  clearTimeout(autoplayTimer);
-  if (autoplayFrame) {
-    cancelAnimationFrame(autoplayFrame);
-    autoplayFrame = null;
-  }
-}
-
-function liberarAutoplay() {
-  autoplayPausas = Math.max(0, autoplayPausas - 1);
-  if (autoplayPausas === 0) iniciarAutoplay();
-}
-
-/* Depois de arrastar ou clicar na seta, espera um tempo antes de voltar —
-   retomar na hora dá a sensação de o carrossel "lutar" com o usuário. */
-function retomarAutoplayDepois() {
-  clearTimeout(autoplayTimer);
-  autoplayTimer = setTimeout(() => {
-    autoplayPausas = 0;
-    iniciarAutoplay();
-  }, ESPERA_APOS_INTERACAO);
-}
-
-function movePropertyCarousel(direction) {
-  const viewport = dom.propertyViewport;
-  const firstCard = dom.grid.querySelector('.property-card');
-  if (!viewport || !firstCard) return;
-  const gap = parseFloat(getComputedStyle(dom.grid).columnGap || getComputedStyle(dom.grid).gap || '20');
-  viewport.scrollBy({ left: direction * (firstCard.getBoundingClientRect().width + gap), behavior: 'smooth' });
-}
-
-if (dom.propertyViewport) {
-  let scrollFrame;
-  dom.propertyViewport.addEventListener('scroll', () => {
-    cancelAnimationFrame(scrollFrame);
-    scrollFrame = requestAnimationFrame(() => {
-      normalizarLoop();
-      updatePropertyCarousel();
-    });
-  }, { passive: true });
-
-  /* Arrasto com o mouse.
-     O `setPointerCapture` ficava ativo já no pointerdown, então o navegador
-     tratava QUALQUER clique como arrasto e engolia o link do card — clicar num
-     imóvel na home não fazia nada. Agora a captura só começa depois de 4px de
-     movimento real; abaixo disso é clique e passa direto. */
-  const LIMIAR_ARRASTO = 4;
-  let arrasto = null;
-
-  dom.propertyViewport.addEventListener('pointerdown', event => {
-    if (event.pointerType !== 'mouse' || event.button !== 0) return;
-    arrasto = {x: event.clientX, scroll: dom.propertyViewport.scrollLeft, ativo: false, id: event.pointerId};
-  });
-
-  dom.propertyViewport.addEventListener('pointermove', event => {
-    if (!arrasto) return;
-    const dx = event.clientX - arrasto.x;
-    if (!arrasto.ativo) {
-      if (Math.abs(dx) < LIMIAR_ARRASTO) return;
-      arrasto.ativo = true;
-      dom.propertyViewport.classList.add('is-dragging');
-      dom.propertyViewport.setPointerCapture(arrasto.id);
-      pausarAutoplay();
-    }
-    dom.propertyViewport.scrollLeft = arrasto.scroll - dx;
-  });
-
-  const encerrarArrasto = () => {
-    if (arrasto?.ativo) {
-      dom.propertyViewport.classList.remove('is-dragging');
-      retomarAutoplayDepois();
-    }
-    arrasto = null;
-  };
-  dom.propertyViewport.addEventListener('pointerup', encerrarArrasto);
-  dom.propertyViewport.addEventListener('pointercancel', encerrarArrasto);
-  // Clique que veio de um arrasto não deve abrir o imóvel.
-  dom.propertyViewport.addEventListener('click', event => {
-    if (dom.propertyViewport.classList.contains('is-dragging')) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  }, true);
-
-  dom.propertyPrev.addEventListener('click', () => { movePropertyCarousel(-1); pausarAutoplay(); retomarAutoplayDepois(); });
-  dom.propertyNext.addEventListener('click', () => { movePropertyCarousel(1); pausarAutoplay(); retomarAutoplayDepois(); });
-
-  // Para no hover e no foco por teclado; volta ao sair.
-  dom.propertyViewport.addEventListener('mouseenter', pausarAutoplay);
-  dom.propertyViewport.addEventListener('mouseleave', liberarAutoplay);
-  dom.propertyViewport.addEventListener('focusin', pausarAutoplay);
-  dom.propertyViewport.addEventListener('focusout', liberarAutoplay);
-  // No celular, o toque pausa enquanto dura.
-  dom.propertyViewport.addEventListener('touchstart', pausarAutoplay, {passive: true});
-  dom.propertyViewport.addEventListener('touchend', retomarAutoplayDepois, {passive: true});
-  // Aba em segundo plano: não gasta bateria animando o que ninguém vê.
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) pausarAutoplay();
-    else { autoplayPausas = 0; iniciarAutoplay(); }
-  });
-  addEventListener('resize', () => updatePropertyCarousel());
-}
-
-function selectQuickFilter(filter) {
-  visibleLimit = 12;
-  state.quickFilter = filter;
-  if (filter === 'sale' || filter === 'rent' || filter === 'commercial') state.purpose = filter;
-  if (filter === 'affordable') state.purpose = 'sale';
-  document.querySelectorAll('.filter-chip').forEach(button => button.classList.toggle('active', button.dataset.filter === filter));
-  document.querySelectorAll('.purpose-tab').forEach(button => button.classList.toggle('active', button.dataset.purpose === state.purpose));
-  renderProperties();
-}
-
-document.querySelectorAll('.filter-chip').forEach(button => button.addEventListener('click', () => selectQuickFilter(button.dataset.filter)));
-document.querySelectorAll('[data-quick-filter]').forEach(trigger => {
-  trigger.addEventListener('click', () => {
-    selectQuickFilter(trigger.dataset.quickFilter);
-    document.querySelector('#imoveis').scrollIntoView({ behavior: 'smooth' });
-  });
-  if (trigger.getAttribute('role') === 'button') {
-    trigger.addEventListener('keydown', event => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      trigger.click();
-    });
-  }
-});
 
 function priceOptions(purpose, target) {
   const rent = purpose === 'rent' || purpose === 'commercial';
@@ -525,27 +296,20 @@ document.querySelector('#advancedSearch').addEventListener('submit', event => {
 function resetSearch() {
   Object.assign(state, { purpose: 'sale', quickFilter: 'all', location: '', type: '', maxPrice: 0, minBeds: 0 });
   state.features.clear();
-  visibleLimit = 12;
   dom.heroLocation.value = '';
   dom.heroType.value = '';
   priceOptions('sale', dom.heroPrice);
   document.querySelectorAll('.purpose-tab').forEach(button => button.classList.toggle('active', button.dataset.purpose === 'sale'));
-  document.querySelectorAll('.filter-chip').forEach(button => button.classList.toggle('active', button.dataset.filter === 'all'));
   if (dom.modalLocation) dom.modalLocation.value = '';
   if (dom.modalType) dom.modalType.value = '';
   if (dom.modalPrice) priceOptions('sale', dom.modalPrice);
   document.querySelector('input[name="modalPurpose"][value="sale"]').checked = true;
   document.querySelectorAll('#bedroomChips button').forEach((button, index) => button.classList.toggle('active', index === 0));
   document.querySelectorAll('.feature-chips input').forEach(input => { input.checked = false; });
-  renderProperties();
   updateModalCount();
 }
 
 document.querySelector('#clearSearch').addEventListener('click', resetSearch);
-document.querySelector('#loadMore').addEventListener('click', () => {
-  visibleLimit += 12;
-  renderProperties();
-});
 
 /* Map */
 let map;
@@ -927,7 +691,8 @@ if (window.matchMedia('(pointer:fine)').matches) {
 }
 
 document.querySelector('#currentYear').textContent = new Date().getFullYear();
-renderProperties();
+renderFeaturedGrid();
+if (dom.count) dom.count.textContent = catalogProperties.length.toLocaleString('pt-BR');
 // O card do mapa é preenchido por mostrarBairroNoMapa, dentro do initMap.
 // Havia aqui um activateMapProperty(0) do tempo em que os 12 imóveis existiam
 // desde o início; agora `mapProperties` começa vazio e essa chamada lançava
