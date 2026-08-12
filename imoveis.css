@@ -380,6 +380,7 @@
 .af-row[hidden]{display:none}
 .af-row-3{grid-template-columns:1fr 1fr 1fr}
 .af-field{display:block;margin-bottom:16px}
+.af-field[hidden]{display:none}
 .af-field>span{display:block;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:7px}
 .af-field input,.af-field select,.af-field textarea{width:100%;border:1px solid var(--line);background:#fdfcfa;padding:13px 14px;font-size:15px;color:var(--ink);appearance:none;transition:border-color .2s,box-shadow .2s}
 .af-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2377746c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:38px}

@@ -38,6 +38,18 @@ cepField.addEventListener('input', () => {
     });
 });
 
+// Financiamento é coisa de venda — em locação pura o campo não faz sentido.
+const goalField = document.querySelector('#afGoal');
+const financingField = document.querySelector('#afFinancingField');
+const financingSelect = document.querySelector('#afFinancing');
+function syncFinancingField() {
+  const isRentOnly = goalField.value === 'Locação';
+  financingField.hidden = isRentOnly;
+  if (isRentOnly) financingSelect.value = '';
+}
+goalField.addEventListener('change', syncFinancingField);
+syncFinancingField();
+
 const submitButton = document.querySelector('#afSubmit');
 const errorNote = document.querySelector('#afError');
 

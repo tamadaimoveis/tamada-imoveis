@@ -3,6 +3,13 @@
    e #valuesTransition) — só a foto abre conforme rola, o resto da página usa .reveal normal.
    Menu/scroll/reveal/magnetic/ano vêm de common.js. */
 
+// "imóveis disponíveis" era número fixo no HTML — desatualizava toda vez que
+// o estoque mudava no Sanity. Agora conta o catálogo gerado no build.
+const statImoveis = document.querySelector('#statImoveis');
+if (statImoveis && Array.isArray(window.TAMADA_CATALOG)) {
+  statImoveis.textContent = window.TAMADA_CATALOG.length.toLocaleString('pt-BR');
+}
+
 (() => {
   const semAnimacao = window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof gsap === 'undefined';
   if (!semAnimacao) gsap.registerPlugin(ScrollTrigger);
