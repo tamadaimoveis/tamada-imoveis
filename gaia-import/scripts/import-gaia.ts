@@ -11,6 +11,9 @@
  *   npx tsx scripts/import-gaia.ts --sem-fotos        # só os dados, sem upload
  *   npx tsx scripts/import-gaia.ts                    # importação completa
  *   npx tsx scripts/import-gaia.ts --force            # reimporta tudo (ignora ledger)
+ *   npx tsx scripts/import-gaia.ts --listar-codigos codigos.json   # só extrai os
+ *                                    códigos do feed atual e sai (usado por
+ *                                    limpar-imoveis-saidos.ts)
  *
  * .env.local:
  *   GAIA_XML_URL                    (ou --xml <caminho local>)
@@ -57,6 +60,7 @@ const FORCE = has('--force')
 const LIMIT = valueOf('--limit') ? parseInt(valueOf('--limit')!, 10) : Infinity
 const XML_LOCAL = valueOf('--xml')
 const XML_URL = process.env.GAIA_XML_URL
+const LISTAR_CODIGOS = valueOf('--listar-codigos')
 
 const LEDGER_PATH = path.resolve(process.cwd(), 'gaia-import-ledger.json')
 const REPORT_PATH = path.resolve(process.cwd(), `gaia-${DRY_RUN ? 'dryrun' : 'import'}-report.json`)
@@ -869,6 +873,12 @@ async function main() {
     if (imoveis.length >= LIMIT) break
   }
   console.log(`   Imóveis no feed: ${imoveis.length}`)
+
+  if (LISTAR_CODIGOS) {
+    fs.writeFileSync(LISTAR_CODIGOS, JSON.stringify(imoveis.map((i) => i.gaiaCodigo)))
+    console.log(`   Códigos gravados em ${LISTAR_CODIGOS}`)
+    return
+  }
 
   const ledger = carregarLedger()
   const jaImportados = Object.values(ledger).filter((e) => e.completo).length

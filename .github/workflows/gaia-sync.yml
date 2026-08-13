@@ -1,0 +1,46 @@
+name: Sincronizar Gaia -> Sanity
+
+on:
+  schedule:
+    # 06:00 UTC = 03:00 horário de Brasília, todo dia
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: gaia-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: gaia-import
+    env:
+      GAIA_XML_URL: ${{ secrets.GAIA_XML_URL }}
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+      SANITY_WRITE_TOKEN: ${{ secrets.SANITY_WRITE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Restaura ledger de fotos já enviadas (retomada incremental)
+        uses: actions/cache@v4
+        with:
+          path: gaia-import/gaia-import-ledger.json
+          key: gaia-ledger-${{ github.run_id }}
+          restore-keys: |
+            gaia-ledger-
+
+      - run: npm ci
+
+      - name: Importa imóveis novos/atualizados do Gaia
+        run: npx tsx scripts/import-gaia.ts
+
+      - name: Marca como inativo quem saiu do feed
+        run: npx tsx scripts/limpar-imoveis-saidos.ts
