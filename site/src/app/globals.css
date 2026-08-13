@@ -1,0 +1,3 @@
+/* CSS do site antigo é servido direto de public/ via <link> no layout.tsx —
+   NÃO via @import aqui: o bundler do Next trata @import url() como módulo a
+   resolver em build time, não como link de runtime pro arquivo em public/. */

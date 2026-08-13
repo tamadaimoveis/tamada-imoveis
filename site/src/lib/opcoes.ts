@@ -1,0 +1,122 @@
+/**
+ * Rótulos das opções de imóvel — mesma fonte usada em
+ * redesign-atlas-urbano/scripts/lib/opcoes.mjs (gerador do site estático) e
+ * no CRM. Copiado aqui porque o app Next não importa arquivos de fora de
+ * site/ — manter os dois em sincronia manualmente se a lista mudar.
+ */
+
+export const TAGS = ['Lançamento', 'Alto Padrão', 'Oportunidade', 'Exclusivo']
+
+export const COMODIDADES: Record<string, string> = {
+  piscina: 'Piscina',
+  piscina_infantil: 'Piscina Infantil',
+  piscina_termica: 'Piscina Térmica',
+  churrasqueira: 'Churrasqueira',
+  academia: 'Academia',
+  sauna: 'Sauna',
+  hidromassagem: 'Hidromassagem',
+  salao_festas: 'Salão de Festas',
+  salao_jogos: 'Salão de Jogos',
+  playground: 'Playground',
+  quadra_poliesportiva: 'Quadra Poliesportiva',
+  campo_futebol: 'Campo de Futebol',
+  area_lazer: 'Área de Lazer',
+  area_verde: 'Área Verde',
+  espaco_gourmet: 'Espaço Gourmet',
+  brinquedoteca: 'Brinquedoteca',
+  coworking: 'Coworking',
+  cinema: 'Cinema',
+  bicicletario: 'Bicicletário',
+  pet_place: 'Pet Place',
+  solarium: 'Solário',
+  sacada: 'Sacada / Varanda',
+  varanda_gourmet: 'Varanda Gourmet',
+  terraco: 'Terraço',
+  quintal: 'Quintal',
+  lavabo: 'Lavabo',
+  area_servico: 'Área de Serviço',
+  copa: 'Copa',
+  despensa: 'Despensa',
+  escritorio: 'Escritório',
+  closet: 'Closet',
+  deposito: 'Depósito',
+  mezanino: 'Mezanino',
+  jardim_inverno: 'Jardim de Inverno',
+  lareira: 'Lareira',
+  adega: 'Adega',
+  pe_direito_duplo: 'Pé-direito Duplo',
+  dormitorio_reversivel: 'Dormitório Reversível',
+  dormitorio_empregada: 'Dormitório de Empregada',
+  wc_empregada: 'WC de Empregada',
+  vestiario: 'Vestiário',
+  armarios_planejados: 'Armários Planejados',
+  cozinha_servico: 'Cozinha com Área de Serviço',
+  ar_condicionado: 'Ar Condicionado',
+  elevador: 'Elevador',
+  interfone: 'Interfone',
+  portao_eletronico: 'Portão Eletrônico',
+  alarme: 'Alarme',
+  cftv: 'Câmeras (CFTV)',
+  portaria_24h: 'Portaria 24h',
+  seguranca_24h: 'Segurança 24h',
+  zelador: 'Zelador',
+  tv_cabo: 'TV a Cabo',
+  energia_solar: 'Energia Solar',
+  garagem_coberta: 'Garagem Coberta',
+  condominio_fechado: 'Condomínio Fechado',
+  acessibilidade_pne: 'Acessibilidade PNE',
+  mobiliado: 'Mobiliado',
+  semimobiliado: 'Semimobiliado',
+  aceita_pet: 'Aceita Pet',
+  frente_mar: 'Frente Mar',
+  beira_mar: 'Beira Mar',
+  agua: 'Água',
+  esgoto: 'Esgoto',
+  energia_eletrica: 'Energia Elétrica',
+  rua_asfaltada: 'Rua Asfaltada',
+  entrada_caminhoes: 'Entrada para Caminhões',
+  doca: 'Doca',
+  vao_livre: 'Vão Livre',
+  caseiro: 'Casa de Caseiro',
+}
+
+export const ACABAMENTOS: Record<string, string> = {
+  porcelanato: 'Porcelanato',
+  ceramica: 'Cerâmica',
+  laminado: 'Laminado',
+  granito: 'Granito',
+  marmore: 'Mármore',
+  taco_madeira: 'Taco de Madeira',
+  carpete: 'Carpete',
+  ardosia: 'Ardósia',
+  cimento_queimado: 'Cimento Queimado',
+  contrapiso: 'Contrapiso',
+  piso_elevado: 'Piso Elevado',
+  piso_aquecido: 'Piso Aquecido',
+  bloquete: 'Bloquete',
+}
+
+export const OCUPACAO: Record<string, string> = {
+  ocupado: 'Ocupado',
+  desocupado: 'Desocupado',
+  novo: 'Novo',
+  em_construcao: 'Em construção',
+  lancamento: 'Lançamento',
+}
+
+export const GARANTIAS: Record<string, string> = {
+  caucao: 'Caução',
+  seguro_fianca: 'Seguro Fiança',
+  fiador: 'Fiador',
+  capitalizacao: 'Capitalização',
+  aluguel_antecipado: 'Aluguel antecipado',
+  kenlo_garante: 'Kenlo Garante',
+}
+
+export const PAGAMENTO: Record<string, string> = {
+  a_vista: 'À vista',
+  financiamento_bancario: 'Financiamento bancário',
+  financiamento_direto: 'Financiamento direto',
+  permuta: 'Permuta',
+  veiculos: 'Veículos',
+}

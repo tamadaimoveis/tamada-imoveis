@@ -1,9 +1,9 @@
 # Gerados do Sanity a cada build. Versionar significaria carregar uma cópia
 # velha do catálogo que ninguém lembra de atualizar — foi exatamente assim que
 # o repositório ficou 11 dias atrás do ar.
-catalog-data.js
-imovel/
-fotos/
+/catalog-data.js
+/imovel/
+/fotos/
 
 .vercel
 .vercel-original
