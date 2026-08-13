@@ -207,36 +207,7 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="property-toolbar reveal">
-              <div className="filter-chips" role="group" aria-label="Filtrar imóveis">
-                <a className="filter-chip" href="/imoveis?purpose=sale">
-                  À venda
-                </a>
-                <a className="filter-chip" href="/imoveis?purpose=rent">
-                  Para alugar
-                </a>
-                <a className="filter-chip" href="/imoveis?purpose=sale&max=260000">
-                  Até R$ 260 mil
-                </a>
-                <a className="filter-chip" href="/imoveis?purpose=sale&commercial=1">
-                  Para seu negócio
-                </a>
-              </div>
-              <p>
-                <strong id="resultsCount">0</strong> imóveis no catálogo
-              </p>
-            </div>
-
             <div className="property-carousel" aria-label="Imóveis em destaque">
-              <div className="property-carousel-head">
-                <div>
-                  <span>IMÓVEIS EM DESTAQUE</span>
-                  <strong>
-                    Para morar, investir
-                    <br />e <em>crescer.</em>
-                  </strong>
-                </div>
-              </div>
               <div className="property-carousel-window">
                 <div className="property-grid" id="propertyGrid" aria-live="polite" />
               </div>
