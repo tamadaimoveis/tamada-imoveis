@@ -10,6 +10,9 @@ concurrency:
   group: gaia-sync
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -29,14 +32,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Restaura ledger de fotos já enviadas (retomada incremental)
-        uses: actions/cache@v4
-        with:
-          path: gaia-import/gaia-import-ledger.json
-          key: gaia-ledger-${{ github.run_id }}
-          restore-keys: |
-            gaia-ledger-
-
       - run: npm ci
 
       - name: Importa imóveis novos/atualizados do Gaia
@@ -44,3 +39,16 @@ jobs:
 
       - name: Marca como inativo quem saiu do feed
         run: npx tsx scripts/limpar-imoveis-saidos.ts
+
+      # O ledger (gaia-import-ledger.json) fica versionado no repo, não em
+      # cache do Actions: cache pode ser despejado (LRU) e a próxima rodada
+      # nasceria sem saber quais das ~99mil fotos já foram enviadas — o que
+      # já aconteceu na primeira tentativa (achou que tinha que subir tudo
+      # de novo). Commitando de volta, o histórico nunca se perde.
+      - name: Salva ledger atualizado
+        run: |
+          git config user.name "gaia-sync-bot"
+          git config user.email "actions@github.com"
+          git add gaia-import-ledger.json
+          git diff --cached --quiet || git commit -m "Atualiza ledger do import Gaia [skip ci]"
+          git push

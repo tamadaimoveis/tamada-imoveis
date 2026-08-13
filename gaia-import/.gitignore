@@ -2,7 +2,6 @@ node_modules
 dist
 *.tsbuildinfo
 feed-gaia.xml
-gaia-import-ledger.json
 gaia-import-report.json
 gaia-dryrun-report.json
 orfaos.json
