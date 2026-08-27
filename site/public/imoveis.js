@@ -432,11 +432,17 @@ function renderMapResults(results) {
   list.querySelectorAll('[data-map-index]').forEach(item => item.addEventListener('mouseenter', () => {
     const index = Number(item.dataset.mapIndex); showMapCard(currentMapResults[index], index); map.panTo(approximateCoords(currentMapResults[index]));
   }));
-  if (currentMapResults.length) {
-    const bounds = window.L.latLngBounds(currentMapResults.map(approximateCoords));
-    map.fitBounds(bounds, { padding: [45, 45], maxZoom: 12 });
-  }
-  setTimeout(() => map.invalidateSize(), 50);
+  // O container só ganha tamanho real depois que `hidden` sai — por isso o
+  // fitBounds (que decide o zoom) tem que rodar DEPOIS do invalidateSize
+  // (que remede o container), nunca antes. Ordem trocada = mapa mede 0x0,
+  // calcula zoom errado, e o resize só corrige o tamanho sem refazer o zoom.
+  requestAnimationFrame(() => {
+    map.invalidateSize();
+    if (currentMapResults.length) {
+      const bounds = window.L.latLngBounds(currentMapResults.map(approximateCoords));
+      map.fitBounds(bounds, { padding: [45, 45], maxZoom: 12 });
+    }
+  });
 }
 
 function switchView(view) {
