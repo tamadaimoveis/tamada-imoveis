@@ -13,6 +13,9 @@ export default async function ImoveisPage() {
 
   return (
     <>
+      {/* Leaflet só carregava o JS, nunca o CSS — sem isso o mapa não tem
+          posicionamento absoluto e os tiles empilham soltos na página. */}
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       <Script src="/hero-copy.js" strategy="beforeInteractive" />
       <script
         dangerouslySetInnerHTML={{

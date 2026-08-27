@@ -26,6 +26,9 @@ export default async function HomePage() {
           __html: `window.TAMADA_CATALOG=${JSON.stringify(imoveis)};window.TAMADA_BAIRROS=${JSON.stringify(bairros)};`,
         }}
       />
+      {/* Leaflet só carregava o JS, nunca o CSS — sem isso o mapa não tem
+          posicionamento absoluto e os tiles empilham soltos na página. */}
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
       <Header />
       <MobileMenu />

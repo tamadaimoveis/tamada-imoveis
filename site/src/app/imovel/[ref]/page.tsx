@@ -56,6 +56,9 @@ export default async function ImovelPage({ params }: Props) {
         }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {/* Leaflet só carregava o JS, nunca o CSS — sem isso o mapa não tem
+          posicionamento absoluto e os tiles empilham soltos na página. */}
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
       <header className="site-header catalog-header" id="siteHeader">
         <div className="shell header-inner">
