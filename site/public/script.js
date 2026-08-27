@@ -436,10 +436,9 @@ function initMap() {
   // `zoomControl: true` acima já cria os botões +/-. Uma segunda chamada a
   // L.control.zoom aqui derrubava o initMap, e como o tileLayer só é adicionado
   // DEPOIS, o mapa ficava sem nenhum tile — a área beje que aparecia.
-  const tiles = window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  const tiles = window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    subdomains: 'abcd',
-    attribution: '© OpenStreetMap contributors · © CARTO'
+    attribution: '© OpenStreetMap contributors'
   });
   tiles.on('tileerror', () => {
     tileErrors += 1;

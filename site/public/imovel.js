@@ -565,7 +565,7 @@ function render(property) {
   if (window.L) {
     const coords = approximateCoords(property);
     const map = window.L.map(document.querySelector('#detailMap'), { center: coords, zoom: 14, scrollWheelZoom: false, attributionControl: false });
-    window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd', attribution: '© OpenStreetMap contributors · © CARTO' }).addTo(map);
+    window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap contributors' }).addTo(map);
     window.L.control.attribution({ prefix: false, position: 'bottomright' }).addTo(map);
     window.L.circle(coords, { radius: 420, color: '#b21218', weight: 2, fillColor: '#b21218', fillOpacity: .14 }).addTo(map);
   }

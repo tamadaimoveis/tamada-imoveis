@@ -395,7 +395,7 @@ function initMap() {
   const mapElement = document.querySelector('#catalogMap');
   map = window.L.map(mapElement, { center: [-23.545, -46.535], zoom: 11, scrollWheelZoom: false, zoomControl: true, attributionControl: false });
   let errors = 0;
-  const tiles = window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, subdomains: 'abcd', attribution: '© OpenStreetMap contributors · © CARTO' });
+  const tiles = window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap contributors' });
   tiles.on('tileerror', () => { if (++errors > 5) mapElement.classList.add('offline'); });
   tiles.addTo(map); window.L.control.attribution({ prefix: false, position: 'bottomright' }).addTo(map);
 }
