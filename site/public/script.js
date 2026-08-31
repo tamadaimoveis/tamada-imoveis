@@ -582,6 +582,9 @@ function swapAtlasView(from, to, { getScrollTarget, onShow } = {}) {
    Desenhar os pinos antes disso não funciona: o Leaflet ignora tudo enquanto o
    container tem tamanho zero. */
 function showAtlasMap(aoMostrar) {
+  // initMap() é definida mas nunca era chamada em lugar nenhum — o mapa do
+  // Atlas nunca existia, só os controles (zoom, cards) em volta de um vazio.
+  if (!map) initMap();
   swapAtlasView(atlasViewList, atlasViewMap, {
     getScrollTarget: () => scrollTargetUnderHeader(document.querySelector('.map-layout')),
     onShow: () => {
