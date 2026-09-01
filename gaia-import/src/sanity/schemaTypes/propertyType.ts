@@ -71,6 +71,7 @@ export const propertyType = defineType({
         list: [
           {title: '🟢 Ativo — Disponível', value: 'ativo'},
           {title: '🔴 Vendido', value: 'vendido'},
+          {title: '🔑 Alugado', value: 'alugado'},
           {title: '⏸️ Inativo — Fora de circulação', value: 'inativo'},
           {title: '📝 Reservado — Em negociação', value: 'reservado'},
         ],
@@ -617,6 +618,16 @@ export const propertyType = defineType({
     defineField({name: 'ownerName', title: '🔒 Nome do Proprietário', type: 'string', group: 'interno'}), // [CRM]
     defineField({name: 'ownerPhone', title: '🔒 Telefone do Proprietário', type: 'string', group: 'interno'}), // [CRM]
     defineField({name: 'ownerNotes', title: '🔒 Observações Internas', type: 'text', group: 'interno'}), // [CRM]
+    defineField({
+      name: 'locacaoEncerrada', // [CRM]
+      title: '🔒 Locação encerrada (imóvel dual-uso)',
+      description:
+        'Marca explícita: imóvel à venda E locação, a locação fechou mas a venda segue. ' +
+        'true trava a reimportação de rentPrice mesmo se o Gaia ainda mandar valor; ' +
+        'false reabre. Ausente = importador decide pelo estado anterior (compatibilidade).',
+      type: 'boolean',
+      group: 'interno',
+    }),
     // [CRM] captador* são STRINGS no contrato do CRM — não converter em reference.
     // O document `broker` existe em paralelo (página "Nossa Equipe" do site).
     defineField({name: 'captador', title: 'Captador (nome)', type: 'string', group: 'interno'}),

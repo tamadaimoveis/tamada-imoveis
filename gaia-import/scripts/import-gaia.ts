@@ -983,38 +983,36 @@ async function main() {
       const camposGaia: Record<string, unknown> = {...doc}
 
       // Imóvel dual-uso (venda + locação): quando a locação fecha, o CRM
-      // apaga só o rentPrice (o site tira da aba Alugar pela AUSÊNCIA do
-      // campo, não por status — o price de venda continua valendo). Se o
-      // Gaia ainda lista o imóvel como alugável (o ERP pode demorar a
-      // refletir o fechamento), reimportar reintroduzia o rentPrice e
-      // reabria a locação sozinho — mesma classe de bug do status.
+      // apaga o rentPrice e grava locacaoEncerrada:true (marca explícita,
+      // sem ambiguidade). Se o Gaia ainda lista o imóvel como alugável (o
+      // ERP pode demorar a refletir o fechamento), reimportar reintroduzia
+      // o rentPrice e reabria a locação sozinho — mesma classe de bug do
+      // status. A reativação grava locacaoEncerrada:false explícito.
       //
-      // A decisão olha só o estado ANTERIOR (Sanity), nunca o que chegou
-      // agora (doc/camposGaia) — se checasse doc.oferta ou doc.price, uma
-      // reclassificação do CRM desarmaria a proteção (bug real que a sessão
-      // LanPortus achou e corrigiu do lado deles do mesmo jeito).
+      // undefined !== false: locacaoEncerrada ausente (doc antigo, criado
+      // antes desse campo existir) cai no heurístico — oferta continuava
+      // 'venda_locacao' no run anterior. Só usa o heurístico quando a marca
+      // não existe; quando existe, ela manda sozinha, mesmo que valha false
+      // (reativação não pode ser tratada como "não sei").
       //
-      // rentPrice==null é ambíguo (fechou vs. nunca teve) — por isso só
-      // preserva o null se o imóvel JÁ ERA venda_locacao antes. Sem essa
-      // checagem, um imóvel só-venda que vira dual-uso pela primeira vez
-      // ficaria bloqueado pra sempre, achando que a locação "fechou".
+      // Decisão sempre olha o estado ANTERIOR (Sanity), nunca o que chegou
+      // agora — testado contra reclassificação de oferta, price zerado e
+      // rodadas encadeadas (bugs reais que a sessão LanPortus achou, dois
+      // deles no próprio código dela). NÃO sincronizo oferta -> 'venda' no
+      // fechamento: o heurístico de fallback depende de oferta continuar
+      // 'venda_locacao' pra se re-armar; sincronizar apaga esse sinal e a
+      // locação reabre sozinha na rodada seguinte (achei isso testando 2
+      // rodadas em sequência, não só uma).
       if (camposGaia.rentPrice) {
-        const atual = await sanity.fetch<{rentPrice?: number; oferta?: string} | null>(
-          '*[_id==$id][0]{rentPrice, oferta}',
-          {id: String(doc._id)}
-        )
-        if (atual && atual.rentPrice == null && atual.oferta === 'venda_locacao') {
-          delete camposGaia.rentPrice
-          // NÃO sincronizar oferta -> 'venda' aqui, por mais que pareça
-          // higiene de dado correta: a checagem acima depende de
-          // atual.oferta continuar 'venda_locacao' pra se re-armar na
-          // rodada seguinte. Testei (2 rodadas encadeadas): sincronizar
-          // oferta some com esse sinal depois do 1º fechamento e a locação
-          // reabre sozinha na 2ª vez que o Gaia mandar o valor de novo —
-          // bug pior que o que eu estava corrigindo. camposGaia.oferta
-          // segue vindo do Gaia como 'venda_locacao' e fica assim mesmo
-          // (Studio mostra "Venda e Locação" com rentPrice vazio; nada no
-          // site lê esse campo pra filtrar, só quem olha o Studio vê).
+        const atual = await sanity.fetch<
+          {rentPrice?: number; oferta?: string; locacaoEncerrada?: boolean} | null
+        >('*[_id==$id][0]{rentPrice, oferta, locacaoEncerrada}', {id: String(doc._id)})
+        if (atual) {
+          const fechouLocacao =
+            atual.locacaoEncerrada != null
+              ? atual.locacaoEncerrada === true
+              : atual.rentPrice == null && atual.oferta === 'venda_locacao'
+          if (fechouLocacao) delete camposGaia.rentPrice
         }
       }
       if (refs[0]) {
