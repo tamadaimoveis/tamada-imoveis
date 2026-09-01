@@ -981,6 +981,22 @@ async function main() {
       // Só os campos que vêm do Gaia (+ as fotos, calculadas acima a partir
       // do feed) — featured/publicarSite ficam de fora de propósito.
       const camposGaia: Record<string, unknown> = {...doc}
+
+      // Imóvel dual-uso (venda + locação): quando a locação fecha, o CRM
+      // apaga só o rentPrice (o site tira da aba Alugar pela AUSÊNCIA do
+      // campo, não por status — o price de venda continua valendo). Se o
+      // Gaia ainda lista o imóvel como alugável (o ERP pode demorar a
+      // refletir o fechamento), reimportar reintroduzia o rentPrice e
+      // reabria a locação sozinho — mesma classe de bug do status.
+      if (camposGaia.rentPrice) {
+        const atual = await sanity.fetch<{rentPrice?: number} | null>(
+          '*[_id==$id][0]{rentPrice}',
+          {id: String(doc._id)}
+        )
+        if (atual && atual.rentPrice == null) {
+          delete camposGaia.rentPrice
+        }
+      }
       if (refs[0]) {
         camposGaia.mainImage = {_type: 'image', asset: {_type: 'reference', _ref: refs[0]}}
       }
