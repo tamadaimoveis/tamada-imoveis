@@ -512,14 +512,18 @@ interface ImovelMapeado {
   gaiaCodigo: string
 }
 
-// `featured` e `publicarSite` NÃO vêm do Gaia — quem manda neles é o
-// corretor pelo CRM ("Destacar na home" / "Publicar no site"). Só entram
-// como valor padrão na CRIAÇÃO de um imóvel novo; num imóvel que já existe,
-// createOrReplace() apagava a escolha do cliente a cada reimportação (os 4
-// destaques de hoje teriam sumido na próxima rodada). Ver DEFAULTS_SO_NA_CRIACAO.
+// `featured`, `publicarSite` e `status` NÃO vêm do Gaia — quem manda neles é
+// o corretor pelo CRM ("Destacar na home" / "Publicar no site" / marcar
+// venda). Só entram como valor padrão na CRIAÇÃO de um imóvel novo; num
+// imóvel que já existe, incluir esses campos no patch apagava a escolha do
+// cliente a cada reimportação. `status` é o mais grave dos três: o Gaia só
+// exporta imóvel ainda publicado, então toda rodada reescrevia 'ativo' por
+// cima de um 'vendido'/'reservado' que o corretor tinha acabado de marcar —
+// bug idêntico ao achado no LanPortus (RobustCRM), mesma causa raiz.
 const DEFAULTS_SO_NA_CRIACAO = {
   publicarSite: true,
   featured: false,
+  status: 'ativo',
 } as const
 
 function mapearImovel(bloco: string): ImovelMapeado | null {
@@ -585,9 +589,7 @@ function mapearImovel(bloco: string): ImovelMapeado | null {
     _type: 'property',
     codigoImovel,
     gaiaCodigo,
-    // O feed do Gaia só exporta imóvel publicado (Publicar=1 em 100% dos
-    // registros) — vendido/desabilitado não chega aqui.
-    status: 'ativo',
+    // status fica de fora de propósito — ver comentário em DEFAULTS_SO_NA_CRIACAO.
     title,
     slug: {_type: 'slug', current: `${baseSlugDoTitulo(title)}-${codigoImovel.toLowerCase()}`},
     type: TIPO_MAP[campo(bloco, 'TipoImovel') || ''],
