@@ -988,13 +988,27 @@ async function main() {
       // Gaia ainda lista o imóvel como alugável (o ERP pode demorar a
       // refletir o fechamento), reimportar reintroduzia o rentPrice e
       // reabria a locação sozinho — mesma classe de bug do status.
+      //
+      // A decisão olha só o estado ANTERIOR (Sanity), nunca o que chegou
+      // agora (doc/camposGaia) — se checasse doc.oferta ou doc.price, uma
+      // reclassificação do CRM desarmaria a proteção (bug real que a sessão
+      // LanPortus achou e corrigiu do lado deles do mesmo jeito).
+      //
+      // rentPrice==null é ambíguo (fechou vs. nunca teve) — por isso só
+      // preserva o null se o imóvel JÁ ERA venda_locacao antes. Sem essa
+      // checagem, um imóvel só-venda que vira dual-uso pela primeira vez
+      // ficaria bloqueado pra sempre, achando que a locação "fechou".
       if (camposGaia.rentPrice) {
-        const atual = await sanity.fetch<{rentPrice?: number} | null>(
-          '*[_id==$id][0]{rentPrice}',
+        const atual = await sanity.fetch<{rentPrice?: number; oferta?: string} | null>(
+          '*[_id==$id][0]{rentPrice, oferta}',
           {id: String(doc._id)}
         )
-        if (atual && atual.rentPrice == null) {
+        if (atual && atual.rentPrice == null && atual.oferta === 'venda_locacao') {
           delete camposGaia.rentPrice
+          // Sem isso o Studio mostra "Venda e Locação" num imóvel que só
+          // vende de verdade — nada no site lê esse campo pra filtrar (usa
+          // presença de price/rentPrice), mas fica errado pra quem olha.
+          camposGaia.oferta = 'venda'
         }
       }
       if (refs[0]) {
