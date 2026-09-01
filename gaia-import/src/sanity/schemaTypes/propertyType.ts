@@ -634,6 +634,15 @@ export const propertyType = defineType({
     defineField({name: 'captadorCRECI', title: 'CRECI do Captador', type: 'string', group: 'interno'}),
     defineField({name: 'captadorCelular', title: 'Celular do Captador', type: 'string', group: 'interno'}),
     defineField({name: 'captadorEmail', title: 'E-mail do Captador', type: 'string', group: 'interno'}),
+    // [CRM] Parceria em imóvel dual-uso (venda+locação): quando quem captou
+    // pra alugar é diferente de quem captou pra vender. O Gaia nunca manda
+    // isso (feed só tem 1 corretor por imóvel, confirmado 03/09/2026 — não
+    // dá pra importar, é 100% dado manual do CRM). Vazio = mesmo captador
+    // cuida dos dois lados (caso normal); preenchido = parceria, dois nomes.
+    defineField({name: 'captadorLocacao', title: '🔒 Captador da Locação (se diferente)', type: 'string', group: 'interno'}),
+    defineField({name: 'captadorLocacaoCRECI', title: '🔒 CRECI do Captador da Locação', type: 'string', group: 'interno'}),
+    defineField({name: 'captadorLocacaoCelular', title: '🔒 Celular do Captador da Locação', type: 'string', group: 'interno'}),
+    defineField({name: 'captadorLocacaoEmail', title: '🔒 E-mail do Captador da Locação', type: 'string', group: 'interno'}),
     defineField({
       name: 'ocupacao',
       title: 'Ocupação',
