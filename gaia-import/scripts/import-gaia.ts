@@ -1005,10 +1005,16 @@ async function main() {
         )
         if (atual && atual.rentPrice == null && atual.oferta === 'venda_locacao') {
           delete camposGaia.rentPrice
-          // Sem isso o Studio mostra "Venda e Locação" num imóvel que só
-          // vende de verdade — nada no site lê esse campo pra filtrar (usa
-          // presença de price/rentPrice), mas fica errado pra quem olha.
-          camposGaia.oferta = 'venda'
+          // NÃO sincronizar oferta -> 'venda' aqui, por mais que pareça
+          // higiene de dado correta: a checagem acima depende de
+          // atual.oferta continuar 'venda_locacao' pra se re-armar na
+          // rodada seguinte. Testei (2 rodadas encadeadas): sincronizar
+          // oferta some com esse sinal depois do 1º fechamento e a locação
+          // reabre sozinha na 2ª vez que o Gaia mandar o valor de novo —
+          // bug pior que o que eu estava corrigindo. camposGaia.oferta
+          // segue vindo do Gaia como 'venda_locacao' e fica assim mesmo
+          // (Studio mostra "Venda e Locação" com rentPrice vazio; nada no
+          // site lê esse campo pra filtrar, só quem olha o Studio vê).
         }
       }
       if (refs[0]) {
