@@ -1,5 +1,5 @@
 import type {ComponentType} from 'react'
-import {defineField, defineType, type ArrayOfObjectsInputProps, type ObjectInputProps} from 'sanity'
+import {defineArrayMember, defineField, defineType, type ArrayOfObjectsInputProps, type ObjectInputProps} from 'sanity'
 import {MultiImageInput, SingleImageInput} from '../components/MultiImageInput'
 
 /**
@@ -634,15 +634,36 @@ export const propertyType = defineType({
     defineField({name: 'captadorCRECI', title: 'CRECI do Captador', type: 'string', group: 'interno'}),
     defineField({name: 'captadorCelular', title: 'Celular do Captador', type: 'string', group: 'interno'}),
     defineField({name: 'captadorEmail', title: 'E-mail do Captador', type: 'string', group: 'interno'}),
-    // [CRM] Parceria em imóvel dual-uso (venda+locação): quando quem captou
-    // pra alugar é diferente de quem captou pra vender. O Gaia nunca manda
-    // isso (feed só tem 1 corretor por imóvel, confirmado 03/09/2026 — não
-    // dá pra importar, é 100% dado manual do CRM). Vazio = mesmo captador
-    // cuida dos dois lados (caso normal); preenchido = parceria, dois nomes.
-    defineField({name: 'captadorLocacao', title: '🔒 Captador da Locação (se diferente)', type: 'string', group: 'interno'}),
-    defineField({name: 'captadorLocacaoCRECI', title: '🔒 CRECI do Captador da Locação', type: 'string', group: 'interno'}),
-    defineField({name: 'captadorLocacaoCelular', title: '🔒 Celular do Captador da Locação', type: 'string', group: 'interno'}),
-    defineField({name: 'captadorLocacaoEmail', title: '🔒 E-mail do Captador da Locação', type: 'string', group: 'interno'}),
+    // [CRM] Parceria entre corretores no mesmo imóvel — N captadores, sem
+    // papel fixo (pode ser 1 de venda + 1 de locação, 2 de venda, 3 pessoas,
+    // etc; "papel" é texto livre pro CRM rotular como quiser, não enum). O
+    // Gaia nunca manda isso (feed só tem 1 corretor por imóvel, confirmado
+    // 03/09/2026 nos 4.399 imóveis do feed atual — limite estrutural da
+    // fonte, não bug de import). captador* acima continua sendo o
+    // principal/primeiro (o que o Gaia manda); este array é só pra quem
+    // mais participou, 100% dado manual do CRM.
+    defineField({
+      name: 'captadoresAdicionais',
+      title: '🔒 Outros captadores (parceria)',
+      description: 'Vazio = só o captador principal acima. Um item por corretor adicional envolvido no imóvel.',
+      type: 'array',
+      group: 'interno',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
+            defineField({name: 'nome', title: 'Nome', type: 'string', validation: (rule) => rule.required()}),
+            defineField({name: 'papel', title: 'Papel (livre, ex: venda, locação)', type: 'string'}),
+            defineField({name: 'creci', title: 'CRECI', type: 'string'}),
+            defineField({name: 'celular', title: 'Celular', type: 'string'}),
+            defineField({name: 'email', title: 'E-mail', type: 'string'}),
+          ],
+          preview: {
+            select: {title: 'nome', subtitle: 'papel'},
+          },
+        }),
+      ],
+    }),
     defineField({
       name: 'ocupacao',
       title: 'Ocupação',
