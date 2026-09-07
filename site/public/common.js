@@ -4,6 +4,14 @@
 
 const menuToggle = document.querySelector('#menuToggle');
 const mobileMenu = document.querySelector('#mobileMenu');
+if (!menuToggle || !mobileMenu) {
+  // Não deveria faltar em nenhuma página que carrega este script, mas um
+  // clique no menu que não faz nada (sem erro nenhum visível pro usuário)
+  // é exatamente o sintoma de continuar em silêncio daqui pra baixo com
+  // uma referência nula — melhor um erro claro no console do que um botão
+  // morto sem pista nenhuma de por quê.
+  console.error('common.js: #menuToggle ou #mobileMenu não encontrado no DOM.');
+}
 function closeMenu() {
   menuToggle.classList.remove('open');
   menuToggle.setAttribute('aria-expanded', 'false');

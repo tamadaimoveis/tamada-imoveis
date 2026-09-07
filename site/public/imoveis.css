@@ -71,6 +71,7 @@
 .floating-map-card{position:absolute;z-index:600;left:16px;bottom:16px;top:auto;width:320px;max-height:min(calc(100% - 32px),calc(100vh - 110px));overflow-y:auto;background:#fff;box-shadow:0 20px 50px rgba(21,21,20,.22);animation:catalogCardIn .35s var(--ease) both}.floating-map-card[hidden]{display:none}.floating-map-card>img{width:100%;height:150px;object-fit:cover}.floating-map-card>div{padding:15px}.floating-map-card p{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin:0 0 5px}.floating-map-card h2{font-family:Antique,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.4;font-weight:600;margin:0 0 9px;letter-spacing:-.01em}.floating-map-card strong{display:block;font-size:13px;margin-bottom:11px}.floating-map-card a{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;font-size:9px;font-weight:700}.floating-map-card>button{position:absolute;right:8px;top:8px;width:31px;height:31px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;cursor:pointer}
 
 .catalog-cta{background:var(--ink);color:#fff;padding:105px 0;position:relative;overflow:hidden}.catalog-cta::after{content:"T";position:absolute;right:-.05em;bottom:-.35em;font-family:Elicyon;font-size:30vw;color:rgba(255,255,255,.025)}.catalog-cta>.shell{display:grid;grid-template-columns:1.1fr .9fr;gap:100px;align-items:end;position:relative;z-index:2}.catalog-cta h2{font-family:Elicyon;font-size:clamp(50px,5vw,82px);line-height:.9;font-weight:400;margin:0}.catalog-cta>div>div:last-child p{max-width:450px;color:rgba(255,255,255,.55);font-size:14px;line-height:1.7;margin:0 0 25px}.catalog-cta h2 em{color:#ef878b}.catalog-footer{padding-top:75px}
+.catalog-footer-mini{display:none}
 .filter-backdrop{position:fixed;inset:0;background:rgba(15,15,14,.5);z-index:180;opacity:0;visibility:hidden;transition:.3s}
 
 @media(max-width:1200px){
@@ -716,24 +717,30 @@
   .site-footer.catalog-footer{display:none}
 
   #catalogContent .catalog-hero{display:none}
-  /* O mockup não mostra a marca/logo nessa tela — a barra sticky (voltar +
-     busca + filtro) toma o lugar do header inteiro. Menu continua acessível
-     pela tab bar (botão "Menu" abre o mesmo #mobileMenu). Outras páginas
-     (Anuncie, Sobre) também usam .catalog-hero mas MOSTRAM a hero no mobile —
-     só o catálogo esconde. */
-  body:has(#catalogContent) .site-header.catalog-header{display:none}
+  /* O header (logo+hambúrguer) chegou a ficar escondido aqui — decisão de
+     seguir o mockup literalmente, que não mostrava marca nessa tela. Na
+     prática o cliente reporta como bug ("falta cabeçalho, parece que não
+     tem identidade da página") — mantém visível como em qualquer outra
+     tela, a barra de busca sticky fica logo abaixo dele. */
 
-  .catalog-mobile-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(21,21,20,.08);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px}
+  /* top:64px (mesma altura do header .scrolled) — com o header de volta,
+     a barra de busca sticky precisa ficar ABAIXO dele, não por baixo/atrás
+     na mesma posição. Sem env(safe-area-inset-top) aqui: quem já reserva
+     esse respiro é o próprio header, ficaria dobrado. */
+  .catalog-mobile-bar{position:sticky;top:var(--header-fixo);z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(21,21,20,.08);padding:10px 16px}
   .catalog-mobile-bar-row{display:flex;align-items:center;gap:10px}
   .catalog-mobile-back{flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);background:#fff;color:var(--ink)}
   .catalog-mobile-back iconify-icon{font-size:19px}
   .catalog-mobile-search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--line);background:#fff}
   .catalog-mobile-search iconify-icon{font-size:16px;color:var(--red);flex:0 0 auto}
   .catalog-mobile-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14px;color:var(--ink)}
-  .catalog-mobile-bar #mobileFilterButtonTop{position:relative;flex:0 0 auto}
+  .catalog-mobile-bar #mobileFilterButtonTop{display:flex;position:relative;flex:0 0 auto}
 
   .catalog-search{padding:0;background:transparent;border:0}
-  .catalog-search-form{display:block;padding:0}
+  /* min-height:108px vem da regra desktop (linha 28), pensada pro grid de
+     5 colunas que aqui vira 1 chip-row só — sem zerar, sobrava espaço vazio
+     embaixo dos chips de finalidade, sem nenhum conteúdo o preenchendo. */
+  .catalog-search-form{display:block;padding:0;min-height:0}
   .catalog-search-form>*:not(.catalog-purpose):not(.catalog-mobile-chips){display:none}
   .catalog-purpose{display:flex;gap:8px;overflow-x:auto;padding:10px 0 0;scrollbar-width:none}
   .catalog-purpose::-webkit-scrollbar{display:none}
@@ -754,7 +761,15 @@
   .catalog-toolbar>div:first-child p::after{content:'imóveis';font-size:15px;color:var(--ink)}
   .catalog-toolbar>div:first-child>span{display:none}
   .catalog-toolbar>div:last-child{gap:10px}
-  .mobile-filter-button{display:none}
+  /* Só o filtro antigo do toolbar (duplicado, o real fica na barra sticky
+     do topo #mobileFilterButtonTop) — sem esse escopo, a regra também
+     escondia o botão da barra sticky, que só compartilha a mesma classe
+     de estilo, deixando a tela sem NENHUM acesso a filtro/busca avançada. */
+  .catalog-toolbar .mobile-filter-button{display:none}
+  .catalog-footer-mini{display:block;text-align:center;padding:22px 16px calc(24px + var(--tab-bar-altura));background:#fff;border-top:1px solid var(--line)}
+  .catalog-footer-mini p{margin:0 0 6px;font-size:11px;color:var(--muted)}
+  .catalog-footer-mini a{color:var(--ink-soft);font-weight:600}
+  .catalog-footer-mini p:last-child{margin-bottom:0}
   .sort-field{min-height:36px;padding:0 12px;border-radius:99px}
   .sort-field span{display:none}
   .view-switch{display:none}

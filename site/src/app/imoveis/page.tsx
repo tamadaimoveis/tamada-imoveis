@@ -401,6 +401,17 @@ export default async function ImoveisPage() {
             </div>
           </div>
         </section>
+
+        {/* Rodapé mínimo só pra fechar a página no mobile (o completo,
+            .site-footer, é preto igual a seção anterior — ficaria preto
+            grudado em preto). Fundo claro só com o essencial: telefone,
+            CRECI, ano. Rodapé cheio continua só na Home. */}
+        <footer className="catalog-footer-mini">
+          <p>
+            <a href="tel:01126822320">(11) 2682-2320</a> · CRECI 21745-J
+          </p>
+          <p>© {new Date().getFullYear()} Tamada Imóveis</p>
+        </footer>
       </main>
 
       <footer className="site-footer catalog-footer">
