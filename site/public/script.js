@@ -738,3 +738,43 @@ if (filterChipsScroller) {
   window.addEventListener('resize', updateFilterChipsFade);
   updateFilterChipsFade();
 }
+
+// Painel de diagnóstico temporário — só aparece com ?debug=1 na URL.
+// Existe pra investigar um bug de layout da busca que não reproduz em
+// nenhum teste automatizado (Chromium/WebKit, várias larguras/UAs), só
+// no Android real do cliente. Remover depois de identificar a causa.
+if (new URLSearchParams(location.search).get('debug') === '1') {
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const rect = el => {
+        if (!el) return 'NAO ENCONTRADO NO DOM';
+        const b = el.getBoundingClientRect();
+        const cs = getComputedStyle(el);
+        return `x:${Math.round(b.x)} y:${Math.round(b.y)} w:${Math.round(b.width)} h:${Math.round(b.height)} display:${cs.display} position:${cs.position}`;
+      };
+      const dock = document.querySelector('.search-dock');
+      const location_ = document.querySelector('.search-location');
+      const submit = document.querySelector('.search-submit');
+      const purpose = document.querySelector('.purpose-tabs');
+      const shortcuts = document.querySelector('.type-shortcuts');
+      const input = document.querySelector('#heroLocation');
+      const panel = document.createElement('div');
+      panel.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#fff;color:#000;font:11px monospace;padding:12px;overflow:auto;white-space:pre-wrap;word-break:break-all';
+      panel.textContent = [
+        `viewport: ${innerWidth}x${innerHeight} dpr:${devicePixelRatio}`,
+        `UA: ${navigator.userAgent}`,
+        '',
+        `.search-dock: ${rect(dock)}`,
+        `.purpose-tabs: ${rect(purpose)}`,
+        `.search-location: ${rect(location_)}`,
+        `#heroLocation (input): ${rect(input)}`,
+        `.search-submit: ${rect(submit)}`,
+        `.type-shortcuts: ${rect(shortcuts)}`,
+        '',
+        `styles.css carregado: ${[...document.styleSheets].some(s => (s.href||'').includes('styles.css'))}`,
+      ].join('\n');
+      document.body.appendChild(panel);
+      panel.addEventListener('click', () => panel.remove());
+    }, 1200);
+  });
+}

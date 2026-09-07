@@ -866,7 +866,11 @@
   .detail-agent-avatar{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;font-family:Elicyon;font-size:20px;display:grid;place-items:center}
   .detail-agent-card .detail-contact-kicker{margin:0 0 2px;font-size:9px}
   .detail-agent-card strong{display:block;font-size:16px;font-weight:600}
-  .detail-agent-card a[href^="tel:"]{display:block;font-size:12px;color:var(--muted)}
+  /* [href^="tel:"] batia também no botão circular de ligar (mesmo tel:) —
+     o display:block dele por cima do display:grid do botão desalinhava
+     o ícone e sobrava fora do card em alguns navegadores. Precisa por
+     nome de classe, não por atributo compartilhado. */
+  .detail-agent-card > div > a[href^="tel:"]{display:block;font-size:12px;color:var(--muted)}
   .detail-agent-call{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font-size:17px;color:var(--ink)}
 
   .detail-similar{padding:0}
