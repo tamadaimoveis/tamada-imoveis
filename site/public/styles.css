@@ -197,6 +197,7 @@ img{display:block;max-width:100%}
 .search-row-mobile{display:contents}
 .search-submit-mobile{display:none}
 .purpose-tabs{position:absolute;left:20px;top:15px;display:flex;align-items:center;gap:3px}
+.advanced-link-mobile{display:none}
 .purpose-tab{border:0;background:transparent;padding:7px 13px;cursor:pointer;font-size:14px;font-weight:650;color:var(--muted);position:relative}
 .purpose-tab::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:2px;background:var(--red);transform:scaleX(0);transition:.25s}
 .purpose-tab.active{color:var(--ink)}.purpose-tab.active::after{transform:scaleX(1)}
@@ -519,8 +520,8 @@ img{display:block;max-width:100%}
      posicionamento fora do fluxo normal do documento. */
   .search-stage{margin-top:0;position:relative;z-index:2}
   .search-dock{display:block;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-color:rgba(21,21,20,.11);box-shadow:0 30px 75px rgba(24,18,15,.14);padding:10px 12px 12px;min-height:0}
-  .purpose-tabs{position:static;width:100%;border-bottom:1px solid var(--line);padding-bottom:0;margin-bottom:8px;display:flex}
-  .purpose-tab{flex:1;min-height:38px;font-size:12px;text-align:center;border-bottom:2px solid transparent}
+  .purpose-tabs{position:static;width:100%;border-bottom:1px solid var(--line);padding-bottom:0;margin-bottom:8px;display:flex;align-items:center;gap:2px}
+  .purpose-tab{flex:1;min-height:38px;padding:0 4px;font-size:11.5px;text-align:center;border-bottom:2px solid transparent}
   .purpose-tab.active{border-color:var(--red)}
   .search-field{border:0;min-height:50px;padding:0}
   .search-field>span{display:none}
@@ -531,13 +532,11 @@ img{display:block;max-width:100%}
   .search-location{flex:1;display:flex;align-items:center;min-width:0;width:auto}
   .search-submit-mobile{flex:none;height:44px;width:44px;margin:0;padding:0;border:0;border-radius:50%;background:var(--ink);color:#fff;font-size:19px;display:flex;align-items:center;justify-content:center}
   /* Busca mobile só tinha localização — sem tipo/valor/quartos o usuário
-     não consegue refinar nada. Em vez de reaproveitar .advanced-link
-     (position:absolute, pensado pro layout desktop), botão novo em fluxo
-     normal que abre o mesmo #searchModal (já responsivo, tela cheia). */
-  .advanced-link-mobile{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;margin-top:10px;padding:0 14px;border:1px solid var(--line);border-radius:99px;background:#fff;color:var(--ink-soft);font-size:12px;font-weight:600;text-align:left}
-  .advanced-link-mobile>iconify-icon:first-child{font-size:17px;color:var(--red);flex:none}
-  .advanced-link-mobile span{flex:1}
-  .advanced-link-mobile>iconify-icon:last-child{font-size:15px;flex:none}
+     não consegue refinar nada. Ícone de filtro ao lado das abas de
+     finalidade (Comprar/Alugar/Comercial) em vez de linha própria — abas
+     um pouco mais estreitas pra caber os 4 junto, mesmo #searchModal já
+     responsivo (tela cheia) que o botão "Busca avançada" do desktop abre. */
+  .advanced-link-mobile{flex:none;width:34px;height:34px;margin:0;padding:0;border:0;border-radius:50%;background:var(--red);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center}
 
   /* Atalhos por tipo (README 01.3) — não existe no desktop */
   .type-shortcuts{display:flex;gap:8px;overflow-x:auto;padding:14px 16px 6px;scrollbar-width:none;margin-top:0}

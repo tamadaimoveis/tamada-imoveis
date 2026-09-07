@@ -140,6 +140,9 @@ export default async function HomePage() {
                 <button className="purpose-tab" type="button" data-purpose="commercial">
                   Comercial
                 </button>
+                <button className="advanced-link-mobile" type="button" data-open-search aria-label="Busca avançada">
+                  <iconify-icon icon="solar:tuning-2-linear" />
+                </button>
               </div>
               <div className="search-row-mobile">
                 <label className="search-field search-location">
@@ -153,11 +156,6 @@ export default async function HomePage() {
                   <iconify-icon icon="solar:magnifer-linear" />
                 </button>
               </div>
-              <button className="advanced-link-mobile" type="button" data-open-search>
-                <iconify-icon icon="solar:tuning-2-linear" />
-                <span>Busca avançada — tipo, valor, quartos e mais</span>
-                <iconify-icon icon="solar:arrow-right-linear" />
-              </button>
               <label className="search-field search-field-type">
                 <span>Tipo de imóvel</span>
                 <div>
