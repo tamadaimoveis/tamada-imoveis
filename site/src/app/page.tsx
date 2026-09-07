@@ -6,6 +6,7 @@ import Header from '@/components/Header'
 import MobileMenu from '@/components/MobileMenu'
 import Footer from '@/components/Footer'
 import SearchModal from '@/components/SearchModal'
+import TabBar from '@/components/TabBar'
 
 export const metadata: Metadata = {
   title: 'Tamada Imóveis — Seu lugar na cidade',
@@ -147,7 +148,7 @@ export default async function HomePage() {
                   <input id="heroLocation" type="search" placeholder="Bairro, cidade ou código" autoComplete="off" />
                 </div>
               </label>
-              <label className="search-field">
+              <label className="search-field search-field-type">
                 <span>Tipo de imóvel</span>
                 <div>
                   <iconify-icon icon="solar:buildings-2-linear" />
@@ -161,7 +162,7 @@ export default async function HomePage() {
                   </select>
                 </div>
               </label>
-              <label className="search-field">
+              <label className="search-field search-field-price">
                 <span>Faixa de valor</span>
                 <div>
                   <iconify-icon icon="solar:wallet-money-linear" />
@@ -190,6 +191,24 @@ export default async function HomePage() {
           </a>
         </section>
 
+        <div className="type-shortcuts" aria-label="Atalhos por tipo de imóvel">
+          <a href="/imoveis?purpose=sale&type=APARTMENT">
+            <iconify-icon icon="solar:buildings-2-linear" /> Apartamentos
+          </a>
+          <a href="/imoveis?purpose=sale&type=HOUSE">
+            <iconify-icon icon="solar:home-2-linear" /> Casas
+          </a>
+          <a href="/imoveis?purpose=sale&type=TWO_STORY_HOUSE">
+            <iconify-icon icon="solar:layers-minimalistic-linear" /> Sobrados
+          </a>
+          <a href="/imoveis?purpose=sale&commercial=1">
+            <iconify-icon icon="solar:shop-2-linear" /> Comerciais
+          </a>
+          <a href="/imoveis?purpose=sale&type=LAND">
+            <iconify-icon icon="solar:map-point-linear" /> Terrenos
+          </a>
+        </div>
+
         <section className="property-section section" id="imoveis">
           <div className="section-atmosphere atmosphere-red" aria-hidden="true" />
           <div className="shell">
@@ -208,6 +227,15 @@ export default async function HomePage() {
                 Uma seleção pensada para diferentes momentos da vida: do primeiro apartamento ao espaço ideal para o
                 crescimento do seu negócio.
               </p>
+            </div>
+
+            <div className="mobile-carousel-toolbar">
+              <p>
+                <strong>{imoveis.length}</strong> imóveis no catálogo
+              </p>
+              <a href="/imoveis">
+                Ver todos <iconify-icon icon="solar:arrow-right-linear" />
+              </a>
             </div>
 
             <div className="property-carousel" aria-label="Imóveis em destaque">
@@ -251,33 +279,43 @@ export default async function HomePage() {
                   <span>Vila Granada</span>
                   <small>Residencial · conectado</small>
                   <b>02</b>
+                <iconify-icon icon="solar:arrow-right-linear" />
                 </button>
                 <button type="button" data-neighborhood="Tatuapé">
                   <span>Tatuapé</span>
                   <small>Urbano · completo</small>
                   <b>03</b>
+                <iconify-icon icon="solar:arrow-right-linear" />
                 </button>
                 <button type="button" data-neighborhood="Penha de França">
                   <span>Penha de França</span>
                   <small>Tradicional · central</small>
                   <b>04</b>
+                <iconify-icon icon="solar:arrow-right-linear" />
                 </button>
                 <button type="button" data-neighborhood="Vila Matilde">
                   <span>Vila Matilde</span>
                   <small>Calmo · conveniente</small>
                   <b>05</b>
+                <iconify-icon icon="solar:arrow-right-linear" />
                 </button>
                 <button type="button" data-neighborhood="Itaquera">
                   <span>Itaquera</span>
                   <small>Dinâmico · acessível</small>
                   <b>06</b>
+                <iconify-icon icon="solar:arrow-right-linear" />
                 </button>
                 <button type="button" data-neighborhood="São Mateus">
                   <span>São Mateus</span>
                   <small>Familiar · em movimento</small>
                   <b>07</b>
+                <iconify-icon icon="solar:arrow-right-linear" />
                 </button>
               </div>
+              <a className="button button-ghost atlas-open-map" href="/imoveis?view=map">
+                <iconify-icon icon="solar:map-linear" />
+                <span>Abrir o mapa da Zona Leste</span>
+              </a>
             </div>
           </div>
 
@@ -621,6 +659,7 @@ export default async function HomePage() {
       </main>
 
       <Footer />
+      <TabBar active="inicio" />
 
       <a
         className="floating-whatsapp"

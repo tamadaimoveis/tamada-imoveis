@@ -114,15 +114,43 @@ document.addEventListener('keydown', e => {
 
 /* Alguns navegadores embutidos (WhatsApp, Instagram) bloqueiam autoplay mesmo
    com muted+playsinline — o vídeo fica parado no pôster sem nenhum aviso.
-   Se play() falhar, mostra um botão pra iniciar manualmente. */
+   Se play() falhar, mostra um botão pra iniciar manualmente.
+
+   No mobile o autoplay nem é tentado: vídeo de fundo rodando o tempo todo
+   pesa a página numa tela pensada pra ser rápida — fica parado no pôster até
+   o usuário tocar no chip "Assistir ao vídeo" (abaixo). */
 (() => {
   const video = document.querySelector('#heroVideo');
   const playButton = document.querySelector('#heroVideoPlay');
   if (!video || !playButton) return;
+  if (window.matchMedia('(max-width:620px)').matches) return;
 
   video.play()?.catch(() => { playButton.hidden = false; });
 
   playButton.addEventListener('click', () => {
     video.play().then(() => { playButton.hidden = true; }).catch(() => {});
+  });
+})();
+
+// Chip "Assistir ao vídeo" (mobile) — com som e em tela cheia, já que o loop
+// de fundo toca mudo. Duração real do arquivo, não um número fixo no HTML.
+(() => {
+  const video = document.querySelector('#heroVideo');
+  const chip = document.querySelector('#heroVideoChip');
+  const duration = document.querySelector('#heroVideoDuration');
+  if (!video || !chip) return;
+
+  const paintDuration = () => {
+    if (!duration || !Number.isFinite(video.duration)) return;
+    const total = Math.round(video.duration);
+    duration.textContent = `· ${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+  };
+  video.addEventListener('loadedmetadata', paintDuration);
+  paintDuration();
+
+  chip.addEventListener('click', async () => {
+    video.muted = false;
+    try { await video.requestFullscreen?.(); } catch { /* navegador sem suporte, segue mesmo assim */ }
+    video.play().catch(() => {});
   });
 })();

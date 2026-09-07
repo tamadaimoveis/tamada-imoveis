@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { getImoveis } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
+import MobileMenu from '@/components/MobileMenu'
+import TabBar from '@/components/TabBar'
 
 export const metadata: Metadata = {
   title: 'A Tamada — Tamada Imóveis',
@@ -105,33 +107,7 @@ export default async function SobrePage() {
         </div>
       </header>
 
-      <div className="mobile-menu" id="mobileMenu" aria-hidden="true">
-        <div className="mobile-menu-number">
-          A
-          <br />
-          TAMADA
-        </div>
-        <nav aria-label="Navegação móvel">
-          <a href="/">
-            <span>00</span> Início
-          </a>
-          <a href="/imoveis?purpose=sale">
-            <span>01</span> Comprar
-          </a>
-          <a href="/imoveis?purpose=rent">
-            <span>02</span> Alugar
-          </a>
-          <a href="/anuncie">
-            <span>03</span> Anuncie
-          </a>
-          <a href="/sobre">
-            <span>04</span> Institucional
-          </a>
-        </nav>
-        <a className="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">
-          Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear" />
-        </a>
-      </div>
+      <MobileMenu />
 
       <main id="sobreContent">
         <div className="video-hero-page">
@@ -139,11 +115,10 @@ export default async function SobrePage() {
             <div className="catalog-hero-media" aria-hidden="true">
               <img src="/assets/images/tamada-hero-poster.jpg" alt="" fetchPriority="high" />
               <video
-                autoPlay
                 muted
                 loop
                 playsInline
-                preload="auto"
+                preload="none"
                 poster="/assets/images/tamada-hero-poster.jpg"
                 id="heroVideo"
               >
@@ -154,6 +129,9 @@ export default async function SobrePage() {
             <div className="catalog-hero-scrim" aria-hidden="true" />
             <button className="hero-video-play" id="heroVideoPlay" type="button" hidden aria-label="Reproduzir vídeo">
               <iconify-icon icon="solar:play-bold" />
+            </button>
+            <button className="hero-video-chip" id="heroVideoChip" type="button">
+              <iconify-icon icon="solar:play-circle-bold" /> Assistir ao vídeo <span id="heroVideoDuration" />
             </button>
             <div className="shell">
               <nav className="breadcrumbs" aria-label="Navegação estrutural">
@@ -224,6 +202,20 @@ export default async function SobrePage() {
               Não somos um portal, nem um call center. Somos uma imobiliária de bairro, com corretores que você pode
               conhecer pelo nome.
             </p>
+            <dl className="about-stats-mobile">
+              <div>
+                <dt>20+</dt>
+                <dd>Anos de atuação</dd>
+              </div>
+              <div>
+                <dt>{imoveis.length}</dt>
+                <dd>Imóveis no site</dd>
+              </div>
+              <div>
+                <dt>ZL</dt>
+                <dd>São Paulo e região</dd>
+              </div>
+            </dl>
           </div>
         </section>
 
@@ -452,6 +444,8 @@ export default async function SobrePage() {
         <span />
         <iconify-icon icon="mdi:whatsapp" />
       </a>
+
+      <TabBar />
 
       <div className="lightbox" id="lightbox" hidden aria-modal="true" role="dialog" aria-label="Galeria do espaço Tamada">
         <div className="lightbox-bar">

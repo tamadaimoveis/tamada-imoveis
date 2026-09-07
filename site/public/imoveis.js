@@ -240,6 +240,8 @@ function updateHero() {
 function syncControls() {
   updateHero();
   el.query.value = state.query;
+  const mobileQuery = document.querySelector('#mobileCatalogQuery');
+  if (mobileQuery) mobileQuery.value = state.query;
   if (el.sideQuery) el.sideQuery.value = state.query;
   el.type.value = state.type;
   updatePriceOptions();
@@ -256,11 +258,31 @@ function syncControls() {
   if (window.refreshElegantSelects) window.refreshElegantSelects();
 }
 
+function renderMobileChips() {
+  const container = document.querySelector('#mobileFilterChips');
+  if (!container) return;
+  const chips = [];
+  if (state.type) chips.push(['type', typeLabels[state.type] || state.type]);
+  if (state.maxPrice) chips.push(['maxPrice', `até ${money(state.maxPrice)}`]);
+  container.innerHTML = chips
+    .map(([key, label]) => `<button type="button" data-clear-chip="${key}">${label} <iconify-icon icon="solar:close-circle-linear"></iconify-icon></button>`)
+    .join('');
+  container.querySelectorAll('[data-clear-chip]').forEach(button => {
+    button.addEventListener('click', () => {
+      state[button.dataset.clearChip] = button.dataset.clearChip === 'maxPrice' ? 0 : '';
+      state.limit = 18;
+      syncControls();
+      render();
+    });
+  });
+}
+
 function render() {
   const results = sortedResults();
   el.count.textContent = results.length;
   el.heroCount.textContent = results.length;
   el.summary.textContent = summaryText();
+  renderMobileChips();
   const visible = results.slice(0, state.limit);
   el.grid.innerHTML = visible.length ? visible.map(card).join('') : `<div class="catalog-empty"><iconify-icon icon="solar:map-point-search-linear"></iconify-icon><h2>Nenhum imóvel nessa combinação.</h2><p>Amplie a região ou remova alguns filtros para continuar.</p></div>`;
   el.load.hidden = results.length <= state.limit;
@@ -460,9 +482,28 @@ function toggleFilters(open) {
   el.filterPanel.classList.toggle('open', open); el.filterBackdrop.classList.toggle('open', open); document.body.classList.toggle('modal-open', open);
 }
 document.querySelector('#mobileFilterButton').addEventListener('click', () => toggleFilters(true));
+document.querySelector('#mobileFilterButtonTop')?.addEventListener('click', () => toggleFilters(true));
+// Campo de busca da barra sticky mobile espelha o #catalogQuery real (o do
+// form desktop, que só filtra no submit) — mantém os dois com o mesmo valor
+// e aplica a mesma busca ao apertar Enter, sem duplicar a lógica de filtro.
+{
+  const mobileQuery = document.querySelector('#mobileCatalogQuery');
+  if (mobileQuery) {
+    mobileQuery.value = el.query.value;
+    mobileQuery.addEventListener('input', () => { el.query.value = mobileQuery.value; });
+    mobileQuery.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      state.query = mobileQuery.value.trim();
+      state.limit = 18;
+      syncControls();
+      render();
+    });
+  }
+}
 document.querySelector('#closeFilters').addEventListener('click', () => toggleFilters(false));
 el.filterBackdrop.addEventListener('click', () => toggleFilters(false));
-document.querySelector('#focusFilters').addEventListener('click', () => {
+document.querySelector('#focusFilters')?.addEventListener('click', () => {
   if (innerWidth <= 900) toggleFilters(true); else document.querySelector('#catalogSearch').scrollIntoView({ behavior: 'smooth' });
 });
 

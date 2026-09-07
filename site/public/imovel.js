@@ -470,6 +470,37 @@ function setupShare(property) {
   share.innerHTML = links.map(([ic, name, href]) =>
     `<a href="${href}" target="_blank" rel="noopener" aria-label="Compartilhar no ${name}"><iconify-icon icon="${ic}"></iconify-icon></a>`
   ).join('');
+
+  const mobileShare = document.querySelector('#mobileShareButton');
+  if (mobileShare) {
+    mobileShare.addEventListener('click', async () => {
+      if (navigator.share) {
+        try { await navigator.share({ title: property.title, text: msg, url }); return; } catch { /* usuário cancelou */ }
+      }
+      window.open(links[0][2], '_blank', 'noopener');
+    });
+  }
+}
+
+function setupFavorite(property) {
+  const button = document.querySelector('#mobileFavoriteButton');
+  if (!button) return;
+  const icon = button.querySelector('iconify-icon');
+  const read = () => {
+    try { return new Set(JSON.parse(localStorage.getItem('tamada-favorites') || '[]')); } catch { return new Set(); }
+  };
+  const paint = saved => {
+    button.classList.toggle('saved', saved);
+    icon.setAttribute('icon', saved ? 'solar:heart-bold' : 'solar:heart-linear');
+    button.setAttribute('aria-label', saved ? 'Remover dos favoritos' : 'Salvar imóvel');
+  };
+  paint(read().has(property.ref));
+  button.addEventListener('click', () => {
+    const favorites = read();
+    favorites.has(property.ref) ? favorites.delete(property.ref) : favorites.add(property.ref);
+    try { localStorage.setItem('tamada-favorites', JSON.stringify([...favorites])); } catch { /* preference only */ }
+    paint(favorites.has(property.ref));
+  });
 }
 
 function render(property) {
@@ -503,6 +534,7 @@ function render(property) {
 
   setupLeadGate(property);
   setupShare(property);
+  setupFavorite(property);
   setupMedia(property);
 
   // Descrição do corretor. O título deste bloco era fixo ("Um imóvel com a cara
@@ -514,6 +546,15 @@ function render(property) {
     document.querySelector('#detailAbout').innerHTML = sobre;
     document.querySelector('#aboutTitle').innerHTML =
       `${escapeHtml(typeLabels[property.type] || 'Imóvel')} em<br><em>${escapeHtml(property.neighborhood)}.</em>`;
+    const aboutEl = document.querySelector('#detailAbout');
+    const toggle = document.querySelector('#detailAboutToggle');
+    if (toggle) {
+      toggle.hidden = false;
+      toggle.addEventListener('click', () => {
+        aboutEl.classList.add('expanded');
+        toggle.hidden = true;
+      });
+    }
   } else if (blocoSobre) {
     blocoSobre.hidden = true;
   }

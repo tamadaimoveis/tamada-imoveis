@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { getImoveis, getBairros } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
+import MobileMenu from '@/components/MobileMenu'
+import TabBar from '@/components/TabBar'
 
 export const metadata: Metadata = {
   title: 'Trabalhe Conosco — Tamada Imóveis',
@@ -101,33 +103,7 @@ export default async function TrabalheConoscoPage() {
         </div>
       </header>
 
-      <div className="mobile-menu" id="mobileMenu" aria-hidden="true">
-        <div className="mobile-menu-number">
-          TRABALHE
-          <br />
-          CONOSCO
-        </div>
-        <nav aria-label="Navegação móvel">
-          <a href="/">
-            <span>00</span> Início
-          </a>
-          <a href="/imoveis?purpose=sale">
-            <span>01</span> Comprar
-          </a>
-          <a href="/imoveis?purpose=rent">
-            <span>02</span> Alugar
-          </a>
-          <a href="/anuncie">
-            <span>03</span> Anuncie
-          </a>
-          <a href="/sobre">
-            <span>04</span> Institucional
-          </a>
-        </nav>
-        <a className="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">
-          Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear" />
-        </a>
-      </div>
+      <MobileMenu />
 
       <main id="trabalheContent">
         <section className="catalog-hero">
@@ -339,18 +315,21 @@ export default async function TrabalheConoscoPage() {
                     </label>
                   </div>
                 </div>
-                <label className="af-field">
-                  <span id="rcExperienceLabel">Conte um pouco da sua experiência</span>
-                  <textarea
-                    id="rcExperience"
-                    rows={3}
-                    placeholder="Tempo de mercado, imóveis que já negociou, o que você busca..."
-                  />
-                </label>
-                <label className="af-field">
-                  <span>Currículo (opcional)</span>
-                  <input id="rcResume" type="file" accept=".pdf,.doc,.docx" />
-                </label>
+                <details className="af-more">
+                  <summary>Currículo e mais sobre você (opcional)</summary>
+                  <label className="af-field">
+                    <span id="rcExperienceLabel">Conte um pouco da sua experiência</span>
+                    <textarea
+                      id="rcExperience"
+                      rows={3}
+                      placeholder="Tempo de mercado, imóveis que já negociou, o que você busca..."
+                    />
+                  </label>
+                  <label className="af-field">
+                    <span>Currículo</span>
+                    <input id="rcResume" type="file" accept=".pdf,.doc,.docx" />
+                  </label>
+                </details>
                 <label className="lead-check">
                   <input id="rcConsent" type="checkbox" required />
                   <span>
@@ -438,6 +417,8 @@ export default async function TrabalheConoscoPage() {
         <span />
         <iconify-icon icon="mdi:whatsapp" />
       </a>
+
+      <TabBar />
 
       <Efeitos scripts={['/nav-dropdown.js', '/common.js', '/elegant-select.js', '/trabalhe-conosco.js']} />
     </>

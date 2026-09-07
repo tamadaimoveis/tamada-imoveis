@@ -338,6 +338,7 @@
 
 .showcase-more{text-align:center;margin-top:36px}
 
+.about-copy dl.about-stats-mobile{display:none}
 .space-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .space-gallery-item{position:relative;overflow:hidden;border:0;padding:0;cursor:zoom-in;aspect-ratio:4/3;background:var(--paper-deep)}
 .space-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
@@ -702,4 +703,246 @@
 /* Tela muito baixa (celular deitado): a tira some e a foto pega tudo. */
 @media (max-width: 900px) and (max-height: 460px) {
   .lightbox-thumbs{display:none}
+}
+
+/* ===========================================================================
+   MOBILE — catálogo (imoveis.html), a partir do handoff (README seção 03).
+   =========================================================================== */
+@media (max-width:620px){
+  /* Mockup só tem rodapé completo na Home — Imóveis, Ficha, Anuncie, Sobre e
+     Trabalhe conosco terminam direto no conteúdo + tab bar / barra de ação
+     fixa. Todas essas páginas usam .catalog-footer (a Home usa .site-footer
+     sozinho, sem esse modificador), então some por esse seletor. */
+  .site-footer.catalog-footer{display:none}
+
+  #catalogContent .catalog-hero{display:none}
+  /* O mockup não mostra a marca/logo nessa tela — a barra sticky (voltar +
+     busca + filtro) toma o lugar do header inteiro. Menu continua acessível
+     pela tab bar (botão "Menu" abre o mesmo #mobileMenu). Outras páginas
+     (Anuncie, Sobre) também usam .catalog-hero mas MOSTRAM a hero no mobile —
+     só o catálogo esconde. */
+  body:has(#catalogContent) .site-header.catalog-header{display:none}
+
+  .catalog-mobile-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(21,21,20,.08);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px}
+  .catalog-mobile-bar-row{display:flex;align-items:center;gap:10px}
+  .catalog-mobile-back{flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);background:#fff;color:var(--ink)}
+  .catalog-mobile-back iconify-icon{font-size:19px}
+  .catalog-mobile-search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--line);background:#fff}
+  .catalog-mobile-search iconify-icon{font-size:16px;color:var(--red);flex:0 0 auto}
+  .catalog-mobile-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14px;color:var(--ink)}
+  .catalog-mobile-bar #mobileFilterButtonTop{position:relative;flex:0 0 auto}
+
+  .catalog-search{padding:0;background:transparent;border:0}
+  .catalog-search-form{display:block;padding:0}
+  .catalog-search-form>*:not(.catalog-purpose):not(.catalog-mobile-chips){display:none}
+  .catalog-purpose{display:flex;gap:8px;overflow-x:auto;padding:10px 0 0;scrollbar-width:none}
+  .catalog-purpose::-webkit-scrollbar{display:none}
+  .catalog-purpose button{flex:0 0 auto;min-height:34px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:700;color:var(--ink-soft)}
+  .catalog-purpose button.active{background:var(--ink);color:#fff;border-color:transparent}
+  .catalog-mobile-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-top:8px}
+  .catalog-mobile-chips:empty{display:none}
+  .catalog-mobile-chips::-webkit-scrollbar{display:none}
+  .catalog-mobile-chips button{flex:0 0 auto;display:flex;align-items:center;gap:4px;min-height:30px;padding:0 10px;border-radius:99px;border:1px solid var(--red);background:#fff;font-size:11px;font-weight:700;color:var(--red)}
+  .catalog-mobile-chips button iconify-icon{font-size:14px}
+
+  .catalog-results-section{padding-top:22px}
+  .catalog-toolbar{border-top:0;border-bottom:0;padding:0 16px 14px;align-items:flex-end}
+  .catalog-toolbar>div:first-child{display:flex;flex-direction:column;align-items:flex-start}
+  .catalog-toolbar>div:first-child::before{content:'Catálogo Tamada';display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--red);font-weight:700;margin-bottom:4px}
+  .catalog-toolbar>div:first-child p{margin:0;font-size:0;display:flex;align-items:baseline;gap:6px}
+  .catalog-toolbar>div:first-child p strong{display:block;font:400 34px/.9 Elicyon;font-size:34px;color:var(--red)}
+  .catalog-toolbar>div:first-child p::after{content:'imóveis';font-size:15px;color:var(--ink)}
+  .catalog-toolbar>div:first-child>span{display:none}
+  .catalog-toolbar>div:last-child{gap:10px}
+  .mobile-filter-button{display:none}
+  .sort-field{min-height:36px;padding:0 12px;border-radius:99px}
+  .sort-field span{display:none}
+  .view-switch{display:none}
+
+  .catalog-grid{grid-template-columns:1fr;gap:14px;padding:22px 16px 140px}
+  .catalog-card-media{height:auto;aspect-ratio:16/11}
+  .catalog-card h2{font-size:16px}
+  .catalog-grid:not(.detail-similar-grid) .catalog-card-copy{display:grid;grid-template-columns:1fr auto}
+  .catalog-grid:not(.detail-similar-grid) .catalog-card-location{grid-column:1/-1}
+  .catalog-grid:not(.detail-similar-grid) .catalog-card-copy h2{grid-column:1/-1}
+  .catalog-grid:not(.detail-similar-grid) .catalog-card-specs{grid-column:1;grid-row:3;align-self:center;border-top:1px solid var(--line);padding-top:11px;margin-top:10px}
+  .catalog-grid:not(.detail-similar-grid) .catalog-card-bottom{grid-column:2;grid-row:3;align-self:center;border-top:1px solid var(--line);padding-top:11px;margin-top:10px}
+  .catalog-card-bottom small{display:none}
+  .catalog-card-bottom a{display:none}
+  .catalog-card-bottom strong{font-size:16px}
+  .detail-similar-grid .catalog-card-specs{display:none}
+  .detail-similar-grid .catalog-card h2{font-size:13px;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+  .detail-similar-grid .catalog-card-bottom strong{font-size:13px}
+
+  .load-catalog{margin:0 16px 40px;width:calc(100% - 32px)}
+
+  /* Pílula "Ver no mapa" flutuando acima da tab bar */
+  .catalog-view-toggle{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:25;display:flex;min-height:44px;padding:0 18px;align-items:center;gap:8px;border-radius:99px;background:var(--ink);color:#fff;font:700 11px Antique,sans-serif;text-transform:uppercase;letter-spacing:.06em;box-shadow:0 12px 30px rgba(21,21,20,.3);border:0;cursor:pointer}
+  .catalog-view-toggle.active{display:none}
+  .catalog-view-toggle iconify-icon{font-size:15px}
+
+  /* Filtros como bottom sheet */
+  .filter-panel{position:fixed;left:0;right:0;bottom:0;top:auto;max-height:85svh;width:100%;background:#fff;border-top:1px solid var(--line);border-radius:0;transform:translateY(100%);transition:transform .35s cubic-bezier(.16,1,.3,1);z-index:200;overflow-y:auto;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+  .filter-panel.open{transform:translateY(0)}
+  .filter-panel-head button{display:flex}
+
+  .catalog-cta{padding:56px 16px 40px}
+
+  /* ===== Ficha do imóvel ===== */
+  .detail-hero-mobile-actions{display:flex;justify-content:space-between;position:absolute;left:16px;right:16px;top:16px;z-index:5}
+  .detail-hero-mobile-actions-right{display:flex;gap:10px}
+  .detail-hero-mobile-actions a,.detail-hero-mobile-actions button{width:40px;height:40px;border:0;border-radius:50%;background:rgba(20,16,14,.55);backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center;font-size:19px;cursor:pointer}
+  .detail-hero-mobile-actions #mobileFavoriteButton.saved{background:var(--red)}
+  .detail-hero{height:56vw;min-height:280px}
+  .strip-badges{left:16px;right:16px;bottom:16px;padding-left:0;gap:8px;overflow-x:auto;scrollbar-width:none}
+  .strip-badges::-webkit-scrollbar{display:none}
+  .strip-chip{padding:9px 13px;font-size:11px;flex:0 0 auto}
+  .gallery-prev,.gallery-next{display:none}
+
+  .detail-intro{padding:0}
+  .detail-intro-grid{gap:0;padding-bottom:0}
+  .detail-pricebar{margin:0;border-radius:0;background:var(--ink);border:0;box-shadow:none;flex-direction:row;align-items:center;justify-content:space-between;gap:14px;padding:18px 16px}
+  .detail-pricebar::before{display:none}
+  .pc-label{color:rgba(255,255,255,.6);font-size:11px;margin-bottom:4px}
+  .pc-value{font-family:Elicyon,Georgia,serif;background:none;-webkit-text-fill-color:initial;color:#fff;font-size:clamp(26px,8vw,34px);font-weight:400}
+  .pc-note{color:rgba(255,255,255,.5);font-size:9px;max-width:110px;text-align:right;padding-bottom:0}
+
+  .detail-intro-left{padding:16px}
+  .detail-intro .breadcrumbs{display:none}
+  .detail-badges{margin:0 0 14px;flex-wrap:wrap}
+  .detail-purpose,.detail-type{padding:6px 10px;font-size:9px}
+  .detail-type{border:1px solid var(--line);background:none}
+  .detail-intro h1{font-family:Elicyon,Georgia,serif;font-weight:400;font-size:clamp(26px,7.5vw,32px);line-height:1.05;letter-spacing:-.02em}
+  .detail-location{font-size:13px;margin-top:10px}
+  .detail-share{display:none}
+
+  .detail-specs{border-top:0;margin-top:20px;padding-top:0;gap:8px!important;display:grid!important;grid-template-columns:repeat(4,1fr)}
+  .detail-specs>div{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:1px solid var(--line);background:#fff;padding:12px 4px;grid-template-columns:none;grid-template-rows:none}
+  .detail-specs iconify-icon{color:var(--red);font-size:20px}
+  .detail-specs b{font-size:15px}
+  .detail-specs span{font-size:8px}
+
+  .detail-intro-form{margin-top:24px;order:99}
+  .lead-inline{border:0;border-top:8px solid var(--paper-deep);box-shadow:none;padding:24px 16px}
+  .lead-row{grid-template-columns:1fr}
+
+  .detail-body{padding:8px 0 0}
+  .detail-columns{gap:0}
+  .detail-block{margin-bottom:0;padding:28px 16px;border-top:8px solid var(--paper-deep)}
+  .detail-block .eyebrow{display:flex;align-items:center;gap:10px;color:var(--red);font-size:10px}
+  .detail-block .eyebrow span{width:22px;height:1px;background:var(--red);order:2}
+  .detail-block h2{font-size:clamp(28px,8vw,34px);margin:10px 0 16px}
+  .detail-about{-webkit-line-clamp:4;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;margin-bottom:14px}
+  .detail-about.expanded{-webkit-line-clamp:unset;display:block;overflow:visible}
+  .detail-about-toggle{border:0;background:none;padding:0;color:var(--red);font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  .detail-about-toggle[hidden]{display:none}
+
+  .amenity-grid{display:flex;flex-wrap:wrap;gap:8px}
+  .amenity-grid li{flex:0 0 auto;flex-direction:row;padding:9px 14px;border-radius:99px;transform:none;opacity:1;gap:8px}
+  .amenity-grid li::before{display:none}
+  .amenity-grid li svg{display:none}
+  .amenity-grid li::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);order:-1}
+  .amenity-grid li span{font-size:12px;font-weight:600}
+  .amenity-grid li small{display:none}
+
+  .detail-facts{grid-template-columns:1fr;border-left:0}
+  .detail-facts>div{display:flex;justify-content:space-between;align-items:center;border-left:0;border-right:0;padding:14px 0}
+  .detail-facts dt{margin:0;font-size:13px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400}
+  .detail-facts dd{font-size:14px}
+
+  .detail-map{height:260px}
+  .detail-aside{position:static}
+  .detail-contact-card{display:none}
+
+  .detail-agent-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin:16px 16px 0;padding:16px;border:1px solid var(--line);background:#fff}
+  .detail-agent-avatar{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;font-family:Elicyon;font-size:20px;display:grid;place-items:center}
+  .detail-agent-card .detail-contact-kicker{margin:0 0 2px;font-size:9px}
+  .detail-agent-card strong{display:block;font-size:16px;font-weight:600}
+  .detail-agent-card a[href^="tel:"]{display:block;font-size:12px;color:var(--muted)}
+  .detail-agent-call{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font-size:17px;color:var(--ink)}
+
+  .detail-similar{padding:0}
+  .detail-similar .section-heading{flex-direction:column;align-items:flex-start;gap:6px}
+  .detail-similar-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .detail-similar{padding-bottom:88px}
+
+  .floating-whatsapp{display:none}
+  .detail-mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+  .detail-mobile-bar-call{width:48px;height:48px;flex:0 0 auto;border:1px solid var(--line);display:grid;place-items:center;font-size:19px;color:var(--ink)}
+  .detail-mobile-bar .button{flex:1;margin:0}
+
+  /* ===== Anuncie seu imóvel ===== */
+  #announceContent .announce-hero-actions{display:none}
+  #announceContent .catalog-hero .breadcrumbs{display:none}
+  #announceContent .catalog-hero-grid h1{font-size:clamp(30px,9vw,38px)}
+  #announceContent .catalog-hero-grid p.eyebrow{margin-bottom:10px}
+  .announce-benefits{padding:32px 0}
+  .benefit-grid{grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .benefit-card{border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-top:0;border-left:0;padding:20px 16px;transform:none!important;box-shadow:none!important}
+  .benefit-card::before{display:none}
+  .benefit-icon{width:36px;height:36px;margin-bottom:12px}
+  .benefit-icon iconify-icon{font-size:18px}
+  .benefit-card h3{font-size:17px;margin-bottom:4px}
+  .benefit-card p{font-size:12px;line-height:1.5}
+
+  .announce-steps{padding:32px 0}
+  .steps-grid{grid-template-columns:1fr;gap:0}
+  .step-card{border:0;border-top:1px solid var(--line);padding:18px 0}
+  .step-card:last-child{border-bottom:1px solid var(--line)}
+  .step-num{font-size:13px;opacity:1;font-weight:700;color:var(--red);font-family:Antique,sans-serif;margin-bottom:6px}
+  .step-card h3{font-size:18px}
+
+  .announce-form-section{padding:32px 0 40px}
+  .announce-form-grid{gap:24px}
+  .announce-form-points{display:none}
+  .announce-form{border:1px solid var(--line);box-shadow:0 20px 50px -20px rgba(21,21,20,.12);border-radius:4px;padding:22px 16px}
+  fieldset:first-of-type>.af-row:first-of-type{grid-template-columns:1fr 1fr}
+  .af-field-location{margin-bottom:0}
+  .af-more{margin:16px 0}
+  .af-more summary{font-size:12px;font-weight:700;color:var(--red);cursor:pointer;list-style:none;padding:10px 0;border-top:1px solid var(--line)}
+  .af-more summary::-webkit-details-marker{display:none}
+  .af-more[open] summary{border-bottom:1px solid var(--line);margin-bottom:16px}
+  fieldset legend{display:none}
+
+  /* ===== A Tamada / Sobre ===== */
+  .video-hero-page .hero-video{height:78vh;min-height:420px}
+  .hero-video-play{width:60px;height:60px;font-size:20px}
+  .hero-video-chip{position:absolute;left:16px;bottom:16px;z-index:5;display:flex;align-items:center;gap:8px;border:0;border-radius:99px;background:rgba(255,255,255,.94);color:var(--ink);padding:11px 16px;font-size:12px;font-weight:700;cursor:pointer}
+  .hero-video-chip iconify-icon{font-size:18px;color:var(--red)}
+  .hero-video-chip span{color:var(--muted);font-weight:400}
+  #sobreContent .catalog-hero-aside dl{display:none}
+  #sobreContent .catalog-hero .breadcrumbs{display:none}
+
+  #heroTransition{padding-top:28px}
+  #heroTransition .about-copy .eyebrow{display:flex;align-items:center;gap:8px}
+  .about-copy dl.about-stats-mobile{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);margin:22px 0 0;text-align:center;padding:0}
+  .about-copy dl.about-stats-mobile div{padding:16px 6px;border-right:1px solid var(--line);border-left:0}
+  .about-copy dl.about-stats-mobile div:last-child{border-right:0}
+  .about-copy dl.about-stats-mobile dt{font-family:Elicyon;font-size:26px;color:var(--red);line-height:1;text-transform:none;letter-spacing:0;font-weight:400}
+  .about-copy dl.about-stats-mobile dd{margin:4px 0 0;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+  #sobreContent .announce-benefits .benefit-grid{grid-template-columns:1fr;border:0}
+  #sobreContent .announce-benefits .benefit-card{display:flex;align-items:flex-start;gap:14px;border:0;border-top:1px solid var(--line);padding:16px 0}
+  #sobreContent .announce-benefits .benefit-card:last-child{border-bottom:1px solid var(--line)}
+  #sobreContent .announce-benefits .benefit-icon{width:38px;height:38px;flex:0 0 auto;margin-bottom:0;border:1px solid var(--line);background:#fff;border-radius:8px}
+  #sobreContent .announce-benefits .benefit-card:hover .benefit-icon{background:#fff;color:var(--red);transform:none}
+  #sobreContent .announce-benefits .benefit-card h3{font-size:16px;margin-bottom:2px}
+  #sobreContent .announce-benefits .benefit-card p{font-size:12.5px}
+
+  #trabalheContent .catalog-hero .breadcrumbs{display:none}
+  #trabalheContent .catalog-hero-aside dl{display:none}
+  #trabalheContent .catalog-hero-grid h1{font-size:clamp(30px,9vw,38px)}
+
+  .space-section{padding:32px 0}
+  .space-gallery{grid-template-columns:1fr;gap:0}
+  .space-gallery-item{aspect-ratio:16/11}
+
+  .instagram-cta{padding:48px 0}
+  .instagram-cta .hero-word{display:none}
+  .instagram-cta h2{font-size:clamp(28px,8vw,34px)}
+
+  #sobreContent .catalog-cta{display:none}
+}
+@media (min-width:621px){
+  .detail-mobile-bar,.detail-hero-mobile-actions{display:none}
 }

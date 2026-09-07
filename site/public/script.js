@@ -163,6 +163,17 @@ function specsMarkup(property) {
   return specs.join('');
 }
 
+// Título curto só pro card mobile (o `title` do CRM é uma frase inteira,
+// longa demais pra 2 linhas em 272px). Desktop continua com o título
+// completo — os dois ficam no DOM, o CSS decide qual mostra por breakpoint.
+function shortTitle(property) {
+  const tipo = typeLabels[property.type] || 'Imóvel';
+  const partes = [tipo];
+  if (property.beds) partes.push(`${property.beds} qts`);
+  if (property.garages) partes.push(`${property.garages} vg`);
+  return `${partes.join(', ')} · ${String(property.area).replace('.', ',')} m² · ${property.neighborhood}`;
+}
+
 function propertyCard(property) {
   const monthly = !property.sale && Boolean(property.rent);
   const currentPrice = monthly ? property.rent : property.sale || property.rent;
@@ -180,7 +191,7 @@ function propertyCard(property) {
       </div>
       <div class="property-copy">
         <p class="property-location"><span>${property.neighborhood} · ${property.city}</span><span>${typeLabels[property.type] || 'Imóvel'}</span></p>
-        <h3><a href="imovel.html?ref=${property.ref}"><span>${property.title}</span></a></h3>
+        <h3><a href="imovel.html?ref=${property.ref}"><span class="property-title-full">${property.title}</span><span class="property-title-short">${shortTitle(property)}</span></a></h3>
         <div class="property-specs">${specsMarkup(property)}</div>
         <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}</strong><a href="imovel.html?ref=${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
       </div>
@@ -616,8 +627,8 @@ if (listaBairros && bairrosComMapa.length) {
   listaBairros.innerHTML = bairrosComMapa.slice(0, 8).map((bairro, i) => {
     const desc = descricoes[normalize(bairro.nome)] || `${bairro.cidade}`;
     return `<button type="button" data-neighborhood="${bairro.nome}"${i === 0 ? ' class="active"' : ''}>`
-      + `<span>${bairro.nome}</span><small>${desc}</small>`
-      + `<b>${bairro.total}</b></button>`;
+      + `<span>${bairro.nome}</span><small>${desc} · ${bairro.total} imóveis</small>`
+      + `<b>${String(i + 1).padStart(2, '0')}</b><iconify-icon icon="solar:arrow-right-linear"></iconify-icon></button>`;
   }).join('');
 }
 
@@ -664,6 +675,7 @@ menuToggle.addEventListener('click', () => {
   document.body.classList.toggle('menu-open', open);
 });
 mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+document.querySelector('[data-tabbar-menu]')?.addEventListener('click', () => menuToggle.click());
 
 const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {

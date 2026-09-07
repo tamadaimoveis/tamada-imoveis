@@ -170,6 +170,19 @@ export default async function ImovelPage({ params }: Props) {
       <main id="detailContent">
         <div id="detailFound">
           <section className="detail-hero">
+            <div className="detail-hero-mobile-actions">
+              <a href="/imoveis" aria-label="Voltar ao catálogo">
+                <iconify-icon icon="solar:arrow-left-linear" />
+              </a>
+              <div className="detail-hero-mobile-actions-right">
+                <button type="button" id="mobileShareButton" aria-label="Compartilhar imóvel">
+                  <iconify-icon icon="solar:share-linear" />
+                </button>
+                <button type="button" id="mobileFavoriteButton" aria-label="Salvar imóvel">
+                  <iconify-icon icon="solar:heart-linear" />
+                </button>
+              </div>
+            </div>
             <div className="detail-filmstrip" id="detailStrip" aria-label="Fotos do imóvel" />
             <button className="gallery-arrow gallery-prev" id="galleryPrev" type="button" aria-label="Fotos anteriores">
               <iconify-icon icon="solar:alt-arrow-left-linear" />
@@ -288,6 +301,9 @@ export default async function ImovelPage({ params }: Props) {
                     <em>a cara do bairro.</em>
                   </h2>
                   <p id="detailAbout" className="detail-about" />
+                  <button type="button" className="detail-about-toggle" id="detailAboutToggle" hidden>
+                    Ver descrição completa
+                  </button>
                 </div>
 
                 <div className="detail-block" id="amenitiesBlock">
@@ -329,6 +345,20 @@ export default async function ImovelPage({ params }: Props) {
                       <i /> Posição aproximada — o endereço exato é informado no atendimento
                     </div>
                   </div>
+                </div>
+
+                <div className="detail-agent-card">
+                  <span className="detail-agent-avatar" aria-hidden="true">
+                    T
+                  </span>
+                  <div>
+                    <p className="detail-contact-kicker">Atendimento responsável</p>
+                    <strong>Tamada Imóveis</strong>
+                    <a href="tel:01126822320">(11) 2682-2320</a>
+                  </div>
+                  <a className="detail-agent-call" href="tel:01126822320" aria-label="Ligar">
+                    <iconify-icon icon="solar:phone-linear" />
+                  </a>
                 </div>
               </div>
 
@@ -472,6 +502,16 @@ export default async function ImovelPage({ params }: Props) {
           </a>
         </div>
       </footer>
+
+      <div className="detail-mobile-bar">
+        <a className="detail-mobile-bar-call" href="tel:01126822320" aria-label="Ligar para a Tamada">
+          <iconify-icon icon="solar:phone-linear" />
+        </a>
+        <a className="button button-red" href="#leadForm" data-scroll-form>
+          <iconify-icon icon="mdi:whatsapp" />
+          <span>Agendar visita</span>
+        </a>
+      </div>
 
       <a
         className="floating-whatsapp"

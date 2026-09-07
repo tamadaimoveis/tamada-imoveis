@@ -99,7 +99,15 @@ img{display:block;max-width:100%}
 .mobile-menu nav{display:flex;flex-direction:column}
 .mobile-menu nav a{font-family:Elicyon,serif;font-size:clamp(38px,8vw,70px);line-height:1;border-bottom:1px solid var(--line);padding:14px 0}
 .mobile-menu nav span{font-family:Antique;font-size:10px;color:var(--red);vertical-align:top;margin-right:10px}
-.mobile-whatsapp{margin-top:auto;display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px;font-weight:600}
+.mobile-menu-chips{display:flex;gap:8px;overflow-x:auto;margin-top:28px;padding-bottom:4px;scrollbar-width:none}
+.mobile-menu-chips::-webkit-scrollbar{display:none}
+.mobile-menu-chips a{flex:0 0 auto;min-height:34px;padding:0 14px;display:flex;align-items:center;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:12px;font-weight:600;color:var(--ink-soft)!important;white-space:nowrap}
+.mobile-menu-links{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-top:28px}
+.mobile-menu-links a{font-size:13px;font-weight:600;color:var(--ink-soft)}
+.mobile-menu-links a iconify-icon{display:none}
+.mobile-menu-footer{margin-top:auto}
+.mobile-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;background:var(--red);color:#fff;border-top:0;padding:0;font-size:13px;font-weight:650}
+.mobile-menu-footer>p{margin:16px 0 0;display:flex;justify-content:space-between;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 
 /* Header legível sobre hero escura (some ao rolar → estado .scrolled volta ao padrão) */
 .site-header:not(.scrolled) .desktop-nav>a,.site-header:not(.scrolled) .nav-dropdown summary{color:#fff}
@@ -268,7 +276,7 @@ img{display:block;max-width:100%}
 .neighborhood-list button:hover{background:rgba(255,255,255,.06);padding-left:32px}
 .neighborhood-list button.active{border-left-color:var(--red);background:rgba(255,255,255,.03)}
 .neighborhood-list button.active span{color:var(--red)}
-.neighborhood-list button span{font-family:Elicyon;font-size:30px;transition:color .3s}.neighborhood-list button small{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45)}.neighborhood-list button b{font-family:monospace;font-size:9px;color:#ef878b}
+.neighborhood-list button span{font-family:Elicyon;font-size:30px;transition:color .3s}.neighborhood-list button small{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45)}.neighborhood-list button b{font-family:monospace;font-size:9px;color:#ef878b}.neighborhood-list button iconify-icon{display:none}
 .map-layout{display:grid;grid-template-columns:1.45fr .55fr;min-height:650px;position:relative;z-index:4}
 .map-shell{min-width:0;position:relative;background:#e8e8e4;overflow:visible}
 .property-map{position:absolute;inset:0;z-index:2;background:#e7e6df}
@@ -415,24 +423,197 @@ img{display:block;max-width:100%}
   .footer-top{grid-template-columns:1fr;gap:60px}.footer-columns{gap:25px}
 }
 
+/* ===========================================================================
+   MOBILE — redesign a partir do handoff (Tamada Mobile.dc.html). Tudo aqui é
+   aditivo/override sobre o CSS desktop acima; nada fora de @media muda.
+   =========================================================================== */
 @media (max-width:620px){
-  :root{--shell:calc(100% - 28px)}
-  .utility-bar{height:31px}.site-header{top:31px}.site-header.scrolled{top:0}.brand{width:144px}.menu-toggle{width:43px;height:43px}
-  .mobile-menu{padding:120px 24px 30px}
-  .hero{padding-top:72px}.hero-layout{padding-top:58px}.hero h1{font-size:clamp(52px,16vw,74px)}.hero-lead{line-height:1.6;margin-top:23px}.hero-actions{align-items:flex-start;flex-direction:column;gap:18px}.hero-phone{display:none}
-  .hero-visual{height:420px;margin-top:25px}.hero-artwork-frame{left:0;top:24px;height:345px}.hero-artwork-frame img{object-position:64% center}.frame-main{left:5%;width:71%;height:70%}.frame-pool{width:34%;height:38%;top:24%}.frame-home{width:48%;height:36%}.hero-coordinate{display:none}.hero-compass{right:3%;top:4%}
-  .search-stage{margin-top:-12px}.search-dock{display:flex;flex-direction:column;align-items:stretch;padding:58px 15px 15px}.search-field{width:100%;border-right:0;border-bottom:1px solid var(--line);min-height:70px}.search-submit{margin-top:14px;justify-content:space-between}.purpose-tabs{left:13px}.advanced-link{right:14px}
-  .section{padding:80px 0}.section-heading,.map-heading{margin-bottom:40px}.section-heading h2,.map-heading h2,.neighborhood-copy h2,.about-copy h2,.contact-copy h2{font-size:48px}.section-heading>p,.map-heading>p{font-size:13px}
-  .property-grid{grid-template-columns:1fr}.property-media{height:430px}.property-footer{align-items:flex-start;flex-direction:column;gap:20px}.property-footer>div{width:100%;align-items:stretch;flex-direction:column}.property-footer>div .button{width:100%}
-  .map-section{padding-bottom:90px}.map-shell{height:460px}.map-panel{padding:16px;min-height:480px}.map-card-image{height:235px}.map-panel-copy h3{font-size:17px}
-  .opportunity-card{padding:27px;min-height:400px}.opportunity-card h3{font-size:38px}
-  .neighborhood-list button{grid-template-columns:1fr auto;min-height:78px}.neighborhood-list button small{display:none}.neighborhood-list button span{font-size:26px}
-  .service-grid{display:flex;flex-direction:column}.service-featured{min-height:500px;padding:30px}.service-featured h3{font-size:48px}.service-card{min-height:270px}
-  .about-image{min-height:430px}.about-copy{padding:75px 24px}.about-copy dl{grid-template-columns:1fr;gap:17px}.about-copy dl div+div{border-left:0;border-top:1px solid var(--line);padding:17px 0 0}
-  .contact-section{padding:85px 0}.contact-layout{gap:42px}.contact-actions>a{min-height:82px;padding:0 4px}.contact-actions span{font-size:11px}.contact-actions b{width:34px;height:34px}
-  .site-footer{padding-top:65px}.footer-columns{grid-template-columns:1fr 1fr}.footer-columns>div:last-child{grid-column:1/3}.footer-bottom{align-items:flex-start;flex-wrap:wrap;gap:25px}.footer-bottom>p{width:100%}
-  .floating-whatsapp{right:15px;bottom:15px;width:52px;height:52px}
+  :root{--shell:calc(100% - 32px);--header-fixo:64px}
+
+  /* Princípio 3 — performance: desliga tudo que é decorativo/pesado */
+  .page-grain,.cursor-glow,.hero-route,.scroll-cue,.hero-coordinate,.section-atmosphere,.map-topography,.contact-orbit,.utility-bar,.floating-whatsapp{display:none}
+  .hero-media img{animation:none}
+  .line-mask{overflow:visible;padding:0;margin:0}.line-mask>span{transform:none;animation:none}
+  .reveal{transform:translateY(20px);transition-duration:.3s}
+  .reveal-delay-1{transition-delay:.06s}.reveal-delay-2{transition-delay:.12s}.reveal-delay-3{transition-delay:.18s}
+
+  /* Header / top bar — vira absolute sobre o hero, sem utility-bar acima */
+  .site-header{top:0;height:auto;padding:calc(env(safe-area-inset-top) + 14px) 0 0}
+  .site-header.scrolled{position:fixed;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);padding-top:0;height:var(--header-fixo)}
+  .header-inner{height:auto;padding:0 16px}
+  .brand{width:auto;height:38px}.brand img{height:100%;width:auto}
+  .site-header.scrolled .brand{height:32px}
+  .menu-toggle{width:44px;height:44px;border:1px solid var(--line);background:#fff}
+  .site-header:not(.scrolled) .menu-toggle{border-color:rgba(255,255,255,.42);background:rgba(12,9,8,.28);backdrop-filter:blur(10px)}
+  .site-header:not(.scrolled) .menu-toggle span{background:#fff}
+
+  /* Menu mobile (README 02) */
+  .mobile-menu{padding:calc(env(safe-area-inset-top) + 66px) 20px 30px}
+  .mobile-menu-number{margin-bottom:24px}
+  /* Com o menu aberto: botão continua quadrado (igual todo botão-ícone do
+     site), mas o X ganha um círculo fino ao redor por dentro — conferi de
+     perto no mockup, é quadrado fora + círculo dentro, não círculo inteiro. */
+  body:has(.mobile-menu.open) .menu-toggle{background:transparent;border-color:var(--line)}
+  body:has(.mobile-menu.open) .menu-toggle::after{content:'';position:absolute;inset:9px;border:1.5px solid var(--ink);border-radius:50%}
+  body:has(.mobile-menu.open) .menu-toggle span{background:var(--ink);width:11px;left:16.5px}
+
+  /* Hero (README 01.1) */
+  .hero{padding:0;height:640px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+  .hero-media,.hero-media picture{position:absolute}
+  .hero-scrim{background:linear-gradient(to bottom,rgba(12,9,8,.62),rgba(12,9,8,.1) 32%,rgba(12,9,8,.55) 62%,rgba(12,9,8,.92) 100%)}
+  .hero-layout{display:block;height:auto;padding:0 16px 16px;width:100%}
+  .hero-copy{padding-bottom:0;display:flex;flex-direction:column;gap:16px}
+  .hero-eyebrow{color:rgba(255,255,255,.82)}
+  .hero h1{font-size:56px;line-height:.88;letter-spacing:-.05em;text-shadow:0 2px 30px rgba(8,6,5,.45);max-width:none}
+  .hero h1 em{color:#ff3b41;font-style:italic}
+  .hero-lead{font-size:14px;line-height:1.55;color:rgba(255,255,255,.82);max-width:320px;margin-top:0}
+  .hero-actions{flex-direction:row;gap:0}
+  .hero-actions .button-red{width:100%;min-height:56px}
+  .hero-phone,.hero-visual,.hero-compass{display:none}
+
+  /* Search dock compacto (README 01.2) */
+  .search-stage{margin-top:0;position:relative;z-index:2}
+  .search-dock{display:flex;flex-direction:column;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-color:rgba(21,21,20,.11);box-shadow:0 30px 75px rgba(24,18,15,.14);padding:10px 12px 12px;min-height:0}
+  .purpose-tabs{position:static;width:100%;border-bottom:1px solid var(--line);padding-bottom:0}
+  .purpose-tab{flex:1;min-height:38px;font-size:12px;text-align:center;border-bottom:2px solid transparent}
+  .purpose-tab.active{border-color:var(--red)}
+  .search-field{border:0;min-height:50px;padding:0 10px 0 0}
+  .search-field>span{display:none}
+  .search-field input{font-size:15px}
+  .search-field input::placeholder{color:#99958c}
+  .search-field-type,.search-field-price,.advanced-link{display:none}
+  .search-submit{height:50px;width:50px;flex:0 0 auto;margin:0;padding:0;justify-content:center;gap:0;position:absolute;right:0;top:48px}
+  .search-submit span{display:none}
+  .search-location{display:flex;align-items:center;width:100%;padding-right:56px}
+
+  /* Atalhos por tipo (README 01.3) — não existe no desktop */
+  .type-shortcuts{display:flex;gap:8px;overflow-x:auto;padding:14px 16px 6px;scrollbar-width:none;margin-top:0}
+  .type-shortcuts::-webkit-scrollbar{display:none}
+  .type-shortcuts a{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:34px;padding:0 14px;border:1px solid var(--line);border-radius:99px;background:#fff;font-size:12px;font-weight:600;color:var(--ink-soft);white-space:nowrap}
+  .type-shortcuts iconify-icon{font-size:15px;color:var(--red)}
+
+  /* Seções — padding geral, título recalibrado (README princípio 4) */
+  .section{padding:56px 0}
+  .section-heading,.map-heading{margin-bottom:0;gap:16px}
+  .section-heading h2,.map-heading h2,.about-copy h2,.contact-copy h2{font-size:44px;line-height:.88;letter-spacing:-.045em}
+  .section-heading>p,.map-heading>p{font-size:14px;line-height:1.6;color:var(--muted);margin-top:16px}
+  .eyebrow{font-size:10px}
+
+  /* Seleção Tamada — carrossel (README 01.4) */
+  .property-section{background:#faf9f6;padding-top:56px;margin-top:18px}
+  .property-carousel-head,.property-toolbar{display:none}
+  .property-section .section-heading>p{display:none}
+  .mobile-carousel-toolbar{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 16px;margin-top:24px}
+  .mobile-carousel-toolbar p{margin:0;font-size:13px;color:var(--ink-soft)}
+  .mobile-carousel-toolbar strong{font-family:Elicyon;font-size:20px;font-weight:400;color:var(--red);margin-right:4px}
+  .mobile-carousel-toolbar a{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--ink)}
+  .property-carousel-window{overflow:visible}
+  .property-grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:22px 16px 40px;scrollbar-width:none;grid-template-columns:none}
+  .property-grid::-webkit-scrollbar{display:none}
+  .property-card{flex:0 0 272px;scroll-snap-align:start}
+  .property-media{height:auto;aspect-ratio:4/3}
+  /* .property-media > a tem z-index:2 (regra de base, pro título clicável
+     funcionar) e .property-purpose/.favorite-button têm z-index:auto — auto
+     empilha ABAIXO de qualquer irmão com z-index explícito, então a imagem
+     cobria o badge "À venda" e o coração de favoritar por completo. */
+  .property-purpose,.property-code,.favorite-button{z-index:3}
+  /* O mockup mantém a frase original truncada por clamp (não um título
+     recomposto) — confirmado visualmente no .dc.html, diferente do que o
+     README descrevia em texto. Mockup manda. */
+  .property-copy h3 a .property-title-short{display:none}
+  .property-copy h3{font-size:15px;line-height:1.4}
+  .property-footer{padding:0 16px;align-items:stretch}.property-footer>div{width:100%}.property-footer>div .button{width:100%;min-height:50px}
+
+  /* Atlas Tamada (README 01.5) */
+  .atlas-section{padding:56px 0 48px}
+  .map-heading>p{color:rgba(255,255,255,.55)}
+  .neighborhood-list-wrap{overflow:visible}
+  .neighborhood-list{display:block}
+  /* Número sequencial (01, 02...) volta a aparecer — o mockup mostra ele
+     pequeno e vermelho à esquerda do nome, não é decorativo à toa. */
+  .neighborhood-list button{display:grid;grid-template-columns:20px 1fr auto;grid-template-rows:auto auto;align-items:center;min-height:64px;padding:0;border-bottom:1px solid rgba(255,255,255,.15);border-left:0;gap:2px 10px}
+  .neighborhood-list button:hover,.neighborhood-list button.active{padding-left:0;background:none;border-left:0}
+  .neighborhood-list button b{display:block;grid-column:1;grid-row:1/3;font-size:10px;color:var(--red)}
+  .neighborhood-list button span{grid-column:2;grid-row:1;font:400 24px/1 Elicyon;font-size:24px}
+  .neighborhood-list button small{display:block;grid-column:2;grid-row:2;font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45)}
+  .neighborhood-list button iconify-icon{display:inline-block;grid-column:3;grid-row:1/3;font-size:18px;color:#ef878b}
+  .map-layout{padding:0}.map-shell{display:none}
+  .atlas-back-floating,.atlas-view-map{display:none}
+  .atlas-open-map{display:flex;width:calc(100% - 32px);margin:24px 16px 0;justify-content:center;gap:10px;min-height:52px;color:#fff;border-color:rgba(255,255,255,.35)}
+
+  /* Oportunidades — cards empilhados cheios (bate com o handoff: cada
+     finalidade é um bloco de cor sólida full-width, não uma linha fina). */
+  .opportunities{padding:64px 0 0}
+  .opportunity-grid{display:flex;flex-direction:column;gap:10px;padding:0 16px}
+  .opportunity-card{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:14px;padding:20px;min-height:0;overflow:visible;transform:none!important;box-shadow:none!important;border:0}
+  .opportunity-card::before{display:none}
+  .opportunity-number{display:none}
+  .opportunity-icon{grid-column:1;grid-row:1;width:38px;height:38px;margin:0 0 14px;border-radius:50%;border:1px solid currentColor;background:none;display:grid;place-items:center;position:static;font-size:16px}
+  .opportunity-card p{grid-column:1;grid-row:2;margin:0 0 2px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;opacity:.7}
+  .opportunity-card h3{grid-column:1;grid-row:3;font-size:26px;line-height:.98;margin:0}
+  .opportunity-card>.opportunity-cta{grid-column:2;grid-row:1/4;align-self:center;font-size:0;border-top:0;padding:0;margin:0}
+  .opportunity-cta iconify-icon{font-size:19px}
+  .opportunity-card>span:not(.opportunity-cta){display:none}
+
+  /* Serviços (README 01.7) */
+  .services{background:#faf9f6;padding-top:56px;margin-top:56px}
+  .service-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .service-featured{grid-column:1/3;height:260px;background:var(--ink);min-height:0;padding:0}
+  .service-featured .service-photo-bg{opacity:.55;filter:saturate(.3)}
+  .service-card:not(.service-featured){background:#fff;border:1px solid var(--line);padding:16px;min-height:150px}
+  .service-photo:not(.service-featured) .service-photo-bg{display:none}
+  .service-icon{width:40px;height:40px;margin:0 0 10px}
+  .service-card h3{font-size:22px}
+  .service-contact{grid-column:1/3}
+  .service-contact div{flex-direction:row}.service-contact div a{flex:1;min-height:40px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);font-size:11px;font-weight:700}
+
+  /* Sobre (README 01.8) */
+  .about-section{display:block}
+  .about-image{min-height:0;height:300px}
+  .about-image img{filter:saturate(.75)}
+  .about-copy{padding:40px 16px 48px;display:flex;flex-direction:column;gap:18px}
+  .about-copy h2{font-size:44px}
+  .about-copy>p{font-size:14px;line-height:1.7;color:var(--muted)}
+  .about-copy-actions{flex-direction:row}.about-copy-actions .button{flex:1;min-height:50px}
+
+  /* Contato / red (README 01.9) */
+  .contact-section{padding:56px 0 48px}
+  .contact-copy h2{font-size:44px}
+  .contact-actions>a{min-height:76px;grid-template-columns:1fr auto;grid-template-rows:auto auto;border-bottom:1px solid rgba(255,255,255,.3)}
+  .contact-actions span{grid-column:1;grid-row:1}
+  .contact-actions strong{display:block;grid-column:1;grid-row:2;font:400 22px/1 Elicyon;font-size:22px}
+  .contact-actions b{grid-column:2;grid-row:1/3;width:38px;height:38px;font-size:16px}
+  .contact-actions a:hover,.contact-actions a:active{color:#fff;background:rgba(255,255,255,.08);padding-left:8px}
+
+  /* Footer (README 01.10) */
+  .site-footer{padding:44px 0 120px}
+  .footer-top{padding-bottom:35px}
+  .footer-brand img{width:170px;height:auto}
+  /* README pede 2 colunas (Encontrar / Institucional), mas o componente tem
+     3 blocos reais (Encontrar, Serviços, Institucional) — mantive o conteúdo
+     e empilhei Encontrar+Serviços na coluna 1, Institucional sozinho na
+     coluna 2, pra ficar visualmente 2 colunas sem apagar link nenhum. */
+  .footer-columns{grid-template-columns:1fr 1fr;grid-template-rows:auto auto}
+  .footer-columns>div:nth-child(1){grid-column:1;grid-row:1}
+  .footer-columns>div:nth-child(2){grid-column:1;grid-row:2;margin-top:20px}
+  .footer-columns>div:nth-child(3){grid-column:2;grid-row:1/3}
+  .footer-bottom{align-items:flex-start;flex-wrap:wrap;gap:16px}.footer-bottom>p{width:100%}
+
+  /* Barra inferior fixa (README, "Componentes recorrentes") */
+  .tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-top:1px solid rgba(21,21,20,.08);display:grid;grid-template-columns:repeat(5,1fr);align-items:end;padding:10px 6px calc(10px + env(safe-area-inset-bottom));margin:0}
+  .tab-bar a,.tab-bar button{display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;border:0;background:none;font:700 8.5px Antique,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+  .tab-bar a.active,.tab-bar button.active{color:var(--red)}
+  .tab-bar iconify-icon{font-size:20px}
+  .tab-bar-whatsapp{width:52px;height:52px;margin-top:-26px;border-radius:50%;background:var(--red);color:#fff;font-size:24px;box-shadow:0 10px 26px rgba(178,18,24,.35),0 0 0 6px var(--paper);display:grid;place-items:center}
+  .tab-bar-whatsapp span{display:none}
+
   .modal-shell{width:100%;height:100%;max-height:none}.modal-head{padding:25px 20px}.modal-head h2{font-size:39px}.modal-body{padding:22px 20px}.modal-grid{grid-template-columns:1fr}.modal-field.full{grid-column:auto}.modal-footer{padding:16px 20px}.modal-footer .button{min-height:50px;padding:0 17px}.clear-search{font-size:0}.clear-search iconify-icon{font-size:21px}
+}
+
+@media (min-width:621px){
+  /* Elementos mobile-only escondidos fora do breakpoint — desktop nunca viu isso */
+  .type-shortcuts,.tab-bar,.mobile-carousel-toolbar,.atlas-open-map{display:none}
+  .property-copy h3 a .property-title-short{display:none}
 }
 
 @media (prefers-reduced-motion:reduce){

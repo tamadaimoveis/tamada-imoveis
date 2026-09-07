@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import Efeitos from '@/components/Efeitos'
+import MobileMenu from '@/components/MobileMenu'
+import TabBar from '@/components/TabBar'
 
 export const metadata: Metadata = {
   title: 'Anuncie seu imóvel — Tamada Imóveis',
@@ -98,33 +100,7 @@ export default function AnunciePage() {
         </div>
       </header>
 
-      <div className="mobile-menu" id="mobileMenu" aria-hidden="true">
-        <div className="mobile-menu-number">
-          ANUNCIE
-          <br />
-          SEU IMÓVEL
-        </div>
-        <nav aria-label="Navegação móvel">
-          <a href="/">
-            <span>00</span> Início
-          </a>
-          <a href="/imoveis?purpose=sale">
-            <span>01</span> Comprar
-          </a>
-          <a href="/imoveis?purpose=rent">
-            <span>02</span> Alugar
-          </a>
-          <a href="/anuncie">
-            <span>03</span> Anuncie
-          </a>
-          <a href="/sobre">
-            <span>04</span> Institucional
-          </a>
-        </nav>
-        <a className="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">
-          Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear" />
-        </a>
-      </div>
+      <MobileMenu />
 
       <main id="announceContent">
         <section className="catalog-hero">
@@ -321,90 +297,94 @@ export default function AnunciePage() {
                     </select>
                   </label>
                 </div>
-                <div className="af-row af-row-3">
-                  <label className="af-field">
-                    <span>Quartos</span>
-                    <select id="afBeds">
-                      <option value="">--</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>Acima de 5</option>
-                    </select>
-                  </label>
-                  <label className="af-field">
-                    <span>Banheiros</span>
-                    <select id="afBaths">
-                      <option value="">--</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>Acima de 4</option>
-                    </select>
-                  </label>
-                  <label className="af-field">
-                    <span>Vagas</span>
-                    <select id="afGarage">
-                      <option value="">--</option>
-                      <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>Acima de 3</option>
-                    </select>
-                  </label>
-                </div>
-                <div className="af-row af-row-3">
-                  <label className="af-field">
-                    <span>Área total (m²)</span>
-                    <input id="afArea" type="number" min="0" inputMode="numeric" placeholder="Ex.: 120" />
-                  </label>
-                  <label className="af-field">
-                    <span>CEP</span>
-                    <input
-                      id="afCep"
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={9}
-                      autoComplete="postal-code"
-                      placeholder="00000-000"
-                    />
-                    <small id="afCepStatus" className="af-cep-status" aria-live="polite" />
-                  </label>
-                  <label className="af-field">
-                    <span>Bairro / Cidade</span>
-                    <input id="afLocation" type="text" placeholder="Ex.: Tatuapé, São Paulo" />
-                  </label>
-                </div>
-                <div className="af-row">
-                  <label className="af-field">
-                    <span>Aceita pet?</span>
-                    <select id="afPet">
-                      <option value="">--</option>
-                      <option>Sim</option>
-                      <option>Não</option>
-                    </select>
-                  </label>
-                  <label className="af-field" id="afFinancingField">
-                    <span>Aceita financiamento?</span>
-                    <select id="afFinancing">
-                      <option value="">--</option>
-                      <option>Sim</option>
-                      <option>Não</option>
-                    </select>
-                  </label>
-                </div>
-                <label className="af-field">
-                  <span>Endereço completo</span>
-                  <input id="afAddress" type="text" placeholder="Rua, número, complemento (não será divulgado)" />
+                <label className="af-field af-field-location">
+                  <span>Bairro / Cidade</span>
+                  <input id="afLocation" type="text" placeholder="Ex.: Tatuapé, São Paulo" />
                 </label>
-                <label className="af-field">
-                  <span>Informações adicionais</span>
-                  <textarea id="afNotes" rows={3} placeholder="Conte diferenciais, estado do imóvel, valor pretendido…" />
-                </label>
+
+                <details className="af-more">
+                  <summary>Mais detalhes do imóvel (opcional)</summary>
+                  <div className="af-row af-row-3">
+                    <label className="af-field">
+                      <span>Quartos</span>
+                      <select id="afBeds">
+                        <option value="">--</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>Acima de 5</option>
+                      </select>
+                    </label>
+                    <label className="af-field">
+                      <span>Banheiros</span>
+                      <select id="afBaths">
+                        <option value="">--</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>Acima de 4</option>
+                      </select>
+                    </label>
+                    <label className="af-field">
+                      <span>Vagas</span>
+                      <select id="afGarage">
+                        <option value="">--</option>
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>Acima de 3</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div className="af-row af-row-3">
+                    <label className="af-field">
+                      <span>Área total (m²)</span>
+                      <input id="afArea" type="number" min="0" inputMode="numeric" placeholder="Ex.: 120" />
+                    </label>
+                    <label className="af-field">
+                      <span>CEP</span>
+                      <input
+                        id="afCep"
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={9}
+                        autoComplete="postal-code"
+                        placeholder="00000-000"
+                      />
+                      <small id="afCepStatus" className="af-cep-status" aria-live="polite" />
+                    </label>
+                  </div>
+                  <div className="af-row">
+                    <label className="af-field">
+                      <span>Aceita pet?</span>
+                      <select id="afPet">
+                        <option value="">--</option>
+                        <option>Sim</option>
+                        <option>Não</option>
+                      </select>
+                    </label>
+                    <label className="af-field" id="afFinancingField">
+                      <span>Aceita financiamento?</span>
+                      <select id="afFinancing">
+                        <option value="">--</option>
+                        <option>Sim</option>
+                        <option>Não</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label className="af-field">
+                    <span>Endereço completo</span>
+                    <input id="afAddress" type="text" placeholder="Rua, número, complemento (não será divulgado)" />
+                  </label>
+                  <label className="af-field">
+                    <span>Informações adicionais</span>
+                    <textarea id="afNotes" rows={3} placeholder="Conte diferenciais, estado do imóvel, valor pretendido…" />
+                  </label>
+                </details>
               </fieldset>
 
               <fieldset>
@@ -519,6 +499,8 @@ export default function AnunciePage() {
         <span />
         <iconify-icon icon="mdi:whatsapp" />
       </a>
+
+      <TabBar active="anuncie" />
 
       <Efeitos scripts={['/nav-dropdown.js', '/common.js', '/anuncie.js']} />
     </>

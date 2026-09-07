@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { getImoveis, getBairros } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
+import Header from '@/components/Header'
+import MobileMenu from '@/components/MobileMenu'
+import TabBar from '@/components/TabBar'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
@@ -23,111 +26,27 @@ export default async function ImoveisPage() {
         }}
       />
 
-      <header className="site-header catalog-header" id="siteHeader">
-        <div className="shell header-inner">
-          <a className="brand" href="/" aria-label="Tamada Imóveis — início">
-            <img src="/assets/images/tamada-logo.png" alt="Tamada Imóveis" width={400} height={148} />
-            <img className="brand-logo-white" src="/assets/images/tamada-logo-white.png" alt="" aria-hidden="true" />
-          </a>
-          <nav className="desktop-nav" aria-label="Navegação principal">
-            <details className="nav-dropdown active">
-              <summary>
-                Comprar <iconify-icon icon="solar:alt-arrow-down-linear" />
-              </summary>
-              <div>
-                <a href="/imoveis?purpose=sale">Todos à venda</a>
-                <a href="/imoveis?purpose=sale&type=HOUSE">Casas</a>
-                <a href="/imoveis?purpose=sale&type=TWO_STORY_HOUSE">Sobrados</a>
-                <a href="/imoveis?purpose=sale&type=APARTMENT">Apartamentos</a>
-                <a href="/imoveis?purpose=sale&type=LAND">Terrenos</a>
-                <a href="/imoveis?purpose=sale&commercial=1">Comerciais</a>
-              </div>
-            </details>
-            <details className="nav-dropdown">
-              <summary>
-                Alugar <iconify-icon icon="solar:alt-arrow-down-linear" />
-              </summary>
-              <div>
-                <a href="/imoveis?purpose=rent">Todos para alugar</a>
-                <a href="/imoveis?purpose=rent&type=HOUSE">Casas</a>
-                <a href="/imoveis?purpose=rent&type=TWO_STORY_HOUSE">Sobrados</a>
-                <a href="/imoveis?purpose=rent&type=APARTMENT">Apartamentos</a>
-                <a href="/imoveis?purpose=rent&commercial=1">Comerciais</a>
-              </div>
-            </details>
-            <details className="nav-dropdown">
-              <summary>
-                Serviços <iconify-icon icon="solar:alt-arrow-down-linear" />
-              </summary>
-              <div>
-                <a href="/anuncie">Anuncie seu imóvel</a>
-                <a href="https://tmdconsultoriai.superlogica.net/clients/areadocliente" target="_blank" rel="noopener">
-                  2ª via de boleto
-                </a>
-                <a href="https://tmdconsultoriai.superlogica.net/clients/areadofornecedor" target="_blank" rel="noopener">
-                  Extrato do proprietário
-                </a>
-              </div>
-            </details>
-            <details className="nav-dropdown">
-              <summary>
-                Institucional <iconify-icon icon="solar:alt-arrow-down-linear" />
-              </summary>
-              <div>
-                <a href="/sobre">A Tamada</a>
-                <a href="/trabalhe-conosco">Trabalhe conosco</a>
-                <a href="https://www.planalto.gov.br/ccivil_03/leis/l8245.htm" target="_blank" rel="noopener">
-                  Leis do Inquilinato
-                </a>
-                <a href="https://www.tamadaimoveis.com.br/fale-conosco" target="_blank" rel="noopener">
-                  Dúvidas e reclamações
-                </a>
-              </div>
-            </details>
-          </nav>
-          <div className="header-actions">
-            <button className="button button-ghost header-search" type="button" id="focusFilters">
-              <iconify-icon icon="solar:tuning-2-linear" />
-              <span>Filtros</span>
-            </button>
-            <a className="button button-red" href="/anuncie">
-              <span>Anuncie seu imóvel</span>
-              <iconify-icon icon="solar:arrow-up-right-linear" />
-            </a>
-            <button className="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false">
-              <span />
-              <span />
-            </button>
-          </div>
-        </div>
-      </header>
+      <Header catalogo active="imoveis" />
+      <MobileMenu />
 
-      <div className="mobile-menu" id="mobileMenu" aria-hidden="true">
-        <div className="mobile-menu-number">
-          CATÁLOGO LOCAL
-          <br />
-          {imoveis.length} IMÓVEIS
+      {/* Cabeçalho sticky só do mobile — substitui a logo/header padrão nessa
+          tela (o mockup não mostra marca aqui, só voltar+busca+filtro). Tem
+          seu próprio campo de busca (mobileCatalogQuery) sincronizado por JS
+          com o #catalogQuery real (o do form desktop), pra não duplicar a
+          lógica de filtro que já lê/escreve só um input. */}
+      <div className="catalog-mobile-bar">
+        <div className="catalog-mobile-bar-row">
+          <a className="catalog-mobile-back" href="/" aria-label="Voltar ao início">
+            <iconify-icon icon="solar:arrow-left-linear" />
+          </a>
+          <label className="catalog-mobile-search">
+            <iconify-icon icon="solar:magnifer-linear" />
+            <input id="mobileCatalogQuery" type="search" placeholder="Localização ou código" autoComplete="off" />
+          </label>
+          <button className="mobile-filter-button" id="mobileFilterButtonTop" type="button">
+            <iconify-icon icon="solar:tuning-2-linear" />
+          </button>
         </div>
-        <nav aria-label="Navegação móvel">
-          <a href="/">
-            <span>00</span> Início
-          </a>
-          <a href="/imoveis?purpose=sale">
-            <span>01</span> Comprar
-          </a>
-          <a href="/imoveis?purpose=rent">
-            <span>02</span> Alugar
-          </a>
-          <a href="/anuncie">
-            <span>03</span> Anuncie
-          </a>
-          <a href="/sobre">
-            <span>04</span> Institucional
-          </a>
-        </nav>
-        <a className="mobile-whatsapp" href="https://wa.me/5511965935749" target="_blank" rel="noopener">
-          Conversar no WhatsApp <iconify-icon icon="solar:arrow-up-right-linear" />
-        </a>
       </div>
 
       <main id="catalogContent">
@@ -195,6 +114,7 @@ export default async function ImoveisPage() {
                 Comercial
               </button>
             </div>
+            <div className="catalog-mobile-chips" id="mobileFilterChips" aria-label="Filtros aplicados" />
             <label className="catalog-query">
               <span>Localização ou código</span>
               <div>
@@ -540,6 +460,18 @@ export default async function ImoveisPage() {
         <span />
         <iconify-icon icon="mdi:whatsapp" />
       </a>
+      {/* No nível raiz (não dentro de .catalog-layout) — um ancestral ali
+          tem transform/contenção que quebrava o position:fixed. */}
+      <button className="catalog-view-toggle" type="button" data-view="map">
+        <iconify-icon icon="solar:map-linear" />
+        <span>Ver no mapa</span>
+      </button>
+      <button className="catalog-view-toggle" type="button" data-view="grid">
+        <iconify-icon icon="solar:widget-4-linear" />
+        <span>Ver lista</span>
+      </button>
+
+      <TabBar active="imoveis" />
       <div className="filter-backdrop" id="filterBackdrop" />
 
       <Efeitos
