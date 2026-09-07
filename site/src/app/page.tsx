@@ -141,13 +141,18 @@ export default async function HomePage() {
                   Comercial
                 </button>
               </div>
-              <label className="search-field search-location">
-                <span>Onde você quer morar?</span>
-                <div>
-                  <iconify-icon icon="solar:map-point-linear" />
-                  <input id="heroLocation" type="search" placeholder="Bairro, cidade ou código" autoComplete="off" />
-                </div>
-              </label>
+              <div className="search-row-mobile">
+                <label className="search-field search-location">
+                  <span>Onde você quer morar?</span>
+                  <div>
+                    <iconify-icon icon="solar:map-point-linear" />
+                    <input id="heroLocation" type="search" placeholder="Bairro, cidade ou código" autoComplete="off" />
+                  </div>
+                </label>
+                <button className="search-submit-mobile" type="submit" aria-label="Buscar imóveis">
+                  <iconify-icon icon="solar:magnifer-linear" />
+                </button>
+              </div>
               <label className="search-field search-field-type">
                 <span>Tipo de imóvel</span>
                 <div>

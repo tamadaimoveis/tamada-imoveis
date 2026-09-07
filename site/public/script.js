@@ -753,8 +753,9 @@ if (new URLSearchParams(location.search).get('debug') === '1') {
         return `x:${Math.round(b.x)} y:${Math.round(b.y)} w:${Math.round(b.width)} h:${Math.round(b.height)} display:${cs.display} position:${cs.position}`;
       };
       const dock = document.querySelector('.search-dock');
+      const row = document.querySelector('.search-row-mobile');
       const location_ = document.querySelector('.search-location');
-      const submit = document.querySelector('.search-submit');
+      const submit = document.querySelector('.search-submit-mobile');
       const purpose = document.querySelector('.purpose-tabs');
       const shortcuts = document.querySelector('.type-shortcuts');
       const input = document.querySelector('#heroLocation');
@@ -766,9 +767,10 @@ if (new URLSearchParams(location.search).get('debug') === '1') {
         '',
         `.search-dock: ${rect(dock)}`,
         `.purpose-tabs: ${rect(purpose)}`,
+        `.search-row-mobile: ${rect(row)}`,
         `.search-location: ${rect(location_)}`,
         `#heroLocation (input): ${rect(input)}`,
-        `.search-submit: ${rect(submit)}`,
+        `.search-submit-mobile: ${rect(submit)}`,
         `.type-shortcuts: ${rect(shortcuts)}`,
         '',
         `styles.css carregado: ${[...document.styleSheets].some(s => (s.href||'').includes('styles.css'))}`,

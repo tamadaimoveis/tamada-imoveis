@@ -194,6 +194,8 @@ img{display:block;max-width:100%}
 
 .search-stage{z-index:8}
 .search-dock{min-height:136px;background:rgba(255,255,255,.91);backdrop-filter:blur(18px);border:1px solid rgba(21,21,20,.11);box-shadow:0 30px 75px rgba(24,18,15,.14);display:grid;grid-template-columns:1.45fr 1fr 1fr auto;align-items:end;gap:0;padding:54px 20px 20px;position:relative}
+.search-row-mobile{display:contents}
+.search-submit-mobile{display:none}
 .purpose-tabs{position:absolute;left:20px;top:15px;display:flex;align-items:center;gap:3px}
 .purpose-tab{border:0;background:transparent;padding:7px 13px;cursor:pointer;font-size:14px;font-weight:650;color:var(--muted);position:relative}
 .purpose-tab::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:2px;background:var(--red);transform:scaleX(0);transition:.25s}
@@ -489,26 +491,30 @@ img{display:block;max-width:100%}
   .hero-actions .button-red{width:100%;min-height:56px}
   .hero-phone,.hero-visual,.hero-compass{display:none}
 
-  /* Search dock compacto (README 01.2) — reescrito sem position:absolute
-     no botão de busca: dependia de .search-dock ter position:relative
-     aplicado e de top:48px calculado bater exatamente com a altura real
-     da barra de finalidade acima, duas contas frágeis que quebravam sem
-     aviso em alguns Android reais (campo de busca sumia/colapsava,
-     mesmo sem reproduzir em teste automatizado). Fluxo normal agora:
-     cada linha ocupa a altura que precisa, sem cálculo nenhum. */
+  /* Search dock compacto (README 01.2) — reescrito sem CSS Grid nem
+     position:absolute. A versão anterior usava grid-column/grid-row pra
+     posicionar campo+botão lado a lado, e antes disso position:absolute
+     com top calculado — as duas quebravam silenciosamente em algum
+     Android real (campo de busca sumia por completo), sem reproduzir em
+     nenhum teste automatizado (Chromium, WebKit, várias larguras/UAs).
+     Agora é bloco simples empilhado (.search-dock só com display:block) +
+     um wrapper próprio (.search-row-mobile) com display:flex básico só
+     pra juntar campo e botão numa linha — a técnica mais antiga e
+     amplamente suportada que existe, sem cálculo, sem propriedade de
+     posicionamento fora do fluxo normal do documento. */
   .search-stage{margin-top:0;position:relative;z-index:2}
-  .search-dock{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;align-items:center;column-gap:10px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-color:rgba(21,21,20,.11);box-shadow:0 30px 75px rgba(24,18,15,.14);padding:10px 12px 12px;min-height:0}
-  .purpose-tabs{grid-column:1/-1;grid-row:1;position:static;width:100%;border-bottom:1px solid var(--line);padding-bottom:0;margin-bottom:8px}
+  .search-dock{display:block;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-color:rgba(21,21,20,.11);box-shadow:0 30px 75px rgba(24,18,15,.14);padding:10px 12px 12px;min-height:0}
+  .purpose-tabs{position:static;width:100%;border-bottom:1px solid var(--line);padding-bottom:0;margin-bottom:8px;display:flex}
   .purpose-tab{flex:1;min-height:38px;font-size:12px;text-align:center;border-bottom:2px solid transparent}
   .purpose-tab.active{border-color:var(--red)}
   .search-field{border:0;min-height:50px;padding:0}
   .search-field>span{display:none}
   .search-field input{font-size:15px}
   .search-field input::placeholder{color:#99958c}
-  .search-field-type,.search-field-price,.advanced-link{display:none}
-  .search-location{grid-column:1;grid-row:2;display:flex;align-items:center;width:100%;min-width:0}
-  .search-submit{grid-column:2;grid-row:2;height:44px;width:44px;flex:0 0 auto;margin:0;padding:0;justify-content:center;gap:0;position:static;border-radius:50%}
-  .search-submit span{display:none}
+  .search-field-type,.search-field-price,.advanced-link,.search-submit{display:none}
+  .search-row-mobile{display:flex;align-items:center;width:100%}
+  .search-location{flex:1;display:flex;align-items:center;min-width:0;width:auto}
+  .search-submit-mobile{flex:none;height:44px;width:44px;margin:0;padding:0;border:0;border-radius:50%;background:var(--ink);color:#fff;font-size:19px;display:flex;align-items:center;justify-content:center}
 
   /* Atalhos por tipo (README 01.3) — não existe no desktop */
   .type-shortcuts{display:flex;gap:8px;overflow-x:auto;padding:14px 16px 6px;scrollbar-width:none;margin-top:0}
