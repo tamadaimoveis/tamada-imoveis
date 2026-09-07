@@ -11,18 +11,40 @@ function closeMenu() {
   mobileMenu.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('menu-open');
 }
-menuToggle.addEventListener('click', () => {
+function toggleMenu() {
   const open = !mobileMenu.classList.contains('open');
   menuToggle.classList.toggle('open', open);
   menuToggle.setAttribute('aria-expanded', String(open));
   mobileMenu.classList.toggle('open', open);
   mobileMenu.setAttribute('aria-hidden', String(!open));
   document.body.classList.toggle('menu-open', open);
-});
+}
+menuToggle.addEventListener('click', toggleMenu);
 mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
+// Ficha do imóvel esconde o header padrão no mobile (a barra de ações da
+// foto assume) — o botão de menu dela abre o mesmo #mobileMenu.
+document.querySelector('#mobileMenuToggle')?.addEventListener('click', toggleMenu);
+
 const siteHeader = document.querySelector('#siteHeader');
-const onHeaderScroll = () => siteHeader.classList.toggle('scrolled', window.scrollY > 90);
+// No mobile o header fica sólido/fixo (.scrolled) depois de 90px — sem
+// esconder ao descer, ele fica flutuando sobre o conteúdo pra sempre e
+// cobre título/texto de cada seção que passa por baixo dele. Some ao
+// descer, volta ao subir (padrão de app), como qualquer barra fixa que
+// não reserva espaço próprio no fluxo da página.
+let lastScrollY = window.scrollY;
+const onHeaderScroll = () => {
+  const y = window.scrollY;
+  siteHeader.classList.toggle('scrolled', y > 90);
+  if (window.matchMedia('(max-width:620px)').matches) {
+    const goingDown = y > lastScrollY + 4;
+    const goingUp = y < lastScrollY - 4;
+    if (y < 90) siteHeader.classList.remove('hide');
+    else if (goingDown) siteHeader.classList.add('hide');
+    else if (goingUp) siteHeader.classList.remove('hide');
+  }
+  lastScrollY = y;
+};
 onHeaderScroll();
 window.addEventListener('scroll', onHeaderScroll, { passive: true });
 

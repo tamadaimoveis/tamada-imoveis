@@ -428,7 +428,14 @@ img{display:block;max-width:100%}
    aditivo/override sobre o CSS desktop acima; nada fora de @media muda.
    =========================================================================== */
 @media (max-width:620px){
-  :root{--shell:calc(100% - 32px);--header-fixo:64px}
+  :root{--shell:calc(100% - 32px);--header-fixo:64px;--tab-bar-altura:calc(65px + env(safe-area-inset-bottom))}
+
+  /* Reserva de espaço pra tab bar fixa — sem isso o fim de QUALQUER página
+     (rodapé, formulário, último card) fica embaixo dela, cortado. Todo
+     <main> tem essa página fechando nele (site-footer ou não), então um
+     padding aqui cobre as 7 telas de uma vez, sem precisar acertar cada
+     seção final individualmente. */
+  main{padding-bottom:var(--tab-bar-altura)}
 
   /* Princípio 3 — performance: desliga tudo que é decorativo/pesado */
   .page-grain,.cursor-glow,.hero-route,.scroll-cue,.hero-coordinate,.section-atmosphere,.map-topography,.contact-orbit,.utility-bar,.floating-whatsapp{display:none}
@@ -439,7 +446,8 @@ img{display:block;max-width:100%}
 
   /* Header / top bar — vira absolute sobre o hero, sem utility-bar acima */
   .site-header{top:0;height:auto;padding:calc(env(safe-area-inset-top) + 14px) 0 0}
-  .site-header.scrolled{position:fixed;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);padding-top:0;height:var(--header-fixo)}
+  .site-header.scrolled{position:fixed;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);padding-top:0;height:var(--header-fixo);transition:transform .3s var(--ease)}
+  .site-header.scrolled.hide{transform:translateY(-100%)}
   .header-inner{height:auto;padding:0 16px}
   .brand{width:auto;height:38px}.brand img{height:100%;width:auto}
   .site-header.scrolled .brand{height:32px}
@@ -457,8 +465,10 @@ img{display:block;max-width:100%}
   body:has(.mobile-menu.open) .menu-toggle::after{content:'';position:absolute;inset:9px;border:1.5px solid var(--ink);border-radius:50%}
   body:has(.mobile-menu.open) .menu-toggle span{background:var(--ink);width:11px;left:16.5px}
 
-  /* Hero (README 01.1) */
-  .hero{padding:0;height:640px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+  /* Hero (README 01.1) — precisa de respiro no topo pro header (fixo desde
+     o scroll 0 no mobile, diferente do desktop onde só fica sólido depois
+     de 90px) não cobrir o eyebrow/título quando o texto é longo. */
+  .hero{padding:calc(env(safe-area-inset-top) + 84px) 0 0;height:640px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
   .hero-media,.hero-media picture{position:absolute}
   .hero-scrim{background:linear-gradient(to bottom,rgba(12,9,8,.62),rgba(12,9,8,.1) 32%,rgba(12,9,8,.55) 62%,rgba(12,9,8,.92) 100%)}
   .hero-layout{display:block;height:auto;padding:0 16px 16px;width:100%}
@@ -537,8 +547,13 @@ img{display:block;max-width:100%}
   .neighborhood-list button span{grid-column:2;grid-row:1;font:400 24px/1 Elicyon;font-size:24px}
   .neighborhood-list button small{display:block;grid-column:2;grid-row:2;font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45)}
   .neighborhood-list button iconify-icon{display:inline-block;grid-column:3;grid-row:1/3;font-size:18px;color:#ef878b}
-  .map-layout{padding:0}.map-shell{display:none}
-  .atlas-back-floating,.atlas-view-map{display:none}
+  /* O mapa (Atlas Tamada) precisa continuar funcionando no mobile — clicar
+     num bairro tem que abrir o mapa de verdade, igual ao desktop, não só a
+     lista. Empilha mapa+painel de cards em vez do grid 2 colunas. */
+  .map-layout{padding:0;grid-template-columns:1fr;min-height:0}
+  .map-shell{height:52vh;min-height:320px}
+  .map-panel{min-height:0;max-height:38vh;padding:16px}
+  .atlas-back-floating{top:calc(env(safe-area-inset-top) + 12px);left:12px;padding:10px 14px;font-size:12px}
   .atlas-open-map{display:flex;width:calc(100% - 32px);margin:24px 16px 0;justify-content:center;gap:10px;min-height:52px;color:#fff;border-color:rgba(255,255,255,.35)}
 
   /* Oportunidades — cards empilhados cheios (bate com o handoff: cada
@@ -604,7 +619,7 @@ img{display:block;max-width:100%}
   .tab-bar a,.tab-bar button{display:flex;flex-direction:column;align-items:center;gap:5px;min-height:44px;border:0;background:none;font:700 8.5px Antique,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer}
   .tab-bar a.active,.tab-bar button.active{color:var(--red)}
   .tab-bar iconify-icon{font-size:20px}
-  .tab-bar-whatsapp{width:52px;height:52px;margin-top:-26px;border-radius:50%;background:var(--red);color:#fff;font-size:24px;box-shadow:0 10px 26px rgba(178,18,24,.35),0 0 0 6px var(--paper);display:grid;place-items:center}
+  .tab-bar a.tab-bar-whatsapp{width:52px;height:52px;margin-top:-26px;border-radius:50%;background:var(--red);color:#fff;font-size:24px;box-shadow:0 10px 26px rgba(178,18,24,.35),0 0 0 6px var(--paper);display:grid;place-items:center}
   .tab-bar-whatsapp span{display:none}
 
   .modal-shell{width:100%;height:100%;max-height:none}.modal-head{padding:25px 20px}.modal-head h2{font-size:39px}.modal-body{padding:22px 20px}.modal-grid{grid-template-columns:1fr}.modal-field.full{grid-column:auto}.modal-footer{padding:16px 20px}.modal-footer .button{min-height:50px;padding:0 17px}.clear-search{font-size:0}.clear-search iconify-icon{font-size:21px}

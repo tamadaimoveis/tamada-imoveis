@@ -147,12 +147,12 @@ function card(property) {
   const saved = favorites.has(property.ref);
   return `<article class="catalog-card" data-ref="${property.ref}">
     <div class="catalog-card-media">
-      <a href="imovel.html?ref=${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400"></a>
+      <a href="/imovel/${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400"></a>
       <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>
       <button class="catalog-favorite ${saved ? 'saved' : ''}" type="button" data-favorite="${property.ref}" aria-label="${saved ? 'Remover dos favoritos' : 'Salvar imóvel'}"><iconify-icon icon="solar:heart-${saved ? 'bold' : 'linear'}"></iconify-icon></button>
     </div>
     <div class="catalog-card-copy"><p class="catalog-card-location">${property.neighborhood} · ${property.city}</p><h2>${property.title}</h2><div class="catalog-card-specs">${specs(property)}</div>
-      <div class="catalog-card-bottom"><strong>${money(rentOnly ? property.rent : property.sale || property.rent, rentOnly)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="imovel.html?ref=${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+      <div class="catalog-card-bottom"><strong>${money(rentOnly ? property.rent : property.sale || property.rent, rentOnly)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="/imovel/${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
     </div></article>`;
 }
 
@@ -429,7 +429,7 @@ function showMapCard(property, markerIndex) {
   document.querySelector('#floatingLocation').textContent = `${property.neighborhood} · ${property.city}`;
   document.querySelector('#floatingTitle').textContent = property.title;
   document.querySelector('#floatingPrice').textContent = displayPrice(property);
-  document.querySelector('#floatingLink').href = `imovel.html?ref=${property.ref}`;
+  document.querySelector('#floatingLink').href = `/imovel/${property.ref}`;
   panel.hidden = false;
   markers.forEach((marker, index) => marker.setIcon(mapIcon(currentMapResults[index], index, index === markerIndex)));
   document.querySelectorAll('.map-result-item').forEach((item, index) => item.classList.toggle('active', index === markerIndex));

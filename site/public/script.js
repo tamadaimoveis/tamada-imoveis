@@ -180,7 +180,7 @@ function propertyCard(property) {
   return `
     <article class="property-card" data-ref="${property.ref}">
       <div class="property-media">
-        <a href="imovel.html?ref=${property.ref}" aria-label="Conhecer ${property.title}">
+        <a href="/imovel/${property.ref}" aria-label="Conhecer ${property.title}">
           <img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400">
         </a>
         <span class="property-purpose">${purposeLabel(property)}</span>
@@ -191,9 +191,9 @@ function propertyCard(property) {
       </div>
       <div class="property-copy">
         <p class="property-location"><span>${property.neighborhood} · ${property.city}</span><span>${typeLabels[property.type] || 'Imóvel'}</span></p>
-        <h3><a href="imovel.html?ref=${property.ref}"><span class="property-title-full">${property.title}</span><span class="property-title-short">${shortTitle(property)}</span></a></h3>
+        <h3><a href="/imovel/${property.ref}"><span class="property-title-full">${property.title}</span><span class="property-title-short">${shortTitle(property)}</span></a></h3>
         <div class="property-specs">${specsMarkup(property)}</div>
-        <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}</strong><a href="imovel.html?ref=${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+        <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}</strong><a href="/imovel/${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
       </div>
     </article>`;
 }
@@ -503,7 +503,7 @@ function activateMapProperty(index, pan = false) {
   document.querySelector('#mapCardTitle').textContent = property.title;
   document.querySelector('#mapCardFeatures').innerHTML = specsMarkup(property);
   document.querySelector('#mapCardPrice').textContent = displayPrice(property, property.rent && !property.sale ? 'rent' : 'sale');
-  document.querySelector('#mapCardLink').href = `imovel.html?ref=${property.ref}`;
+  document.querySelector('#mapCardLink').href = `/imovel/${property.ref}`;
   // Alterna a classe no elemento que já existe em vez de recriar o ícone:
   // `setIcon` substituiria o DOM dos 60 pinos, reiniciando a transição de
   // cada um e piscando o que estivesse sob o cursor.
@@ -639,11 +639,24 @@ document.querySelectorAll('[data-neighborhood]').forEach(button => button.addEve
 
 /* Header, mobile navigation and motion */
 let scrollTick = false;
+let lastHeaderScrollY = window.scrollY;
 function onScroll() {
   if (scrollTick) return;
   scrollTick = true;
   requestAnimationFrame(() => {
-    dom.header.classList.toggle('scrolled', window.scrollY > 90);
+    const y = window.scrollY;
+    dom.header.classList.toggle('scrolled', y > 90);
+    // Mobile: header fixo some ao descer, volta ao subir — sem isso ele
+    // fica flutuando sobre o conteúdo pra sempre e cobre título/texto de
+    // cada seção que passa por baixo (nenhuma seção reserva esse espaço).
+    if (window.matchMedia('(max-width:620px)').matches) {
+      const goingDown = y > lastHeaderScrollY + 4;
+      const goingUp = y < lastHeaderScrollY - 4;
+      if (y < 90) dom.header.classList.remove('hide');
+      else if (goingDown) dom.header.classList.add('hide');
+      else if (goingUp) dom.header.classList.remove('hide');
+    }
+    lastHeaderScrollY = y;
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.innerWidth > 900) {
       document.querySelectorAll('[data-parallax]').forEach(element => {
         const speed = Number(element.dataset.parallax || 0);

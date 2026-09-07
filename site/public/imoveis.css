@@ -789,7 +789,11 @@
   .catalog-cta{padding:56px 16px 40px}
 
   /* ===== Ficha do imóvel ===== */
-  .detail-hero-mobile-actions{display:flex;justify-content:space-between;position:absolute;left:16px;right:16px;top:16px;z-index:5}
+  /* Ficha do imóvel não usa o header padrão do site no mobile — a própria
+     barra de ações (voltar/compartilhar/favoritar) substitui logo+hambúrguer,
+     senão os dois disputam o mesmo canto e ficam colados um no outro. */
+  body:has(#detailContent) .site-header{display:none}
+  .detail-hero-mobile-actions{display:flex;justify-content:space-between;position:absolute;left:16px;right:16px;top:calc(env(safe-area-inset-top) + 16px);z-index:5}
   .detail-hero-mobile-actions-right{display:flex;gap:10px}
   .detail-hero-mobile-actions a,.detail-hero-mobile-actions button{width:40px;height:40px;border:0;border-radius:50%;background:rgba(20,16,14,.55);backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center;font-size:19px;cursor:pointer}
   .detail-hero-mobile-actions #mobileFavoriteButton.saved{background:var(--red)}

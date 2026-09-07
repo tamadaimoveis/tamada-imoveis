@@ -181,6 +181,9 @@ export default async function ImovelPage({ params }: Props) {
                 <button type="button" id="mobileFavoriteButton" aria-label="Salvar imóvel">
                   <iconify-icon icon="solar:heart-linear" />
                 </button>
+                <button type="button" id="mobileMenuToggle" aria-label="Abrir menu">
+                  <iconify-icon icon="solar:hamburger-menu-linear" />
+                </button>
               </div>
             </div>
             <div className="detail-filmstrip" id="detailStrip" aria-label="Fotos do imóvel" />
