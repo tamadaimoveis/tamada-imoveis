@@ -465,10 +465,18 @@ img{display:block;max-width:100%}
   body:has(.mobile-menu.open) .menu-toggle::after{content:'';position:absolute;inset:9px;border:1.5px solid var(--ink);border-radius:50%}
   body:has(.mobile-menu.open) .menu-toggle span{background:var(--ink);width:11px;left:16.5px}
 
-  /* Hero (README 01.1) — precisa de respiro no topo pro header (fixo desde
-     o scroll 0 no mobile, diferente do desktop onde só fica sólido depois
-     de 90px) não cobrir o eyebrow/título quando o texto é longo. */
-  .hero{padding:calc(env(safe-area-inset-top) + 84px) 0 0;height:640px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+  /* Hero (README 01.1) — era justify-content:flex-end (texto grudado
+     embaixo). Nesse modo nem padding-top na .hero nem margin-top no
+     .hero-copy empurram o texto pra baixo: o flex mantém a base fixa e
+     estica o conteúdo pra CIMA, saindo da tela por cima em telas estreitas
+     (~360px), onde o bloco de texto é mais alto e a logo é larga o
+     bastante pra invadir a faixa do eyebrow. Trocado pra um espaçador real
+     acima do texto (flex-grow), que empurra pra baixo de verdade e nunca
+     estica o conteúdo pra fora da tela. */
+  .hero{height:640px;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden}
+  .hero-layout{display:flex;flex-direction:column;flex:1}
+  .hero-layout::before{content:'';flex:1 0 calc(env(safe-area-inset-top) + 74px)}
+  .hero-copy{margin-top:0;flex:0 0 auto}
   .hero-media,.hero-media picture{position:absolute}
   .hero-scrim{background:linear-gradient(to bottom,rgba(12,9,8,.62),rgba(12,9,8,.1) 32%,rgba(12,9,8,.55) 62%,rgba(12,9,8,.92) 100%)}
   .hero-layout{display:block;height:auto;padding:0 16px 16px;width:100%}
