@@ -475,14 +475,29 @@ img{display:block;max-width:100%}
      bastante pra invadir a faixa do eyebrow. Trocado pra um espaçador real
      acima do texto (flex-grow), que empurra pra baixo de verdade e nunca
      estica o conteúdo pra fora da tela. */
-  .hero{height:640px;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden}
-  .hero-layout{display:flex;flex-direction:column;flex:1}
+  /* height:640px fixo com overflow:hidden CORTAVA a busca por completo em
+     qualquer condição onde o conteúdo real passasse dos 640px — nunca
+     reproduzi isso em teste (minhas simulações sempre ficavam abaixo do
+     limite por pouco), mas é exatamente esse o motivo do campo de busca
+     sumir sempre no Android real do cliente: a métrica de fonte do sistema
+     dele é alguns px mais alta que a das minhas simulações, e o conteúdo
+     empurra o total pra além dos 640px — a parte que sobra (a busca,
+     por vir por último) fica escondida atrás do overflow:hidden, sem
+     erro nenhum no console, só sumindo da tela. Altura automática agora:
+     a hero cresce com o conteúdo, a foto de fundo (position:absolute;
+     inset:0) sempre acompanha, min-height segura o visual em telas onde
+     o conteúdo é mais curto que a proporção original. */
+  .hero{height:auto;min-height:560px;box-sizing:border-box;display:flex;flex-direction:column;overflow:visible}
+  /* .hero-layout e .hero-copy tinham CADA UM duas regras conflitantes
+     neste mesmo bloco mobile (uma daqui, outra redefinindo display/padding
+     mais abaixo) — a segunda sempre vencia na cascata e desfazia parte da
+     primeira sem erro nenhum no console, só quebrando visualmente. Uma
+     regra só agora, com tudo que as duas versões precisavam. */
+  .hero-layout{display:flex;flex-direction:column;flex:1;height:auto;padding:0 16px 16px;width:100%;box-sizing:border-box}
   .hero-layout::before{content:'';flex:1 0 calc(env(safe-area-inset-top) + 74px)}
-  .hero-copy{margin-top:0;flex:0 0 auto}
   .hero-media,.hero-media picture{position:absolute}
   .hero-scrim{background:linear-gradient(to bottom,rgba(12,9,8,.62),rgba(12,9,8,.1) 32%,rgba(12,9,8,.55) 62%,rgba(12,9,8,.92) 100%)}
-  .hero-layout{display:block;height:auto;padding:0 16px 16px;width:100%}
-  .hero-copy{padding-bottom:0;display:flex;flex-direction:column;gap:16px}
+  .hero-copy{margin-top:0;padding-bottom:0;flex:0 0 auto;display:flex;flex-direction:column;gap:16px}
   .hero-eyebrow{color:rgba(255,255,255,.82)}
   .hero h1{font-size:56px;line-height:.88;letter-spacing:-.05em;text-shadow:0 2px 30px rgba(8,6,5,.45);max-width:none}
   .hero h1 em{color:#ff3b41;font-style:italic}

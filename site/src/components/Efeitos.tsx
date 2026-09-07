@@ -26,9 +26,15 @@ function carregar(src: string) {
     s.async = false
     s.dataset.efeito = src
     // CDN fora do ar não pode travar a página — sem animação o site continua
-    // legível e navegável.
-    s.onload = () => resolve()
-    s.onerror = () => resolve()
+    // legível e navegável. onload/onerror cobrem falha explícita, mas numa
+    // rede que nem completa nem erra (comum em dados móveis instáveis) nenhum
+    // dos dois dispara — a promise ficava pendurada pra sempre e, como o
+    // carregamento é sequencial, TUDO depois dela (script.js incluso) nunca
+    // rodava. 8s é generoso pra um script de CDN; depois disso segue sem ele.
+    const destravar = () => resolve()
+    s.onload = destravar
+    s.onerror = destravar
+    setTimeout(destravar, 8000)
     document.head.appendChild(s)
   })
 }
