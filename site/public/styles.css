@@ -530,6 +530,14 @@ img{display:block;max-width:100%}
   .search-row-mobile{display:flex;align-items:center;width:100%}
   .search-location{flex:1;display:flex;align-items:center;min-width:0;width:auto}
   .search-submit-mobile{flex:none;height:44px;width:44px;margin:0;padding:0;border:0;border-radius:50%;background:var(--ink);color:#fff;font-size:19px;display:flex;align-items:center;justify-content:center}
+  /* Busca mobile só tinha localização — sem tipo/valor/quartos o usuário
+     não consegue refinar nada. Em vez de reaproveitar .advanced-link
+     (position:absolute, pensado pro layout desktop), botão novo em fluxo
+     normal que abre o mesmo #searchModal (já responsivo, tela cheia). */
+  .advanced-link-mobile{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;margin-top:10px;padding:0 14px;border:1px solid var(--line);border-radius:99px;background:#fff;color:var(--ink-soft);font-size:12px;font-weight:600;text-align:left}
+  .advanced-link-mobile>iconify-icon:first-child{font-size:17px;color:var(--red);flex:none}
+  .advanced-link-mobile span{flex:1}
+  .advanced-link-mobile>iconify-icon:last-child{font-size:15px;flex:none}
 
   /* Atalhos por tipo (README 01.3) — não existe no desktop */
   .type-shortcuts{display:flex;gap:8px;overflow-x:auto;padding:14px 16px 6px;scrollbar-width:none;margin-top:0}

@@ -27,24 +27,13 @@ mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeM
 document.querySelector('#mobileMenuToggle')?.addEventListener('click', toggleMenu);
 
 const siteHeader = document.querySelector('#siteHeader');
-// No mobile o header fica sólido/fixo (.scrolled) depois de 90px — sem
-// esconder ao descer, ele fica flutuando sobre o conteúdo pra sempre e
-// cobre título/texto de cada seção que passa por baixo dele. Some ao
-// descer, volta ao subir (padrão de app), como qualquer barra fixa que
-// não reserva espaço próprio no fluxo da página.
-let lastScrollY = window.scrollY;
-const onHeaderScroll = () => {
-  const y = window.scrollY;
-  siteHeader.classList.toggle('scrolled', y > 90);
-  if (window.matchMedia('(max-width:620px)').matches) {
-    const goingDown = y > lastScrollY + 4;
-    const goingUp = y < lastScrollY - 4;
-    if (y < 90) siteHeader.classList.remove('hide');
-    else if (goingDown) siteHeader.classList.add('hide');
-    else if (goingUp) siteHeader.classList.remove('hide');
-  }
-  lastScrollY = y;
-};
+// Header vira sólido/fixo (.scrolled) depois de 90px, como qualquer navbar
+// fixa comum — fica sempre visível, sem sumir ao rolar. (Chegou a esconder
+// ao descer numa versão anterior, pra compensar seções sem espaço reservado
+// pra ele; a causa raiz real do overlap era outra — a hero da home cortando
+// conteúdo com overflow:hidden — já corrigida, então o header não precisa
+// mais desse comportamento.)
+const onHeaderScroll = () => siteHeader.classList.toggle('scrolled', window.scrollY > 90);
 onHeaderScroll();
 window.addEventListener('scroll', onHeaderScroll, { passive: true });
 

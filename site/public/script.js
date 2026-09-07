@@ -639,24 +639,16 @@ document.querySelectorAll('[data-neighborhood]').forEach(button => button.addEve
 
 /* Header, mobile navigation and motion */
 let scrollTick = false;
-let lastHeaderScrollY = window.scrollY;
 function onScroll() {
   if (scrollTick) return;
   scrollTick = true;
   requestAnimationFrame(() => {
     const y = window.scrollY;
+    // Header vira sólido/fixo (.scrolled) depois de 90px e fica sempre
+    // visível — chegou a esconder ao descer numa versão anterior, mas a
+    // causa raiz do overlap era a hero cortando conteúdo com
+    // overflow:hidden (já corrigida), não o header em si.
     dom.header.classList.toggle('scrolled', y > 90);
-    // Mobile: header fixo some ao descer, volta ao subir — sem isso ele
-    // fica flutuando sobre o conteúdo pra sempre e cobre título/texto de
-    // cada seção que passa por baixo (nenhuma seção reserva esse espaço).
-    if (window.matchMedia('(max-width:620px)').matches) {
-      const goingDown = y > lastHeaderScrollY + 4;
-      const goingUp = y < lastHeaderScrollY - 4;
-      if (y < 90) dom.header.classList.remove('hide');
-      else if (goingDown) dom.header.classList.add('hide');
-      else if (goingUp) dom.header.classList.remove('hide');
-    }
-    lastHeaderScrollY = y;
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.innerWidth > 900) {
       document.querySelectorAll('[data-parallax]').forEach(element => {
         const speed = Number(element.dataset.parallax || 0);
