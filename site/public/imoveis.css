@@ -1,4 +1,9 @@
 .catalog-page{background:#faf9f6}
+/* Barra de busca sticky é só do mobile (position:sticky vem só de dentro
+   do @media 620px) — sem display:none aqui, ela nunca ficou de verdade
+   escondida no desktop, só passava despercebido por acaso conforme outros
+   elementos do layout mudavam ao redor dela. */
+.catalog-mobile-bar{display:none}
 /* Header segue o padrão da home: transparente sobre a hero (com foto), sólido no scroll */
 .catalog-page .site-header:not(.scrolled) .brand-logo-white{opacity:1}
 .catalog-page .desktop-nav>a.active{color:#fff}
@@ -716,18 +721,26 @@
      sozinho, sem esse modificador), então some por esse seletor. */
   .site-footer.catalog-footer{display:none}
 
-  #catalogContent .catalog-hero{display:none}
-  /* O header (logo+hambúrguer) chegou a ficar escondido aqui — decisão de
-     seguir o mockup literalmente, que não mostrava marca nessa tela. Na
-     prática o cliente reporta como bug ("falta cabeçalho, parece que não
-     tem identidade da página") — mantém visível como em qualquer outra
-     tela, a barra de busca sticky fica logo abaixo dele. */
+  /* Hero com foto chegou a ficar escondida aqui — decisão de seguir o
+     mockup literalmente (só mostrava a barra de busca, sem foto). Na
+     prática o cliente reporta como inconsistência: Anuncie tem foto de
+     fundo na hero, Imóveis não — "se tem imagem numa tela, deveria ter em
+     todo o resto". Volta a aparecer, compacta, igual ao tratamento da
+     hero do Anuncie/Sobre/Trabalhe conosco. */
+  #catalogContent .catalog-hero{display:flex;min-height:0;height:38vh;padding:0}
+  #catalogContent .catalog-hero .breadcrumbs,
+  #catalogContent .catalog-hero-aside{display:none}
+  #catalogContent .catalog-hero-grid{grid-template-columns:1fr;gap:0;padding:0 16px}
+  #catalogContent .catalog-hero-grid h1{font-size:clamp(26px,8vw,32px)}
+  /* Header (logo+hambúrguer) também chegou a ficar escondido — mesma
+     lógica: mantém visível como em qualquer outra tela, a barra de busca
+     sticky fica logo abaixo dele. */
 
   /* top:64px (mesma altura do header .scrolled) — com o header de volta,
      a barra de busca sticky precisa ficar ABAIXO dele, não por baixo/atrás
      na mesma posição. Sem env(safe-area-inset-top) aqui: quem já reserva
      esse respiro é o próprio header, ficaria dobrado. */
-  .catalog-mobile-bar{position:sticky;top:var(--header-fixo);z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(21,21,20,.08);padding:10px 16px}
+  .catalog-mobile-bar{display:block;position:sticky;top:var(--header-fixo);z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(21,21,20,.08);padding:10px 16px}
   .catalog-mobile-bar-row{display:flex;align-items:center;gap:10px}
   .catalog-mobile-back{flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);background:#fff;color:var(--ink)}
   .catalog-mobile-back iconify-icon{font-size:19px}
