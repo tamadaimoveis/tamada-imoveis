@@ -29,26 +29,6 @@ export default async function ImoveisPage() {
       <Header catalogo active="imoveis" />
       <MobileMenu />
 
-      {/* Cabeçalho sticky só do mobile — substitui a logo/header padrão nessa
-          tela (o mockup não mostra marca aqui, só voltar+busca+filtro). Tem
-          seu próprio campo de busca (mobileCatalogQuery) sincronizado por JS
-          com o #catalogQuery real (o do form desktop), pra não duplicar a
-          lógica de filtro que já lê/escreve só um input. */}
-      <div className="catalog-mobile-bar">
-        <div className="catalog-mobile-bar-row">
-          <a className="catalog-mobile-back" href="/" aria-label="Voltar ao início">
-            <iconify-icon icon="solar:arrow-left-linear" />
-          </a>
-          <label className="catalog-mobile-search">
-            <iconify-icon icon="solar:magnifer-linear" />
-            <input id="mobileCatalogQuery" type="search" placeholder="Localização ou código" autoComplete="off" />
-          </label>
-          <button className="mobile-filter-button" id="mobileFilterButtonTop" type="button">
-            <iconify-icon icon="solar:tuning-2-linear" />
-          </button>
-        </div>
-      </div>
-
       <main id="catalogContent">
         <section className="catalog-hero">
           <div className="catalog-hero-media" aria-hidden="true">

@@ -1,9 +1,4 @@
 .catalog-page{background:#faf9f6}
-/* Barra de busca sticky é só do mobile (position:sticky vem só de dentro
-   do @media 620px) — sem display:none aqui, ela nunca ficou de verdade
-   escondida no desktop, só passava despercebido por acaso conforme outros
-   elementos do layout mudavam ao redor dela. */
-.catalog-mobile-bar{display:none}
 /* Header segue o padrão da home: transparente sobre a hero (com foto), sólido no scroll */
 .catalog-page .site-header:not(.scrolled) .brand-logo-white{opacity:1}
 .catalog-page .desktop-nav>a.active{color:#fff}
@@ -43,7 +38,7 @@
 .catalog-toolbar>div:first-child p{margin:0;font-size:13px}.catalog-toolbar>div:first-child p strong{font-family:Elicyon;font-size:28px;font-weight:400;color:var(--red);vertical-align:-2px}.catalog-toolbar>div:first-child>span{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 .catalog-toolbar>div:last-child{display:flex;align-items:center;gap:12px}.sort-field{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;height:42px;padding:0 12px}.sort-field span{font-size:8px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}.sort-field select{border:0;background:transparent;outline:0;font-size:10px;font-weight:700}
 .view-switch{height:42px;display:flex;border:1px solid var(--line);background:#fff}.view-switch button{width:42px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;font-size:18px}.view-switch button+button{border-left:1px solid var(--line)}.view-switch button.active{background:var(--ink);color:#fff}
-.mobile-filter-button{display:none;height:42px;border:1px solid var(--line);background:#fff;padding:0 13px;font-size:10px;font-weight:700;align-items:center;gap:6px}.mobile-filter-button b{background:var(--red);color:#fff;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:8px}
+.mobile-filter-button{display:none;height:42px;border:1px solid var(--line);background:#fff;padding:0 13px;font-size:10px;font-weight:700;align-items:center;gap:6px}.mobile-filter-button b:not([hidden]){background:var(--red);color:#fff;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:8px}
 
 .catalog-layout{display:grid;grid-template-columns:260px 1fr;gap:34px;align-items:start}
 .filter-panel{position:sticky;top:96px;max-height:calc(100vh - 150px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(178,18,24,.55) transparent;border:1px solid var(--line);background:#fff;padding:23px 20px}
@@ -721,49 +716,34 @@
      sozinho, sem esse modificador), então some por esse seletor. */
   .site-footer.catalog-footer{display:none}
 
-  /* Hero com foto chegou a ficar escondida aqui — decisão de seguir o
-     mockup literalmente (só mostrava a barra de busca, sem foto). Na
-     prática o cliente reporta como inconsistência: Anuncie tem foto de
-     fundo na hero, Imóveis não — "se tem imagem numa tela, deveria ter em
-     todo o resto". Volta a aparecer, compacta, igual ao tratamento da
-     hero do Anuncie/Sobre/Trabalhe conosco. */
-  #catalogContent .catalog-hero{display:flex;min-height:0;height:38vh;padding:0}
-  #catalogContent .catalog-hero .breadcrumbs,
-  #catalogContent .catalog-hero-aside{display:none}
-  #catalogContent .catalog-hero-grid{grid-template-columns:1fr;gap:0;padding:0 16px}
-  #catalogContent .catalog-hero-grid h1{font-size:clamp(26px,8vw,32px)}
-  /* Header (logo+hambúrguer) também chegou a ficar escondido — mesma
-     lógica: mantém visível como em qualquer outra tela, a barra de busca
-     sticky fica logo abaixo dele. */
+  /* Tela de Imóveis segue o MESMO padrão das outras 3 páginas internas
+     (Anuncie, Sobre, Trabalhe conosco): hero de foto no tamanho normal
+     (herda a regra base, sem altura customizada), header comum sempre
+     visível, busca dentro do fluxo da página — sem barra sticky própria
+     nem hero em tamanho diferente. Chegou a ter as duas coisas (hero
+     compacta + barra fixa por cima, layout único dessa tela), o cliente
+     reportou "não existe padrão nenhum entre as páginas" e tinha razão. */
+  #catalogContent .catalog-hero-aside .catalog-hero-actions,
+  #catalogContent .catalog-hero-aside dl{display:none}
 
-  /* top:64px (mesma altura do header .scrolled) — com o header de volta,
-     a barra de busca sticky precisa ficar ABAIXO dele, não por baixo/atrás
-     na mesma posição. Sem env(safe-area-inset-top) aqui: quem já reserva
-     esse respiro é o próprio header, ficaria dobrado. */
-  .catalog-mobile-bar{display:block;position:sticky;top:var(--header-fixo);z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(18px);border-bottom:1px solid rgba(21,21,20,.08);padding:10px 16px}
-  .catalog-mobile-bar-row{display:flex;align-items:center;gap:10px}
-  .catalog-mobile-back{flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);background:#fff;color:var(--ink)}
-  .catalog-mobile-back iconify-icon{font-size:19px}
-  .catalog-mobile-search{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid var(--line);background:#fff}
-  .catalog-mobile-search iconify-icon{font-size:16px;color:var(--red);flex:0 0 auto}
-  .catalog-mobile-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14px;color:var(--ink)}
-  .catalog-mobile-bar #mobileFilterButtonTop{display:flex;position:relative;flex:0 0 auto}
-
-  .catalog-search{padding:0;background:transparent;border:0}
-  /* min-height:108px vem da regra desktop (linha 28), pensada pro grid de
-     5 colunas que aqui vira 1 chip-row só — sem zerar, sobrava espaço vazio
-     embaixo dos chips de finalidade, sem nenhum conteúdo o preenchendo. */
+  .catalog-search{padding:16px;background:#fff;border-bottom:1px solid var(--line)}
   .catalog-search-form{display:block;padding:0;min-height:0}
-  .catalog-search-form>*:not(.catalog-purpose):not(.catalog-mobile-chips){display:none}
-  .catalog-purpose{display:flex;gap:8px;overflow-x:auto;padding:10px 0 0;scrollbar-width:none}
+  .catalog-search-form>*:not(.catalog-purpose):not(.catalog-mobile-chips):not(.catalog-query):not(.catalog-submit){display:none}
+  .catalog-purpose{display:flex;gap:8px;overflow-x:auto;padding:0 0 12px;scrollbar-width:none}
   .catalog-purpose::-webkit-scrollbar{display:none}
   .catalog-purpose button{flex:0 0 auto;min-height:34px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:700;color:var(--ink-soft)}
   .catalog-purpose button.active{background:var(--ink);color:#fff;border-color:transparent}
-  .catalog-mobile-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-top:8px}
+  .catalog-mobile-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px}
   .catalog-mobile-chips:empty{display:none}
   .catalog-mobile-chips::-webkit-scrollbar{display:none}
   .catalog-mobile-chips button{flex:0 0 auto;display:flex;align-items:center;gap:4px;min-height:30px;padding:0 10px;border-radius:99px;border:1px solid var(--red);background:#fff;font-size:11px;font-weight:700;color:var(--red)}
   .catalog-mobile-chips button iconify-icon{font-size:14px}
+  .catalog-query{display:block!important;margin:0}
+  .catalog-query>span{display:none}
+  .catalog-query>div{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 14px;border:1px solid var(--line);background:#fff}
+  .catalog-query iconify-icon{font-size:17px;color:var(--red);flex:0 0 auto}
+  .catalog-query input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:14px;color:var(--ink)}
+  .catalog-submit{display:flex!important;width:100%;margin-top:10px;min-height:48px;justify-content:center;align-items:center;gap:8px;background:var(--ink);color:#fff;border:0;font-size:13px;font-weight:700}
 
   .catalog-results-section{padding-top:22px}
   .catalog-toolbar{border-top:0;border-bottom:0;padding:0 16px 14px;align-items:flex-end}
@@ -774,11 +754,11 @@
   .catalog-toolbar>div:first-child p::after{content:'imóveis';font-size:15px;color:var(--ink)}
   .catalog-toolbar>div:first-child>span{display:none}
   .catalog-toolbar>div:last-child{gap:10px}
-  /* Só o filtro antigo do toolbar (duplicado, o real fica na barra sticky
-     do topo #mobileFilterButtonTop) — sem esse escopo, a regra também
-     escondia o botão da barra sticky, que só compartilha a mesma classe
-     de estilo, deixando a tela sem NENHUM acesso a filtro/busca avançada. */
-  .catalog-toolbar .mobile-filter-button{display:none}
+  /* Sem a barra sticky própria (removida — Imóveis agora segue o mesmo
+     padrão de Anuncie/Sobre/Trabalhe conosco), esse é o ÚNICO botão de
+     filtro avançado que sobra na tela — não pode ficar escondido. */
+  .mobile-filter-button{display:flex;min-height:38px;padding:0 14px;border-radius:99px;font-size:12px}
+  .mobile-filter-button b{margin-left:4px}
   .catalog-footer-mini{display:block;text-align:center;padding:22px 16px calc(24px + var(--tab-bar-altura));background:#fff;border-top:1px solid var(--line)}
   .catalog-footer-mini p{margin:0 0 6px;font-size:11px;color:var(--muted)}
   .catalog-footer-mini a{color:var(--ink-soft);font-weight:600}
