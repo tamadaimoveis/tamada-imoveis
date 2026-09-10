@@ -123,7 +123,7 @@ function factRows(property) {
     ['Terreno', f.larguraTerreno && f.comprimentoTerreno
       ? `${String(f.larguraTerreno).replace('.', ',')} x ${String(f.comprimentoTerreno).replace('.', ',')} m`
       : null],
-    ['Orientação solar', f.faceImovel],
+    ['Orientação solar', f.orientacaoSolar],
     // Idade e estado
     ['Ano de construção', f.anoConstrucao],
     ['Ano da reforma', f.anoReforma],

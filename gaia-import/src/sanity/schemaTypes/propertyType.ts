@@ -216,24 +216,6 @@ export const propertyType = defineType({
       group: 'principal',
       options: {dateFormat: 'MM/YYYY'},
     }),
-    defineField({
-      name: 'faceImovel', // [CRM]
-      title: 'Orientação Solar',
-      type: 'string',
-      group: 'principal',
-      options: {
-        list: [
-          {title: 'Norte', value: 'norte'},
-          {title: 'Sul', value: 'sul'},
-          {title: 'Leste', value: 'leste'},
-          {title: 'Oeste', value: 'oeste'},
-          {title: 'Nordeste', value: 'nordeste'},
-          {title: 'Noroeste', value: 'noroeste'},
-          {title: 'Sudeste', value: 'sudeste'},
-          {title: 'Sudoeste', value: 'sudoeste'},
-        ],
-      },
-    }),
 
     // ── Valores ────────────────────────────────────────────────────────────
     defineField({

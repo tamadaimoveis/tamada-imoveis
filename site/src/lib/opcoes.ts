@@ -104,7 +104,7 @@ export const OCUPACAO: Record<string, string> = {
   lancamento: 'Lançamento',
 }
 
-export const FACE_IMOVEL: Record<string, string> = {
+export const ORIENTACAO_SOLAR: Record<string, string> = {
   norte: 'Norte',
   sul: 'Sul',
   leste: 'Leste',
