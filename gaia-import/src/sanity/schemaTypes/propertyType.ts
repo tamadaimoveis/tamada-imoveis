@@ -357,6 +357,25 @@ export const propertyType = defineType({
       type: 'number',
       group: 'medidas',
     }),
+    defineField({
+      name: 'orientacaoSolar', // [CRM]
+      title: 'Orientação Solar',
+      description: 'Face do imóvel. Deixe em branco se não informado.',
+      type: 'string',
+      group: 'medidas',
+      options: {
+        list: [
+          {title: 'Norte', value: 'norte'},
+          {title: 'Sul', value: 'sul'},
+          {title: 'Leste', value: 'leste'},
+          {title: 'Oeste', value: 'oeste'},
+          {title: 'Nordeste', value: 'nordeste'},
+          {title: 'Noroeste', value: 'noroeste'},
+          {title: 'Sudeste', value: 'sudeste'},
+          {title: 'Sudoeste', value: 'sudoeste'},
+        ],
+      },
+    }),
     defineField({name: 'bedrooms', title: 'Quartos', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'suites', title: 'Suítes', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'bathrooms', title: 'Banheiros', type: 'number', group: 'medidas'}), // [CRM]
