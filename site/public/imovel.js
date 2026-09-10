@@ -114,10 +114,16 @@ function factRows(property) {
     ['Pé-direito', f.peDireito ? `${String(f.peDireito).replace('.', ',')} m` : null],
     // Medidas e cômodos que a barra de specs não mostra
     ['Área total', f.areaTotal && f.areaTotal !== f.areaUtil ? m2(f.areaTotal) : null],
+    ['Área construída', f.areaConstruida ? m2(f.areaConstruida) : null],
+    ['Área privativa', f.areaPrivativa ? m2(f.areaPrivativa) : null],
     ['Suítes', f.suites],
     ['Salas', f.salas],
     ['Distribuição das vagas', vagas || null],
     ['Tipo de vaga', f.tipoVaga],
+    ['Terreno', f.larguraTerreno && f.comprimentoTerreno
+      ? `${String(f.larguraTerreno).replace('.', ',')} x ${String(f.comprimentoTerreno).replace('.', ',')} m`
+      : null],
+    ['Orientação solar', f.faceImovel],
     // Idade e estado
     ['Ano de construção', f.anoConstrucao],
     ['Ano da reforma', f.anoReforma],

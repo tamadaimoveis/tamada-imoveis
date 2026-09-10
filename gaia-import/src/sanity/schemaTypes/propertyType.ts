@@ -216,6 +216,24 @@ export const propertyType = defineType({
       group: 'principal',
       options: {dateFormat: 'MM/YYYY'},
     }),
+    defineField({
+      name: 'faceImovel', // [CRM]
+      title: 'Orientação Solar',
+      type: 'string',
+      group: 'principal',
+      options: {
+        list: [
+          {title: 'Norte', value: 'norte'},
+          {title: 'Sul', value: 'sul'},
+          {title: 'Leste', value: 'leste'},
+          {title: 'Oeste', value: 'oeste'},
+          {title: 'Nordeste', value: 'nordeste'},
+          {title: 'Noroeste', value: 'noroeste'},
+          {title: 'Sudeste', value: 'sudeste'},
+          {title: 'Sudoeste', value: 'sudoeste'},
+        ],
+      },
+    }),
 
     // ── Valores ────────────────────────────────────────────────────────────
     defineField({
@@ -313,6 +331,32 @@ export const propertyType = defineType({
     // ── Medidas e cômodos ──────────────────────────────────────────────────
     defineField({name: 'area', title: 'Área Útil (m²)', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'areaTotal', title: 'Área Total (m²)', type: 'number', group: 'medidas'}), // [CRM]
+    defineField({
+      name: 'areaConstruida', // [CRM]
+      title: 'Área Construída (m²)',
+      description: 'Só a parte edificada — distinto de Área Total, que inclui terreno/área comum rateada.',
+      type: 'number',
+      group: 'medidas',
+    }),
+    defineField({
+      name: 'areaPrivativa', // [CRM]
+      title: 'Área Privativa (m²)',
+      description: 'Metragem exclusiva do dono em unidade de condomínio/prédio, sem áreas comuns rateadas.',
+      type: 'number',
+      group: 'medidas',
+    }),
+    defineField({
+      name: 'larguraTerreno', // [CRM]
+      title: 'Largura do Terreno (m)',
+      type: 'number',
+      group: 'medidas',
+    }),
+    defineField({
+      name: 'comprimentoTerreno', // [CRM]
+      title: 'Comprimento do Terreno (m)',
+      type: 'number',
+      group: 'medidas',
+    }),
     defineField({name: 'bedrooms', title: 'Quartos', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'suites', title: 'Suítes', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'bathrooms', title: 'Banheiros', type: 'number', group: 'medidas'}), // [CRM]

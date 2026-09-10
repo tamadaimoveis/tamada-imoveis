@@ -104,6 +104,17 @@ export const OCUPACAO: Record<string, string> = {
   lancamento: 'Lançamento',
 }
 
+export const FACE_IMOVEL: Record<string, string> = {
+  norte: 'Norte',
+  sul: 'Sul',
+  leste: 'Leste',
+  oeste: 'Oeste',
+  nordeste: 'Nordeste',
+  noroeste: 'Noroeste',
+  sudeste: 'Sudeste',
+  sudoeste: 'Sudoeste',
+}
+
 export const GARANTIAS: Record<string, string> = {
   caucao: 'Caução',
   seguro_fianca: 'Seguro Fiança',

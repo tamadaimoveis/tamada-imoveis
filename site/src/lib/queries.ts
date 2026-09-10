@@ -6,7 +6,7 @@
  * (com cache do Next), lá era arquivo gerado no build.
  */
 import { client } from './sanity'
-import { COMODIDADES, ACABAMENTOS, GARANTIAS, PAGAMENTO, OCUPACAO } from './opcoes'
+import { COMODIDADES, ACABAMENTOS, GARANTIAS, PAGAMENTO, OCUPACAO, FACE_IMOVEL } from './opcoes'
 
 const REVALIDATE = 300
 
@@ -95,6 +95,11 @@ type Bruto = {
   paymentMethods?: string[]
   area?: number
   areaTotal?: number
+  areaConstruida?: number
+  areaPrivativa?: number
+  larguraTerreno?: number
+  comprimentoTerreno?: number
+  faceImovel?: string
   beds?: number
   suites?: number
   baths?: number
@@ -219,7 +224,8 @@ const CAMPOS_DETALHE = `
   "codigo": codigoImovel,
   finalidade, oferta, subTipo, constructionStatus,
   garantiaLocacao, paymentMethods,
-  areaTotal, suites, qtdSalas,
+  areaTotal, areaConstruida, areaPrivativa, larguraTerreno, comprimentoTerreno, faceImovel,
+  suites, qtdSalas,
   vagasCobertas, vagasDescobertas, garageType,
   numeroAndar, qtdAndar, qtdElevador, alturaPeDireito,
   anoConstrucao, anoReforma,
@@ -256,6 +262,11 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
       finalidade: p.finalidade,
       areaUtil: p.area,
       areaTotal: p.areaTotal,
+      areaConstruida: p.areaConstruida,
+      areaPrivativa: p.areaPrivativa,
+      larguraTerreno: p.larguraTerreno,
+      comprimentoTerreno: p.comprimentoTerreno,
+      faceImovel: FACE_IMOVEL[p.faceImovel ?? ''] || null,
       quartos: p.beds,
       suites: p.suites,
       banheiros: p.baths,
