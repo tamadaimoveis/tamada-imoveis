@@ -471,6 +471,7 @@ export default async function ImoveisPage() {
           '/nav-dropdown.js',
           '/common.js',
           '/elegant-select.js',
+          '/oferta.js',
           '/imoveis.js',
         ]}
       />

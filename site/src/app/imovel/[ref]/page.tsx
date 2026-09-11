@@ -527,7 +527,7 @@ export default async function ImovelPage({ params }: Props) {
         <iconify-icon icon="mdi:whatsapp" />
       </a>
 
-      <Efeitos scripts={['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', '/nav-dropdown.js', '/common.js', '/imovel.js']} />
+      <Efeitos scripts={['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', '/nav-dropdown.js', '/common.js', '/oferta.js', '/imovel.js']} />
     </>
   )
 }

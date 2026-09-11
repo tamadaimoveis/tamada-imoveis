@@ -71,20 +71,30 @@ function compactMoney(value) {
   return `R$ ${value}`;
 }
 
+/** Propósito ativo do catálogo, no vocabulário de oferta.js ('rent'/'sale'/null). */
+function purposeAtivo() {
+  return state.purpose === 'rent' || state.purpose === 'sale' ? state.purpose : null;
+}
+
+/** Continua usada pelo filtro de preço/ordenação — segue a mesma regra de precoDestaque. */
 function priceFor(property) {
-  if (state.purpose === 'rent') return property.rent;
-  if (state.purpose === 'sale') return property.sale;
-  return property.sale || property.rent;
+  return precoDestaque(property, purposeAtivo());
 }
 
 function purposeLabel(property) {
-  if (property.sale && property.rent) return 'Venda ou locação';
-  return property.rent ? 'Para alugar' : 'À venda';
+  return purposeLabelContextual(property, purposeAtivo());
 }
 
 function displayPrice(property) {
-  const useRent = state.purpose === 'rent' || (!property.sale && property.rent);
-  return money(useRent ? property.rent : property.sale || property.rent, useRent);
+  const purpose = purposeAtivo();
+  return money(precoDestaque(property, purpose), destaqueEhLocacao(property, purpose));
+}
+
+/** `/imovel/{ref}` com `?de=` quando há propósito de venda/locação ativo — a
+ *  ficha abre já destacando o mesmo valor que o card prometeu. */
+function imovelHref(property) {
+  const purpose = purposeAtivo();
+  return purpose ? `/imovel/${property.ref}?de=${purpose}` : `/imovel/${property.ref}`;
 }
 
 function matches(property) {
@@ -143,16 +153,16 @@ function specs(property) {
 }
 
 function card(property) {
-  const rentOnly = !property.sale && Boolean(property.rent);
   const saved = favorites.has(property.ref);
+  const href = imovelHref(property);
   return `<article class="catalog-card" data-ref="${property.ref}">
     <div class="catalog-card-media">
-      <a href="/imovel/${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400"></a>
+      <a href="${href}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400"></a>
       <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>
       <button class="catalog-favorite ${saved ? 'saved' : ''}" type="button" data-favorite="${property.ref}" aria-label="${saved ? 'Remover dos favoritos' : 'Salvar imóvel'}"><iconify-icon icon="solar:heart-${saved ? 'bold' : 'linear'}"></iconify-icon></button>
     </div>
     <div class="catalog-card-copy"><p class="catalog-card-location">${property.neighborhood} · ${property.city}</p><h2>${property.title}</h2><div class="catalog-card-specs">${specs(property)}</div>
-      <div class="catalog-card-bottom"><strong>${money(rentOnly ? property.rent : property.sale || property.rent, rentOnly)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="/imovel/${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+      <div class="catalog-card-bottom"><strong>${displayPrice(property)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
     </div></article>`;
 }
 
@@ -408,7 +418,7 @@ function approximateCoords(property) {
 }
 
 function mapIcon(property, index, active = false) {
-  const value = priceFor(property) || property.sale || property.rent;
+  const value = priceFor(property);
   return window.L.divIcon({ className: '', html: `<div class="catalog-pin ${active ? 'active' : ''}">${compactMoney(value)}</div>`, iconSize: [66, 36], iconAnchor: [33, 18] });
 }
 
@@ -429,7 +439,7 @@ function showMapCard(property, markerIndex) {
   document.querySelector('#floatingLocation').textContent = `${property.neighborhood} · ${property.city}`;
   document.querySelector('#floatingTitle').textContent = property.title;
   document.querySelector('#floatingPrice').textContent = displayPrice(property);
-  document.querySelector('#floatingLink').href = `/imovel/${property.ref}`;
+  document.querySelector('#floatingLink').href = imovelHref(property);
   panel.hidden = false;
   markers.forEach((marker, index) => marker.setIcon(mapIcon(currentMapResults[index], index, index === markerIndex)));
   document.querySelectorAll('.map-result-item').forEach((item, index) => item.classList.toggle('active', index === markerIndex));

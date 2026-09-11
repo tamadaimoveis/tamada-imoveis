@@ -683,7 +683,7 @@ export default async function HomePage() {
       <SearchModal />
 
       <Efeitos
-        scripts={['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', '/elegant-select.js', '/nav-dropdown.js', '/script.js']}
+        scripts={['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', '/elegant-select.js', '/nav-dropdown.js', '/oferta.js', '/script.js']}
         gsap={false}
       />
     </>

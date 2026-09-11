@@ -84,21 +84,22 @@ function money(value, monthly = false) {
   return monthly ? `${formatted}/mês` : formatted;
 }
 
-function propertyPrice(property, purpose = state.purpose) {
-  if (purpose === 'rent' && property.rent) return property.rent;
-  if (purpose === 'sale' && property.sale) return property.sale;
-  return property.sale || property.rent;
+/** Propósito ativo da home, no vocabulário de oferta.js ('rent'/'sale'/null). */
+function purposeAtivo(purpose = state.purpose) {
+  return purpose === 'rent' || purpose === 'sale' ? purpose : null;
 }
 
-function purposeLabel(property) {
-  if (property.sale && property.rent) return 'Venda ou locação';
-  if (property.rent) return 'Para alugar';
-  return 'À venda';
+function propertyPrice(property, purpose = state.purpose) {
+  return precoDestaque(property, purposeAtivo(purpose));
+}
+
+function purposeLabel(property, purpose = state.purpose) {
+  return purposeLabelContextual(property, purposeAtivo(purpose));
 }
 
 function displayPrice(property, purpose = state.purpose) {
-  const useRent = purpose === 'rent' ? property.rent : (!property.sale && property.rent ? property.rent : 0);
-  return money(useRent || property.sale, Boolean(useRent));
+  const ativo = purposeAtivo(purpose);
+  return money(precoDestaque(property, ativo), destaqueEhLocacao(property, ativo));
 }
 
 function matchesFilters(property, filters = state) {
@@ -175,12 +176,14 @@ function shortTitle(property) {
 }
 
 function propertyCard(property) {
-  const monthly = !property.sale && Boolean(property.rent);
-  const currentPrice = monthly ? property.rent : property.sale || property.rent;
+  const ativo = purposeAtivo();
+  const monthly = destaqueEhLocacao(property, ativo);
+  const currentPrice = precoDestaque(property, ativo);
+  const href = ativo ? `/imovel/${property.ref}?de=${ativo}` : `/imovel/${property.ref}`;
   return `
     <article class="property-card" data-ref="${property.ref}">
       <div class="property-media">
-        <a href="/imovel/${property.ref}" aria-label="Conhecer ${property.title}">
+        <a href="${href}" aria-label="Conhecer ${property.title}">
           <img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400">
         </a>
         <span class="property-purpose">${purposeLabel(property)}</span>
@@ -191,9 +194,9 @@ function propertyCard(property) {
       </div>
       <div class="property-copy">
         <p class="property-location"><span>${property.neighborhood} · ${property.city}</span><span>${typeLabels[property.type] || 'Imóvel'}</span></p>
-        <h3><a href="/imovel/${property.ref}"><span class="property-title-full">${property.title}</span><span class="property-title-short">${shortTitle(property)}</span></a></h3>
+        <h3><a href="${href}"><span class="property-title-full">${property.title}</span><span class="property-title-short">${shortTitle(property)}</span></a></h3>
         <div class="property-specs">${specsMarkup(property)}</div>
-        <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}</strong><a href="/imovel/${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+        <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}</strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
       </div>
     </article>`;
 }
@@ -223,6 +226,7 @@ document.querySelectorAll('.purpose-tab').forEach(button => button.addEventListe
   state.quickFilter = button.dataset.purpose;
   document.querySelectorAll('.purpose-tab').forEach(tab => tab.classList.toggle('active', tab === button));
   priceOptions(state.purpose, dom.heroPrice);
+  renderFeaturedGrid();
 }));
 
 document.querySelector('#heroSearch').addEventListener('submit', event => {

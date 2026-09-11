@@ -222,15 +222,17 @@ function amenityList(property) {
   }));
 }
 
-function similarCard(property) {
-  const rentOnly = !property.sale && Boolean(property.rent);
+function similarCard(property, purpose) {
+  const destaque = precoDestaque(property, purpose);
+  const locacao = destaqueEhLocacao(property, purpose);
+  const href = purpose ? `/imovel/${property.ref}?de=${purpose}` : `/imovel/${property.ref}`;
   return `<article class="catalog-card">
     <div class="catalog-card-media">
-      <a href="/imovel/${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy"></a>
-      <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>
+      <a href="${href}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy"></a>
+      <span class="catalog-card-purpose">${purposeLabelContextual(property, purpose)}</span><span class="catalog-card-code">${property.ref}</span>
     </div>
     <div class="catalog-card-copy"><p class="catalog-card-location">${property.neighborhood} · ${property.city}</p><h2>${property.title}</h2><div class="catalog-card-specs">${specs(property)}</div>
-      <div class="catalog-card-bottom"><strong>${money(rentOnly ? property.rent : property.sale || property.rent, rentOnly)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="/imovel/${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+      <div class="catalog-card-bottom"><strong>${money(destaque, locacao)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabelContextual(property, purpose)}</small></strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
     </div></article>`;
 }
 
@@ -515,8 +517,10 @@ function render(property) {
 
   setupGallery(property);
 
+  const purpose = purposeDaUrl();
+
   document.querySelector('#crumbRef').textContent = property.ref;
-  document.querySelector('#detailPurpose').textContent = purposeLabel(property);
+  document.querySelector('#detailPurpose').textContent = purposeLabelContextual(property, purpose);
   document.querySelector('#detailType').textContent = typeLabels[property.type] || 'Imóvel';
   document.querySelector('#detailTitle').textContent = property.title;
   document.querySelector('#detailLocation').textContent = `${property.neighborhood} · ${property.city}`;
@@ -529,12 +533,15 @@ function render(property) {
     property.garages ? `<div><iconify-icon icon="solar:garage-linear"></iconify-icon><b>${property.garages}</b><span>${property.garages > 1 ? 'vagas' : 'vaga'}</span></div>` : ''
   ].filter(Boolean).join('');
 
-  const rentOnly = !property.sale && Boolean(property.rent);
-  const mainPrice = money(rentOnly ? property.rent : property.sale || property.rent, rentOnly);
-  document.querySelector('#detailPriceLabel').textContent = rentOnly ? 'Para locação por' : (property.sale && property.rent ? 'À venda (ou locação) por' : 'À venda por');
+  const destaqueLocacao = destaqueEhLocacao(property, purpose);
+  const mainPrice = money(precoDestaque(property, purpose), destaqueLocacao);
+  const secundario = precoSecundario(property, purpose);
+  document.querySelector('#detailPriceLabel').textContent = rotuloPrecoContextual(property, purpose);
   document.querySelector('#detailPrice').textContent = mainPrice;
   document.querySelector('#asidePrice').textContent = mainPrice;
-  document.querySelector('#asidePurpose').textContent = property.sale && property.rent ? `ou ${money(property.rent, true)} na locação` : purposeLabel(property);
+  document.querySelector('#asidePurpose').textContent = secundario != null
+    ? (destaqueLocacao ? `ou ${money(secundario)} na venda` : `ou ${money(secundario, true)} na locação`)
+    : purposeLabelContextual(property, purpose);
 
   document.querySelector('#officialLink').href = `${liveBase}${property.url}`;
 
@@ -606,7 +613,7 @@ function render(property) {
   initMagnetic();
 
   const similar = pickSimilar(property);
-  if (similar.length) document.querySelector('#similarGrid').innerHTML = similar.map(similarCard).join('');
+  if (similar.length) document.querySelector('#similarGrid').innerHTML = similar.map(item => similarCard(item, purpose)).join('');
   else document.querySelector('.detail-similar').hidden = true;
 
   if (window.L) {
