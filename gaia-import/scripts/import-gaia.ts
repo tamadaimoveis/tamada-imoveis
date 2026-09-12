@@ -370,6 +370,9 @@ const AMENITY_MAP: Record<string, string> = {
   AreaServico: 'area_servico',
   Copa: 'copa',
   Despensa: 'despensa',
+  // Mesmo nome do campo numérico `escritorio` (contador, PR #1601) de propósito
+  // — os dois coexistem, não são a mesma coisa. Ver comentário no schema
+  // (propertyType.ts) antes de "limpar" um dos dois numa manutenção futura.
   Escritorio: 'escritorio',
   AreaEscritorio: 'escritorio',
   ArmarioCloset: 'closet',

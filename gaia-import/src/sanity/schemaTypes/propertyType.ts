@@ -370,6 +370,10 @@ export const propertyType = defineType({
       type: 'number',
       group: 'medidas',
     }),
+    // Nome igual ao valor 'escritorio' de `amenities` (comodidade booleana,
+    // mapeada em import-gaia.ts a partir das tags Gaia Escritorio/AreaEscritorio)
+    // é PROPOSITAL — os dois coexistem, não são o mesmo dado. Não remover um
+    // achando que é duplicata do outro.
     defineField({
       name: 'escritorio', // [CRM]
       title: 'Escritório (quantidade)',
