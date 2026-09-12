@@ -361,6 +361,7 @@ export const propertyType = defineType({
     defineField({name: 'bedrooms', title: 'Quartos', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'suites', title: 'Suítes', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'bathrooms', title: 'Banheiros', type: 'number', group: 'medidas'}), // [CRM]
+    defineField({name: 'lavabos', title: 'Lavabos', type: 'number', group: 'medidas'}),
     defineField({name: 'qtdSalas', title: 'Salas', type: 'number', group: 'medidas'}),
     defineField({name: 'garage', title: 'Vagas de Garagem', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'vagasCobertas', title: 'Vagas Cobertas', type: 'number', group: 'medidas'}),
