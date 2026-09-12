@@ -362,7 +362,23 @@ export const propertyType = defineType({
     defineField({name: 'suites', title: 'Suítes', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'bathrooms', title: 'Banheiros', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'lavabos', title: 'Lavabos', type: 'number', group: 'medidas'}),
-    defineField({name: 'qtdSalas', title: 'Salas', type: 'number', group: 'medidas'}),
+    defineField({name: 'qtdSalas', title: 'Salas', type: 'number', group: 'medidas'}), // [CRM] escreve aqui — reaproveita o campo existente, ver PR #1601
+    defineField({
+      name: 'lavanderia', // [CRM]
+      title: 'Lavanderia',
+      description: 'Quantidade de lavanderias. Novo (PR #1601, indexação em portais ZAP/OLX/ImovelWeb).',
+      type: 'number',
+      group: 'medidas',
+    }),
+    defineField({
+      name: 'escritorio', // [CRM]
+      title: 'Escritório (quantidade)',
+      description:
+        'Contador numérico, distinto da comodidade booleana "Escritório" em Comodidades — ' +
+        'os dois coexistem (PR #1601, indexação em portais ZAP/OLX/ImovelWeb).',
+      type: 'number',
+      group: 'medidas',
+    }),
     defineField({name: 'garage', title: 'Vagas de Garagem', type: 'number', group: 'medidas'}), // [CRM]
     defineField({name: 'vagasCobertas', title: 'Vagas Cobertas', type: 'number', group: 'medidas'}),
     defineField({name: 'vagasDescobertas', title: 'Vagas Descobertas', type: 'number', group: 'medidas'}),

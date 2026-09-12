@@ -118,6 +118,8 @@ function factRows(property) {
     ['Área privativa', f.areaPrivativa ? m2(f.areaPrivativa) : null],
     ['Suítes', f.suites],
     ['Salas', f.salas],
+    ['Lavanderia', f.lavanderia],
+    ['Escritório', f.escritorio],
     ['Distribuição das vagas', vagas || null],
     ['Tipo de vaga', f.tipoVaga],
     ['Terreno', f.larguraTerreno && f.comprimentoTerreno

@@ -104,6 +104,8 @@ type Bruto = {
   suites?: number
   baths?: number
   qtdSalas?: number
+  lavanderia?: number
+  escritorio?: number
   garages?: number
   vagasCobertas?: number
   vagasDescobertas?: number
@@ -225,7 +227,7 @@ const CAMPOS_DETALHE = `
   finalidade, oferta, subTipo, constructionStatus,
   garantiaLocacao, paymentMethods,
   areaTotal, areaConstruida, areaPrivativa, larguraTerreno, comprimentoTerreno, orientacaoSolar,
-  suites, qtdSalas,
+  suites, qtdSalas, lavanderia, escritorio,
   vagasCobertas, vagasDescobertas, garageType,
   numeroAndar, qtdAndar, qtdElevador, alturaPeDireito,
   anoConstrucao, anoReforma,
@@ -271,6 +273,8 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
       suites: p.suites,
       banheiros: p.baths,
       salas: p.qtdSalas,
+      lavanderia: p.lavanderia,
+      escritorio: p.escritorio,
       vagas: p.garages,
       vagasCobertas: p.vagasCobertas,
       vagasDescobertas: p.vagasDescobertas,
