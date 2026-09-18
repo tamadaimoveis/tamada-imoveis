@@ -467,8 +467,8 @@ function setupLeadGate(property) {
 }
 
 /* ===== Compartilhar nas redes ===== */
-function setupShare(property) {
-  const url = `${liveBase}${property.url}`;
+function setupShare(property, purpose) {
+  const url = purpose ? `${liveBase}${property.url}?de=${purpose}` : `${liveBase}${property.url}`;
   const share = document.querySelector('#shareButtons');
   const msg = `${property.title} — ${property.neighborhood}, ${property.city}`;
   const links = [
@@ -545,10 +545,12 @@ function render(property) {
     ? (destaqueLocacao ? `ou ${money(secundario)} na venda` : `ou ${money(secundario, true)} na locação`)
     : purposeLabelContextual(property, purpose);
 
-  document.querySelector('#officialLink').href = `${liveBase}${property.url}`;
+  document.querySelector('#officialLink').href = purpose
+    ? `${liveBase}${property.url}?de=${purpose}`
+    : `${liveBase}${property.url}`;
 
   setupLeadGate(property);
-  setupShare(property);
+  setupShare(property, purpose);
   setupFavorite(property);
   setupMedia(property);
 
