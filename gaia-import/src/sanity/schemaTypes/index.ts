@@ -4,7 +4,8 @@ import { watermarkSettingsType } from './watermarkSettings'
 import { brokerType } from './brokerType'
 import { imovelOptionsType } from './imovelOptionsType'
 import { leadType } from './leadType'
+import { condominioType } from './condominioType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [propertyType, watermarkSettingsType, brokerType, imovelOptionsType, leadType],
+  types: [propertyType, watermarkSettingsType, brokerType, imovelOptionsType, leadType, condominioType],
 }

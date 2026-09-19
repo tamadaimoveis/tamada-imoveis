@@ -482,6 +482,21 @@ export const propertyType = defineType({
       group: 'interno',
     }),
     defineField({
+      name: 'condominioRef', // [CRM] issue #1842 — condomínio compartilhado entre unidades
+      title: 'Condomínio (cadastro compartilhado)',
+      description:
+        'Referência ao documento de Condomínio (área comum, fotos, endereço do ' +
+        'prédio) quando esta unidade pertence a um condomínio com múltiplos ' +
+        'imóveis independentes cadastrados. NÃO confundir com `condominio` ' +
+        '(valor mensal do condomínio em R$, campo numérico já existente) nem ' +
+        'com `condominioNome` (texto livre legado) ou o empreendimento de ' +
+        'lançamento com `unidades[]` — este é o caso de vários imóveis ' +
+        'independentes no mesmo prédio.',
+      type: 'reference',
+      to: [{type: 'condominio'}],
+      group: 'local',
+    }),
+    defineField({
       name: 'zoneamento',
       title: 'Zoneamento',
       description: 'Ex: ZM, ZEU, ZC. Relevante em terreno e imóvel comercial.',
