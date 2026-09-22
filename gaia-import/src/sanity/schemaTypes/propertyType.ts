@@ -197,12 +197,13 @@ export const propertyType = defineType({
     }),
     defineField({
       name: 'constructionStatus', // [CRM]
-      title: 'Status da Obra',
+      title: 'Situação do Imóvel',
       type: 'string',
       group: 'principal',
       options: {
         list: [
           {title: '🏠 Pronto para morar', value: 'pronto'},
+          {title: '🔑 Usado', value: 'usado'},
           {title: '🚧 Em construção', value: 'construcao'},
           {title: '🆕 Lançamento', value: 'lancamento'},
         ],
