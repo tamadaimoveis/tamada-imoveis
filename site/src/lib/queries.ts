@@ -297,11 +297,13 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
       obra:
         p.constructionStatus === 'pronto'
           ? 'Pronto para morar'
-          : p.constructionStatus === 'construcao'
-            ? 'Em construção'
-            : p.constructionStatus === 'lancamento'
-              ? 'Lançamento'
-              : null,
+          : p.constructionStatus === 'usado'
+            ? 'Usado'
+            : p.constructionStatus === 'construcao'
+              ? 'Em construção'
+              : p.constructionStatus === 'lancamento'
+                ? 'Lançamento'
+                : null,
     },
     video: p.videoUrl || null,
     videoInstitucional: !!p.videoUrl && (p.usoDeVideo || 0) > LIMITE_INSTITUCIONAL,
