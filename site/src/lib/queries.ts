@@ -64,6 +64,16 @@ export type ImovelDetalhe = Imovel & {
   videoInstitucional: boolean
   tour: string | null
   corretor: { nome: string; celular: string | null; creci: string | null } | null
+  /** Nome do condomínio/edifício, vindo do documento `condominio`
+      referenciado (condominioRef) — não confundir com o campo legado
+      `condominioNome` do Sanity (texto livre, não usado aqui). */
+  condominioNome: string | null
+  /** Fotos da área comum do condomínio — vêm do documento `condominio`
+      referenciado, nunca de `photos` (galeria da unidade). */
+  fotosCondominio: string[]
+  /** Comodidades exclusivas do condomínio (área comum). `comodidades` acima
+      já vem como a diferença unidade-menos-condomínio (ver getImovel). */
+  comodidadesCondominio: string[]
 }
 
 type Bruto = {
@@ -133,10 +143,24 @@ type Bruto = {
   slug?: string
   featured?: boolean
   usoDeVideo?: number
+  condominioNome?: string
+  fotosCondominio?: string[]
+  amenitiesCondominio?: string[]
 }
 
 const rotular = (valores: string[] | undefined, mapa: Record<string, string>) =>
   (valores || []).map((v) => mapa[v]).filter(Boolean)
+
+// Fallback pra slug sem entrada no mapa de rótulos — usado só pra
+// amenitiesCondominio, cujo vocabulário (documento `condominio`) não tem
+// garantia de estar 100% coberto por COMODIDADES. Formata em vez de
+// descartar silenciosamente (rotular() descarta via .filter(Boolean)).
+function rotularComFallback(valores: string[] | undefined, mapa: Record<string, string>): string[] {
+  return (valores || []).map((v) =>
+    mapa[v] ?? v.replace(/[-_]+/g, ' ').split(' ').filter(Boolean)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+  )
+}
 
 // Vídeo institucional x vídeo do imóvel: vídeo reaproveitado em muitos
 // imóveis é o comercial da Tamada, não desse imóvel específico — o mesmo
@@ -237,7 +261,10 @@ const CAMPOS_DETALHE = `
   amenities, acabamentos, tags,
   captador, captadorCelular, captadorCRECI,
   "fotos": images[].asset->url,
-  "usoDeVideo": count(*[_type=="property" && videoUrl==^.videoUrl])
+  "usoDeVideo": count(*[_type=="property" && videoUrl==^.videoUrl]),
+  "condominioNome": condominioRef->nome,
+  "fotosCondominio": condominioRef->images[defined(asset->)].asset->url,
+  "amenitiesCondominio": condominioRef->amenitiesCondominio
 `
 
 export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
@@ -249,12 +276,19 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
   if (!p) return null
 
   const basico = mapBasico(p)
+  // amenities já vem como a UNIÃO unidade+condomínio (o CRM faz essa junção
+  // na publicação) — comodidades só da unidade = amenities menos as do
+  // condomínio, que ganham seção própria (comodidadesCondominio).
+  const doCondominio = new Set(p.amenitiesCondominio || [])
   return {
     ...basico,
     codigo: p.codigo ?? null,
     photos: [p.img, ...(p.fotos || [])].filter((v): v is string => !!v),
     descricao: p.description || '',
-    comodidades: rotular(p.amenities, COMODIDADES),
+    comodidades: rotular((p.amenities || []).filter((v) => !doCondominio.has(v)), COMODIDADES),
+    condominioNome: p.condominioNome ?? null,
+    fotosCondominio: p.fotosCondominio || [],
+    comodidadesCondominio: rotularComFallback(p.amenitiesCondominio, COMODIDADES),
     acabamentos: rotular(p.acabamentos, ACABAMENTOS),
     garantias: rotular(p.garantiaLocacao, GARANTIAS),
     pagamento: rotular(p.paymentMethods, PAGAMENTO),

@@ -321,6 +321,26 @@ export default async function ImovelPage({ params }: Props) {
                   <ul className="amenity-grid" id="amenityGrid" />
                 </div>
 
+                <div className="detail-block" id="condominioAmenitiesBlock">
+                  <p className="eyebrow">
+                    <span /> Área comum
+                  </p>
+                  <h2>
+                    Comodidades
+                    <br />
+                    <em>do condomínio.</em>
+                  </h2>
+                  <ul className="amenity-grid" id="condominioAmenityGrid" />
+                </div>
+
+                <div className="detail-block" id="condominioFotosBlock">
+                  <p className="eyebrow">
+                    <span /> Fotos do condomínio
+                  </p>
+                  <h2 id="condominioFotosTitle">Área comum</h2>
+                  <div className="detail-gallery-grid" id="condominioFotosGrid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '.6rem' }} />
+                </div>
+
                 <div className="detail-block">
                   <p className="eyebrow">
                     <span /> Ficha técnica

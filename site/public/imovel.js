@@ -598,6 +598,40 @@ function render(property) {
     `<li>${handIcons[a.icon] || handIcons.check}<div><span>${escapeHtml(a.label)}</span>${a.sub ? `<small>${escapeHtml(a.sub)}</small>` : ''}</div></li>`
   ).join('');
 
+  // Comodidades do condomínio (área comum) — documento `condominio`
+  // referenciado, separadas das comodidades da unidade acima. `comodidades`
+  // (usada em amenityList) já vem como a DIFERENÇA unidade-menos-condomínio
+  // (calculado em queries.ts), então não há sobreposição entre os dois blocos.
+  const condominioAmenities = (property.comodidadesCondominio || []).map(label => ({
+    icon: ICONE_COMODIDADE[label] || 'check',
+    label,
+    sub: '',
+  }));
+  const blocoCondominioAmenities = document.querySelector('#condominioAmenitiesBlock');
+  if (blocoCondominioAmenities) blocoCondominioAmenities.hidden = !condominioAmenities.length;
+  const gridCondominioAmenities = document.querySelector('#condominioAmenityGrid');
+  if (gridCondominioAmenities) {
+    gridCondominioAmenities.innerHTML = condominioAmenities.map(a =>
+      `<li>${handIcons[a.icon] || handIcons.check}<div><span>${escapeHtml(a.label)}</span></div></li>`
+    ).join('');
+  }
+
+  // Fotos do condomínio (área comum) — nunca vêm da galeria da unidade
+  // (galleryPhotos), sempre do documento `condominio` referenciado.
+  const fotosCondominio = Array.isArray(property.fotosCondominio) ? property.fotosCondominio : [];
+  const blocoCondominioFotos = document.querySelector('#condominioFotosBlock');
+  if (blocoCondominioFotos) blocoCondominioFotos.hidden = !fotosCondominio.length;
+  const tituloCondominioFotos = document.querySelector('#condominioFotosTitle');
+  if (tituloCondominioFotos) tituloCondominioFotos.textContent = property.condominioNome || 'Área comum';
+  const gridCondominioFotos = document.querySelector('#condominioFotosGrid');
+  if (gridCondominioFotos) {
+    gridCondominioFotos.innerHTML = fotosCondominio.map((src, i) =>
+      `<div style="position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden">
+        <img src="${sized(src, 500)}" alt="${escapeHtml(property.condominioNome || 'Área comum do condomínio')} — foto ${i + 1}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      </div>`
+    ).join('');
+  }
+
   // Efeitos do design system: chips entram em cascata quando visíveis
   const chips = document.querySelectorAll('#amenityGrid li');
   const chipObserver = new IntersectionObserver(entries => {
