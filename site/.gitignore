@@ -4,3 +4,6 @@ node_modules
 .env
 .env*.local
 next-env.d.ts
+*.tsbuildinfo
+AGENTS.md
+CLAUDE.md

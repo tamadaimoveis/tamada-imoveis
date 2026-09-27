@@ -64,10 +64,33 @@ export const watermarkSettingsType = defineType({
     }),
     defineField({
       name: 'forceAspectRatio',
-      title: 'Recortar imagens para 4:3 (formato do site)?',
+      title: '🔒 [Legado] Recortar imagens para 4:3?',
       type: 'boolean',
-      initialValue: true,
-      description: 'Recomendado: SIM. Garante que a pré-visualização no Sanity é IGUAL ao que aparece no site. Sem isso, partes da imagem podem ser cortadas no site sem aviso.',
+      description:
+        'Substituído por "Recorte de proporção" abaixo — mantido só como fallback ' +
+        'de leitura para documentos antigos que nunca foram salvos de novo. Não ' +
+        'editar aqui: use o campo novo.',
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
+      name: 'aspectRatioCrop',
+      title: 'Recorte de proporção',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Sem recorte (mantém a foto original)', value: 'none' },
+          { title: '4:3 (horizontal — formato padrão do site)', value: '4:3' },
+          { title: '3:4 (vertical — melhor para fachadas/plantas altas)', value: '3:4' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'none',
+      description:
+        'Substitui o antigo "Recortar para 4:3?". A importação da Tamada nunca ' +
+        'fez crop de aspecto (ver LOGO_LARGURA_PCT em import-gaia.ts) — o padrão ' +
+        'aqui é "Sem recorte" pra não mudar o comportamento existente. Escolha ' +
+        '4:3 ou 3:4 só se quiser padronizar o enquadramento do catálogo.',
     }),
   ],
   preview: {
