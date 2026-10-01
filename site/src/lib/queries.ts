@@ -199,7 +199,14 @@ function mapBasico(p: Bruto): Imovel {
     baths: p.baths || 0,
     garages: p.garages || 0,
     image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
-    url: `/imovel/${p.slug}/${p.ref}`,
+    // Rota real é /imovel/[ref] (1 segmento, ref = gaiaCodigo com sufixo
+    // -EIU) — achado em 01/10: este campo vinha com /imovel/{slug}/{ref}
+    // (2 segmentos), uma URL que nunca existiu como rota válida (não há
+    // generateStaticParams nem pasta pra isso). A navegação normal do site
+    // nunca usou este campo (card/home/mapa usam property.ref direto), mas
+    // o botão de compartilhar, "Ver anúncio completo" e o JSON-LD usavam —
+    // link quebrado pra quem recebia um imóvel compartilhado.
+    url: `/imovel/${p.ref}`,
   }
 }
 
