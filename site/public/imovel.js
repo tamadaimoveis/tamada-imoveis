@@ -440,8 +440,39 @@ function setupGallery(property) {
   });
 }
 
+/* ===== Lais: pré-atendimento da Lastro, repassa pro CRM Trama ===== */
+const LAIS_LEADS_URL = 'https://prod.lastro.services/api/public/v1/leads/webhook/39182584-8027-45d3-a795-e82d4e046b67';
+
+function enviarLeadLais(property, lead, ehLocacao) {
+  let digitos = lead.phone.replace(/\D/g, '');
+  if (digitos.length >= 12 && digitos.startsWith('55')) digitos = digitos.slice(2);
+  if (digitos.length < 10) return;
+  const corpo = {
+    name: lead.name,
+    ddd: digitos.slice(0, 2),
+    phone: digitos.slice(2),
+    formText: `Tenho interesse no imóvel ${property.ref} — ${property.title}, ${property.neighborhood}.`,
+    clientListingId: String(property.ref),
+    link: location.href,
+    transactionType: ehLocacao ? 'rent' : 'buy',
+    origin: 'PropWebsiteLais',
+  };
+  if (lead.email) corpo.email = lead.email;
+  // Sem await e com keepalive: o window.open do WhatsApp tem que acontecer no
+  // mesmo clique (senão o bloqueador de pop-up fecha a aba) e o envio não pode
+  // morrer se a pessoa sair da página.
+  try {
+    fetch(LAIS_LEADS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(corpo),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (_) {}
+}
+
 /* ===== Form-gate: preenche antes de ir pro WhatsApp ===== */
-function setupLeadGate(property) {
+function setupLeadGate(property, ehLocacao) {
   const form = document.querySelector('#leadForm');
 
   // CTAs secundários (aside) rolam até o formulário e destacam o campo nome
@@ -460,8 +491,8 @@ function setupLeadGate(property) {
     const email = document.querySelector('#leadEmail').value.trim();
     const consent = document.querySelector('#leadConsent').checked;
     if (!name || phone.replace(/\D/g, '').length < 8 || !consent) { form.reportValidity(); return; }
-    // Hook p/ CRM futuro: guarda o lead (troque por fetch pro backend quando existir)
     try { localStorage.setItem('tamada_lead', JSON.stringify({ name, phone, email, ref: property.ref, at: new Date().toISOString() })); } catch (_) {}
+    enviarLeadLais(property, { name, phone, email }, ehLocacao);
     window.open(whatsappLink(property, { name, phone, email }), '_blank', 'noopener');
   });
 }
@@ -549,7 +580,7 @@ function render(property) {
     ? `${liveBase}${property.url}?de=${purpose}`
     : `${liveBase}${property.url}`;
 
-  setupLeadGate(property);
+  setupLeadGate(property, destaqueLocacao);
   setupShare(property, purpose);
   setupFavorite(property);
   setupMedia(property);
