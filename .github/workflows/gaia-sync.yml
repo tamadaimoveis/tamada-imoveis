@@ -1,9 +1,12 @@
 name: Sincronizar Gaia -> Sanity
 
+# Cron desativado em 02/10/2026: a Tamada não usa mais o Gaia como fonte,
+# cadastro passou a ser 100% via CRM direto no Sanity. Mantido como
+# workflow_dispatch manual (histórico/caso precise reimportar algo pontual),
+# mas sem rodar sozinho — sem feed ativo, limpar-imoveis-saidos.ts marcaria
+# em massa como inativo todo imóvel que só existe no Sanity por ter vindo
+# do Gaia no passado.
 on:
-  schedule:
-    # 06:00 UTC = 03:00 horário de Brasília, todo dia
-    - cron: '0 6 * * *'
   workflow_dispatch: {}
 
 concurrency:

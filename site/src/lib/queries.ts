@@ -168,7 +168,12 @@ function rotularComFallback(valores: string[] | undefined, mapa: Record<string, 
 const LIMITE_INSTITUCIONAL = 5
 
 const CAMPOS_BASICOS = `
-  "ref": gaiaCodigo,
+  // ref = codigoImovel (não gaiaCodigo): desde 02/10/2026 a Tamada não usa
+  // mais o Gaia, cadastro é 100% via CRM e gaiaCodigo não existe nesses
+  // imóveis novos — ficavam de fora do site (filtro de p.ref && p.title
+  // abaixo os descartava silenciosamente). codigoImovel é único e sempre
+  // presente (confirmado nos 4.376 imóveis ativos), vale pra todo mundo.
+  "ref": codigoImovel,
   title,
   featured,
   "tipo": type,
@@ -199,13 +204,13 @@ function mapBasico(p: Bruto): Imovel {
     baths: p.baths || 0,
     garages: p.garages || 0,
     image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
-    // Rota real é /imovel/[ref] (1 segmento, ref = gaiaCodigo com sufixo
-    // -EIU) — achado em 01/10: este campo vinha com /imovel/{slug}/{ref}
-    // (2 segmentos), uma URL que nunca existiu como rota válida (não há
-    // generateStaticParams nem pasta pra isso). A navegação normal do site
-    // nunca usou este campo (card/home/mapa usam property.ref direto), mas
-    // o botão de compartilhar, "Ver anúncio completo" e o JSON-LD usavam —
-    // link quebrado pra quem recebia um imóvel compartilhado.
+    // Rota real é /imovel/[ref] (1 segmento) — achado em 01/10: este campo
+    // vinha com /imovel/{slug}/{ref} (2 segmentos), uma URL que nunca
+    // existiu como rota válida (não há generateStaticParams nem pasta pra
+    // isso). A navegação normal do site nunca usou este campo (card/home/
+    // mapa usam property.ref direto), mas o botão de compartilhar, "Ver
+    // anúncio completo" e o JSON-LD usavam — link quebrado pra quem recebia
+    // um imóvel compartilhado.
     url: `/imovel/${p.ref}`,
   }
 }
@@ -275,8 +280,11 @@ const CAMPOS_DETALHE = `
 `
 
 export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
+  // codigoImovel é a chave atual (desde 02/10/2026, sem Gaia). Cai pro
+  // gaiaCodigo se não achar — mantém vivos os links /imovel/AP9266-EIU já
+  // compartilhados/indexados antes da troca, sem precisar de redirect.
   const p = await client.fetch<Bruto | null>(
-    `*[${FILTRO_PUBLICO} && gaiaCodigo==$ref][0]{${CAMPOS_DETALHE}}`,
+    `*[${FILTRO_PUBLICO} && (codigoImovel==$ref || gaiaCodigo==$ref)][0]{${CAMPOS_DETALHE}}`,
     { ref },
     { next: { revalidate: REVALIDATE } }
   )
@@ -357,7 +365,7 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
 
 export async function getRefBySlug(slug: string): Promise<string | null> {
   const ref = await client.fetch<string | null>(
-    `*[${FILTRO_PUBLICO} && slug.current==$slug][0].gaiaCodigo`,
+    `*[${FILTRO_PUBLICO} && slug.current==$slug][0].codigoImovel`,
     { slug },
     { next: { revalidate: REVALIDATE } }
   )

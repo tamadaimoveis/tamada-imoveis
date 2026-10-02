@@ -16,9 +16,9 @@ export async function POST(req: NextRequest) {
   }
 
   // triggerRevalidate (App/supabase/functions/_shared/revalidate.ts, no CRM)
-  // manda { _id, slug: { current } } — não manda o ref (gaiaCodigo), que é o
-  // que usamos na URL /imovel/[ref]. Traduz slug -> ref via GROQ antes de
-  // revalidar a página específica.
+  // manda { _id, slug: { current } } — não manda o ref (codigoImovel), que
+  // é o que usamos na URL /imovel/[ref]. Traduz slug -> ref via GROQ antes
+  // de revalidar a página específica.
   let body: { _id?: string; slug?: { current?: string } } = {}
   try {
     body = await req.json()
