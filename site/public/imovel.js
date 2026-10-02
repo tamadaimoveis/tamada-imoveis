@@ -452,7 +452,10 @@ function enviarLeadLais(property, lead, ehLocacao) {
     ddd: digitos.slice(0, 2),
     phone: digitos.slice(2),
     formText: `Tenho interesse no imóvel ${property.ref} — ${property.title}, ${property.neighborhood}.`,
-    clientListingId: String(property.ref),
+    // Código limpo (sem o sufixo -EIU do Gaia) — é o formato usado em todo o
+    // resto do sistema (CRM, codigoImovel no Sanity). property.codigo pode
+    // ser null em cadastro antigo; cai pro gaiaCodigo (com sufixo) nesse caso.
+    clientListingId: String(property.codigo || property.ref),
     link: location.href,
     transactionType: ehLocacao ? 'rent' : 'buy',
     origin: 'PropWebsiteLais',
