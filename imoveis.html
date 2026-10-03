@@ -16,7 +16,7 @@
   <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style" crossorigin="" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""></noscript>
   <link rel="stylesheet" href="styles.css?v=36">
-  <link rel="stylesheet" href="imoveis.css?v=37">
+  <link rel="stylesheet" href="imoveis.css?v=38">
   <!-- Sem defer/async, de propósito: precisa existir antes do <body> ser
        desenhado. Fonte única do hero por finalidade — ver hero-copy.js. -->
   <script src="hero-copy.js?v=1"></script>
@@ -173,7 +173,7 @@
           <fieldset><legend>Vagas</legend><div class="side-number-chips" id="sideGarages"><button class="active" type="button" data-value="0">Todas</button><button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3" data-min="">3+</button></div></fieldset>
           <fieldset><legend>Valores</legend><select id="sideMaxPrice" data-elegant><option value="">Sem limite</option></select></fieldset>
           <fieldset><legend>Faixa de área</legend><div class="range-grid"><label><span>Mínima</span><input id="minArea" type="number" min="0" step="10" placeholder="0 m²"></label><label><span>Máxima</span><input id="maxArea" type="number" min="0" step="10" placeholder="Qualquer"></label></div></fieldset>
-          <fieldset><legend>Características</legend><div class="side-checks"><label><input id="onlyAffordable" type="checkbox"><span><i></i><b id="affordableLabel">Até R$ 260 mil</b></span></label><label><input id="onlyCommercial" type="checkbox"><span><i></i>Uso comercial</span></label><label><input id="onlyGarage" type="checkbox"><span><i></i>Com vaga</span></label></div></fieldset>
+          <fieldset><legend>Características</legend><div class="side-checks"><label><input id="onlyAffordable" type="checkbox"><span><i></i><b id="affordableLabel">Até R$ 260 mil</b></span></label><label><input id="onlyCommercial" type="checkbox"><span><i></i>Uso comercial</span></label><label><input id="onlyGarage" type="checkbox"><span><i></i>Com vaga</span></label><label><input id="onlyMobiliado" type="checkbox"><span><i></i>Mobiliado</span></label></div></fieldset>
           <button class="clear-all" id="clearCatalogFilters" type="button"><iconify-icon icon="solar:restart-linear"></iconify-icon> Limpar todos os filtros</button>
           <div class="filter-contact"><iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon><p><strong>Busca muito específica?</strong><span>Um corretor pode procurar por você.</span></p><a href="https://wa.me/5511965935749" target="_blank" rel="noopener">Conversar</a></div>
         </aside>
@@ -229,6 +229,6 @@
   <script src="nav-dropdown.js?v=32" defer></script>
   <script src="common.js?v=32" defer></script>
   <script src="elegant-select.js?v=32" defer></script>
-  <script src="imoveis.js?v=35" defer></script>
+  <script src="imoveis.js?v=36" defer></script>
 </body>
 </html>

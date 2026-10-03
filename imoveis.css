@@ -703,3 +703,8 @@
 @media (max-width: 900px) and (max-height: 460px) {
   .lightbox-thumbs{display:none}
 }
+.mobilia-tag{display:inline-block;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;line-height:1;padding:6px 8px;white-space:nowrap}
+.mobilia-tag.is-full{background:#111110;color:#fff;border:1px solid #c9a96a}
+.mobilia-tag.is-semi{background:rgba(255,255,255,.92);color:#111110;border:1px solid rgba(17,17,16,.3)}
+.mobilia-tag.on-card{position:absolute;right:11px;bottom:10px;z-index:2}
+.detail-badges .mobilia-tag{margin-left:.5rem;font-size:10px;padding:7px 10px}
