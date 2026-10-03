@@ -298,6 +298,13 @@ export default async function ImoveisPage() {
                       Com vaga
                     </span>
                   </label>
+                  <label>
+                    <input id="onlyMobiliado" type="checkbox" />
+                    <span>
+                      <i />
+                      Mobiliado
+                    </span>
+                  </label>
                 </div>
               </fieldset>
               <button className="clear-all" id="clearCatalogFilters" type="button">

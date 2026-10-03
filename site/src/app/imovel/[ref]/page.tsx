@@ -246,6 +246,7 @@ export default async function ImovelPage({ params }: Props) {
                 <p className="detail-badges">
                   <span className="detail-purpose" id="detailPurpose" />
                   <span className="detail-type" id="detailType" />
+                  <span id="detailMobilia" hidden />
                 </p>
                 <h1 id="detailTitle" />
                 <p className="detail-location">

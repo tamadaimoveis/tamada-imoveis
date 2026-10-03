@@ -48,6 +48,8 @@ export type Imovel = {
   garages: number
   image: string
   url: string
+  /** 'm' = mobiliado, 's' = semimobiliado, ausente = nenhum (slug exato em amenities). */
+  mobilia?: 'm' | 's'
 }
 
 export type ImovelDetalhe = Imovel & {
@@ -146,6 +148,7 @@ type Bruto = {
   condominioNome?: string
   fotosCondominio?: string[]
   amenitiesCondominio?: string[]
+  mobilia?: string
 }
 
 const rotular = (valores: string[] | undefined, mapa: Record<string, string>) =>
@@ -186,6 +189,7 @@ const CAMPOS_BASICOS = `
   "baths": bathrooms,
   "garages": garage,
   "img": mainImage.asset->url,
+  "mobilia": select("mobiliado" in amenities => "m", "semimobiliado" in amenities => "s"),
   "slug": slug.current
 `
 
@@ -203,6 +207,7 @@ function mapBasico(p: Bruto): Imovel {
     beds: p.beds || 0,
     baths: p.baths || 0,
     garages: p.garages || 0,
+    ...(p.mobilia === 'm' || p.mobilia === 's' ? { mobilia: p.mobilia } : {}),
     image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
     // Rota real é /imovel/[ref] (1 segmento) — achado em 01/10: este campo
     // vinha com /imovel/{slug}/{ref} (2 segmentos), uma URL que nunca
