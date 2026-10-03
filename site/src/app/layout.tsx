@@ -2,9 +2,25 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import './globals.css'
 
+const TITULO_SITE = 'Tamada Imóveis — Seu lugar na cidade'
+const DESCRICAO_SITE = 'Tamada Imóveis — venda, locação e administração de imóveis em São Paulo e região.'
+
 export const metadata: Metadata = {
-  title: 'Tamada Imóveis — Seu lugar na cidade',
-  description: 'Tamada Imóveis — venda, locação e administração de imóveis em São Paulo e região.',
+  metadataBase: new URL('https://www.tamadaimoveis.com.br'),
+  title: TITULO_SITE,
+  description: DESCRICAO_SITE,
+  // Default herdado por toda página sem openGraph próprio (ex: /sobre,
+  // /anuncie) — foto da hero da home. A ficha de imóvel (imovel/[ref]/
+  // page.tsx) e a home (page.tsx) sobrescrevem com a imagem específica.
+  openGraph: {
+    title: TITULO_SITE,
+    description: DESCRICAO_SITE,
+    url: 'https://www.tamadaimoveis.com.br',
+    siteName: 'Tamada Imóveis',
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: '/assets/images/hero-cidade-1344.jpg', width: 1344, height: 768, alt: TITULO_SITE }],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

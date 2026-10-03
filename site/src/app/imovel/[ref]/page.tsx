@@ -22,9 +22,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { ref } = await params
   const imovel = await getImovel(ref.toUpperCase())
   if (!imovel) return { title: 'Imóvel não encontrado — Tamada Imóveis' }
+  const title = `${imovel.title} — ${imovel.neighborhood} · Tamada Imóveis`
+  const description = (imovel.descricao || `${imovel.title} em ${imovel.neighborhood}, ${imovel.city}.`).slice(0, 160)
+  // Foto de capa (photos[0]) pro preview de compartilhamento no WhatsApp —
+  // sem isso cai no fallback genérico (hero da home) do layout raiz.
+  const capa = imovel.photos[0]
   return {
-    title: `${imovel.title} — ${imovel.neighborhood} · Tamada Imóveis`,
-    description: (imovel.descricao || `${imovel.title} em ${imovel.neighborhood}, ${imovel.city}.`).slice(0, 160),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: imovel.url,
+      siteName: 'Tamada Imóveis',
+      locale: 'pt_BR',
+      type: 'website',
+      images: capa ? [{ url: capa, width: 1200, height: 900, alt: imovel.title }] : undefined,
+    },
   }
 }
 
