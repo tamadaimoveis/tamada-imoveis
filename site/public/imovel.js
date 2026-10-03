@@ -48,14 +48,14 @@ function specs(property) {
 }
 
 function whatsappLink(property, lead) {
-  let text = `Olá! Tenho interesse no imóvel ${property.ref} — ${property.title}, ${property.neighborhood} (${purposeLabel(property).toLowerCase()}).`;
+  let text = `Olá! Tenho interesse no imóvel ${property.ref} — ${property.title}, ${property.neighborhood} (${purposeLabel(property).toLowerCase()}).\n${location.href.split('#')[0]}`;
   if (lead && lead.name) {
     text += `\n\nMeu nome: ${lead.name}`;
     if (lead.phone) text += `\nTelefone: ${lead.phone}`;
     if (lead.email) text += `\nE-mail: ${lead.email}`;
     text += `\n\nPode me passar mais informações?`;
   } else {
-    text += ` Pode me passar mais informações?`;
+    text += `\n\nPode me passar mais informações?`;
   }
   return `https://wa.me/5511965935749?text=${encodeURIComponent(text)}`;
 }

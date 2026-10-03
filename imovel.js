@@ -39,13 +39,6 @@ function approximateCoords(property) {
   return [base[0] + Math.cos(angle) * radius, base[1] + Math.sin(angle) * radius];
 }
 
-/* Selo de mobília. 'm' = mobiliado (destaque), 's' = semimobiliado (discreto). Slug exato no gerador. */
-function mobiliaBadge(property, extraClass = '') {
-  if (property.mobilia !== 'm' && property.mobilia !== 's') return '';
-  const cheio = property.mobilia === 'm';
-  return `<span class="mobilia-tag ${cheio ? 'is-full' : 'is-semi'} ${extraClass}">${cheio ? 'Mobiliado' : 'Semimobiliado'}</span>`;
-}
-
 function specs(property) {
   const list = [`<span><iconify-icon icon="solar:ruler-angular-linear"></iconify-icon>${String(property.area || 0).replace('.', ',')} m²</span>`];
   if (property.beds) list.push(`<span><iconify-icon icon="solar:bed-linear"></iconify-icon>${property.beds}</span>`);
@@ -228,7 +221,7 @@ function similarCard(property) {
   return `<article class="catalog-card">
     <div class="catalog-card-media">
       <a href="imovel.html?ref=${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy"></a>
-      <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>${mobiliaBadge(property, 'on-card')}
+      <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>
     </div>
     <div class="catalog-card-copy"><p class="catalog-card-location">${property.neighborhood} · ${property.city}</p><h2>${property.title}</h2><div class="catalog-card-specs">${specs(property)}</div>
       <div class="catalog-card-bottom"><strong>${money(rentOnly ? property.rent : property.sale || property.rent, rentOnly)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="imovel.html?ref=${property.ref}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
@@ -494,12 +487,6 @@ function render(property) {
   document.querySelector('#crumbRef').textContent = property.ref;
   document.querySelector('#detailPurpose').textContent = purposeLabel(property);
   document.querySelector('#detailType').textContent = typeLabels[property.type] || 'Imóvel';
-  const mobEl = document.querySelector('#detailMobilia');
-  if (mobEl && (property.mobilia === 'm' || property.mobilia === 's')) {
-    mobEl.textContent = property.mobilia === 'm' ? 'Mobiliado' : 'Semimobiliado';
-    mobEl.className = 'mobilia-tag ' + (property.mobilia === 'm' ? 'is-full' : 'is-semi');
-    mobEl.hidden = false;
-  }
   document.querySelector('#detailTitle').textContent = property.title;
   document.querySelector('#detailLocation').textContent = `${property.neighborhood} · ${property.city}`;
   document.querySelector('#mobileMenuRef').innerHTML = `IMÓVEL<br>${property.ref}`;

@@ -123,15 +123,6 @@ for (let off = 0; ; off += LOTE_CONSULTA) {
 }
 process.stdout.write('\r'.padEnd(30) + '\r')
 
-// 'm' = mobiliado, 's' = semimobiliado, ausente = nenhum. Igualdade exata do slug
-// (nunca "contém"), e só entra no objeto quando existe, para não inchar o catálogo.
-const mobiliaCampo = (amenities) =>
-  Array.isArray(amenities) && amenities.includes('mobiliado')
-    ? { mobilia: 'm' }
-    : Array.isArray(amenities) && amenities.includes('semimobiliado')
-      ? { mobilia: 's' }
-      : {}
-
 const catalogo = result
   .filter((p) => p.ref && p.title)
   .map((p) => ({
@@ -152,7 +143,6 @@ const catalogo = result
     beds: p.beds || 0,
     baths: p.baths || 0,
     garages: p.garages || 0,
-    ...mobiliaCampo(p.amenities),
     // Sanity redimensiona no CDN: o card mostra ~400px, não faz sentido baixar
     // a original de 1024 em 4.429 imóveis.
     image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
@@ -258,7 +248,6 @@ const registros = result
     garages: p.garages || 0,
     image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
     url: `/imovel/${p.slug}/${p.ref}`,
-    ...mobiliaCampo(p.amenities),
     photos: [p.img, ...(p.fotos || [])].filter(Boolean),
     descricao: p.description || '',
     // Rótulos já resolvidos: o site não precisa conhecer os slugs do Sanity.

@@ -21,7 +21,6 @@ const state = {
   affordable: queryParams.get('affordable') === '1',
   commercial: queryParams.get('commercial') === '1',
   garage: queryParams.get('garage') === '1',
-  mobiliado: queryParams.get('mobiliado') === '1',
   sort: 'featured',
   view: queryParams.get('view') === 'map' ? 'map' : 'grid',
   limit: 18
@@ -112,8 +111,6 @@ function matches(property) {
   if (state.affordable && !(price && price <= affordableThreshold())) return false;
   if (state.commercial && !commercialTypes.has(property.type)) return false;
   if (state.garage && !Number(property.garages)) return false;
-  // Só "mobiliado" (slug exato). Semimobiliado NÃO entra neste filtro.
-  if (state.mobiliado && property.mobilia !== 'm') return false;
   return true;
 }
 
@@ -145,20 +142,13 @@ function specs(property) {
   return list.join('');
 }
 
-/* Selo de mobília. 'm' = mobiliado (destaque), 's' = semimobiliado (discreto). Slug exato no gerador. */
-function mobiliaBadge(property, extraClass = '') {
-  if (property.mobilia !== 'm' && property.mobilia !== 's') return '';
-  const cheio = property.mobilia === 'm';
-  return `<span class="mobilia-tag ${cheio ? 'is-full' : 'is-semi'} ${extraClass}">${cheio ? 'Mobiliado' : 'Semimobiliado'}</span>`;
-}
-
 function card(property) {
   const rentOnly = !property.sale && Boolean(property.rent);
   const saved = favorites.has(property.ref);
   return `<article class="catalog-card" data-ref="${property.ref}">
     <div class="catalog-card-media">
       <a href="imovel.html?ref=${property.ref}"><img src="${property.image}" alt="${property.title} em ${property.neighborhood}" loading="lazy" width="560" height="400"></a>
-      <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>${mobiliaBadge(property, 'on-card')}
+      <span class="catalog-card-purpose">${purposeLabel(property)}</span><span class="catalog-card-code">${property.ref}</span>
       <button class="catalog-favorite ${saved ? 'saved' : ''}" type="button" data-favorite="${property.ref}" aria-label="${saved ? 'Remover dos favoritos' : 'Salvar imóvel'}"><iconify-icon icon="solar:heart-${saved ? 'bold' : 'linear'}"></iconify-icon></button>
     </div>
     <div class="catalog-card-copy"><p class="catalog-card-location">${property.neighborhood} · ${property.city}</p><h2>${property.title}</h2><div class="catalog-card-specs">${specs(property)}</div>
@@ -167,7 +157,7 @@ function card(property) {
 }
 
 function activeFilterCount() {
-  return [state.purpose !== 'all', state.query, state.type, state.maxPrice, state.minBeds, state.minGarages, state.minArea, state.maxArea, state.affordable, state.commercial, state.garage, state.mobiliado].filter(Boolean).length;
+  return [state.purpose !== 'all', state.query, state.type, state.maxPrice, state.minBeds, state.minGarages, state.minArea, state.maxArea, state.affordable, state.commercial, state.garage].filter(Boolean).length;
 }
 
 function summaryText() {
@@ -191,7 +181,6 @@ function updateUrl() {
   if (state.affordable) params.set('affordable', '1');
   if (state.commercial) params.set('commercial', '1');
   if (state.garage) params.set('garage', '1');
-  if (state.mobiliado) params.set('mobiliado', '1');
   if (state.view === 'map') params.set('view', 'map');
   history.replaceState(null, '', `${location.pathname}${params.size ? `?${params}` : ''}`);
 }
@@ -263,7 +252,6 @@ function syncControls() {
   document.querySelector('#onlyAffordable').checked = state.affordable;
   document.querySelector('#onlyCommercial').checked = state.commercial;
   document.querySelector('#onlyGarage').checked = state.garage;
-  document.querySelector('#onlyMobiliado').checked = state.mobiliado;
   document.querySelectorAll('[data-view]').forEach(button => button.classList.toggle('active', button.dataset.view === state.view));
   if (window.refreshElegantSelects) window.refreshElegantSelects();
 }
@@ -363,10 +351,9 @@ let areaTimer;
 document.querySelector('#onlyAffordable').addEventListener('change', event => { state.affordable = event.target.checked; render(); });
 document.querySelector('#onlyCommercial').addEventListener('change', event => { state.commercial = event.target.checked; render(); });
 document.querySelector('#onlyGarage').addEventListener('change', event => { state.garage = event.target.checked; render(); });
-document.querySelector('#onlyMobiliado').addEventListener('change', event => { state.mobiliado = event.target.checked; render(); });
 
 function clearFilters() {
-  Object.assign(state, { purpose: 'all', query: '', type: '', maxPrice: 0, minBeds: 0, minBedsExact: true, minGarages: 0, minGaragesExact: true, minArea: 0, maxArea: 0, affordable: false, commercial: false, garage: false, mobiliado: false, limit: 18 });
+  Object.assign(state, { purpose: 'all', query: '', type: '', maxPrice: 0, minBeds: 0, minBedsExact: true, minGarages: 0, minGaragesExact: true, minArea: 0, maxArea: 0, affordable: false, commercial: false, garage: false, limit: 18 });
   el.minArea.value = ''; el.maxArea.value = '';
   document.querySelectorAll('.side-number-chips button').forEach(button => button.classList.toggle('active', button.dataset.value === '0'));
   document.querySelectorAll('.side-checks input').forEach(input => { input.checked = false; });
