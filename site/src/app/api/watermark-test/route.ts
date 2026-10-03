@@ -18,6 +18,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
 import sharp, { type OverlayOptions } from 'sharp'
+import { createHash } from 'crypto'
 import * as fs from 'fs'
 import * as path from 'path'
 
@@ -309,9 +310,11 @@ export async function GET(req: NextRequest) {
       message: changes > 0 ? `${changes} imagem(ns) com watermark aplicada` : 'Nada para processar',
     })
   } catch (err) {
+    const t = process.env.SANITY_WRITE_TOKEN ?? ''
     return NextResponse.json({
       error: (err as Error).message,
       stack: (err as Error).stack,
+      diagTemp: { len: t.length, sha8: createHash('sha256').update(t.trim()).digest('hex').slice(0, 8), project: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID?.length },
     }, { status: 500 })
   }
 }
