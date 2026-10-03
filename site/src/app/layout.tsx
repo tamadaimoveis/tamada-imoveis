@@ -9,9 +9,10 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.tamadaimoveis.com.br'),
   title: TITULO_SITE,
   description: DESCRICAO_SITE,
-  // Default herdado por toda página sem openGraph próprio (ex: /sobre,
-  // /anuncie) — foto da hero da home. A ficha de imóvel (imovel/[ref]/
-  // page.tsx) e a home (page.tsx) sobrescrevem com a imagem específica.
+  // Default herdado por toda página sem openGraph próprio (home, /sobre,
+  // /anuncie…). og-home.jpg = foto da hero com logo e slogan por cima: a
+  // hero pura não mostrava o nome da Tamada no preview do WhatsApp. A ficha
+  // de imóvel (imovel/[ref]/page.tsx) sobrescreve com a foto do imóvel.
   openGraph: {
     title: TITULO_SITE,
     description: DESCRICAO_SITE,
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     siteName: 'Tamada Imóveis',
     locale: 'pt_BR',
     type: 'website',
-    images: [{ url: '/assets/images/hero-cidade-1344.jpg', width: 1344, height: 768, alt: TITULO_SITE }],
+    images: [{ url: '/assets/images/og-home.jpg', width: 1200, height: 630, alt: TITULO_SITE }],
   },
 }
 

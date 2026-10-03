@@ -167,12 +167,12 @@ function rotularComFallback(valores: string[] | undefined, mapa: Record<string, 
 // critério do gerador estático (scripts/gerar-catalogo.mjs).
 const LIMITE_INSTITUCIONAL = 5
 
+// ref = codigoImovel (não gaiaCodigo): desde 02/10/2026 a Tamada não usa
+// mais o Gaia, cadastro é 100% via CRM e gaiaCodigo não existe nesses
+// imóveis novos — ficavam de fora do site (filtro de p.ref && p.title
+// abaixo os descartava silenciosamente). codigoImovel é único e sempre
+// presente (confirmado nos 4.376 imóveis ativos), vale pra todo mundo.
 const CAMPOS_BASICOS = `
-  // ref = codigoImovel (não gaiaCodigo): desde 02/10/2026 a Tamada não usa
-  // mais o Gaia, cadastro é 100% via CRM e gaiaCodigo não existe nesses
-  // imóveis novos — ficavam de fora do site (filtro de p.ref && p.title
-  // abaixo os descartava silenciosamente). codigoImovel é único e sempre
-  // presente (confirmado nos 4.376 imóveis ativos), vale pra todo mundo.
   "ref": codigoImovel,
   title,
   featured,
