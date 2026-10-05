@@ -500,6 +500,8 @@ function setupLeadGate(property, ehLocacao) {
     if (resultado === 'ok') {
       try { localStorage.setItem('tamada_lead', JSON.stringify({ name, phone, email, ref: property.ref, at: new Date().toISOString() })); } catch (_) {}
       form.querySelectorAll('.lead-row, .lead-field, .lead-check, #leadSubmit').forEach(el => { el.hidden = true; });
+      const intro = form.closest('.lead-inline').querySelector('.lead-inline-sub');
+      if (intro && intro !== aviso) intro.hidden = true;
       aviso.textContent = 'Recebemos o seu contato! Em instantes a Tamada Imóveis fala com você sobre este imóvel.';
       aviso.hidden = false;
       return;
