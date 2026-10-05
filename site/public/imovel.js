@@ -54,19 +54,6 @@ function specs(property) {
   return list.join('');
 }
 
-function whatsappLink(property, lead) {
-  let text = `Olá! Tenho interesse no imóvel ${property.ref} — ${property.title}, ${property.neighborhood} (${purposeLabel(property).toLowerCase()}).\n${location.href.split('#')[0]}`;
-  if (lead && lead.name) {
-    text += `\n\nMeu nome: ${lead.name}`;
-    if (lead.phone) text += `\nTelefone: ${lead.phone}`;
-    if (lead.email) text += `\nE-mail: ${lead.email}`;
-    text += `\n\nPode me passar mais informações?`;
-  } else {
-    text += `\n\nPode me passar mais informações?`;
-  }
-  return `https://wa.me/5511965935749?text=${encodeURIComponent(text)}`;
-}
-
 /* Descrição escrita pelo corretor, vinda do cadastro. Antes este bloco montava
    um texto genérico a partir de quartos/preço — texto de template, igual em
    todo imóvel. O texto real vem com quebras de parágrafo, então é renderizado
@@ -453,7 +440,7 @@ const LAIS_LEADS_URL = 'https://prod.lastro.services/api/public/v1/leads/webhook
 function enviarLeadLais(property, lead, ehLocacao) {
   let digitos = lead.phone.replace(/\D/g, '');
   if (digitos.length >= 12 && digitos.startsWith('55')) digitos = digitos.slice(2);
-  if (digitos.length < 10) return;
+  if (digitos.length < 10) return Promise.resolve('telefone');
   const corpo = {
     name: lead.name,
     ddd: digitos.slice(0, 2),
@@ -468,20 +455,15 @@ function enviarLeadLais(property, lead, ehLocacao) {
     origin: 'PropWebsiteLais',
   };
   if (lead.email) corpo.email = lead.email;
-  // Sem await e com keepalive: o window.open do WhatsApp tem que acontecer no
-  // mesmo clique (senão o bloqueador de pop-up fecha a aba) e o envio não pode
-  // morrer se a pessoa sair da página.
-  try {
-    fetch(LAIS_LEADS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(corpo),
-      keepalive: true,
-    }).catch(() => {});
-  } catch (_) {}
+  return fetch(LAIS_LEADS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(corpo),
+    keepalive: true,
+  }).then(r => (r.ok ? 'ok' : 'erro')).catch(() => 'erro');
 }
 
-/* ===== Form-gate: preenche antes de ir pro WhatsApp ===== */
+/* ===== Formulário de lead: só vai pra Laís (não abre WhatsApp) ===== */
 function setupLeadGate(property, ehLocacao) {
   const form = document.querySelector('#leadForm');
 
@@ -494,16 +476,40 @@ function setupLeadGate(property, ehLocacao) {
     setTimeout(() => document.querySelector('#leadName').focus(), 400);
   }));
 
-  form.addEventListener('submit', e => {
+  const botao = document.querySelector('#leadSubmit');
+  const rotulo = botao.querySelector('span');
+  const textoBotao = rotulo.textContent;
+  const aviso = document.createElement('p');
+  aviso.className = 'lead-inline-sub';
+  aviso.setAttribute('role', 'status');
+  aviso.hidden = true;
+  form.appendChild(aviso);
+
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const name = document.querySelector('#leadName').value.trim();
     const phone = document.querySelector('#leadPhone').value.trim();
     const email = document.querySelector('#leadEmail').value.trim();
     const consent = document.querySelector('#leadConsent').checked;
     if (!name || phone.replace(/\D/g, '').length < 8 || !consent) { form.reportValidity(); return; }
-    try { localStorage.setItem('tamada_lead', JSON.stringify({ name, phone, email, ref: property.ref, at: new Date().toISOString() })); } catch (_) {}
-    enviarLeadLais(property, { name, phone, email }, ehLocacao);
-    window.open(whatsappLink(property, { name, phone, email }), '_blank', 'noopener');
+    if (botao.disabled) return;
+    botao.disabled = true;
+    rotulo.textContent = 'Enviando…';
+    aviso.hidden = true;
+    const resultado = await enviarLeadLais(property, { name, phone, email }, ehLocacao);
+    if (resultado === 'ok') {
+      try { localStorage.setItem('tamada_lead', JSON.stringify({ name, phone, email, ref: property.ref, at: new Date().toISOString() })); } catch (_) {}
+      form.querySelectorAll('.lead-row, .lead-field, .lead-check, #leadSubmit').forEach(el => { el.hidden = true; });
+      aviso.textContent = 'Recebemos o seu contato! Em instantes a Tamada Imóveis fala com você sobre este imóvel.';
+      aviso.hidden = false;
+      return;
+    }
+    aviso.textContent = resultado === 'telefone'
+      ? 'Confira o telefone: informe com DDD, por exemplo (11) 90000-0000.'
+      : 'Não foi possível enviar agora. Confira a conexão e tente de novo.';
+    aviso.hidden = false;
+    botao.disabled = false;
+    rotulo.textContent = textoBotao;
   });
 }
 

@@ -265,7 +265,7 @@ export default async function ImovelPage({ params }: Props) {
                 <div className="lead-inline">
                   <p className="detail-contact-kicker">Entre em contato</p>
                   <p className="lead-inline-sub">
-                    Preencha e um corretor retorna com todas as informações — direto no seu WhatsApp.
+                    Preencha e um corretor retorna com todas as informações.
                   </p>
                   <form id="leadForm">
                     <div className="lead-row">
@@ -297,8 +297,8 @@ export default async function ImovelPage({ params }: Props) {
                       <span>Concordo em ser contatado pela Tamada Imóveis sobre este imóvel.</span>
                     </label>
                     <button className="button button-red button-large" id="leadSubmit" type="submit">
-                      <iconify-icon icon="mdi:whatsapp" />
-                      <span>Continuar no WhatsApp</span>
+                      <iconify-icon icon="mdi:send" />
+                      <span>Quero ser contatado</span>
                     </button>
                   </form>
                 </div>
@@ -406,7 +406,7 @@ export default async function ImovelPage({ params }: Props) {
                   <strong className="detail-contact-price" id="asidePrice" />
                   <span className="detail-contact-purpose" id="asidePurpose" />
                   <a className="button button-red button-large magnetic" id="asideWhats" href="#leadForm" data-scroll-form>
-                    <iconify-icon icon="mdi:whatsapp" />
+                    <iconify-icon icon="mdi:calendar-check" />
                     <span>Agendar visita</span>
                   </a>
                   <a className="button button-ghost button-large" href="tel:01126822320">
@@ -546,7 +546,7 @@ export default async function ImovelPage({ params }: Props) {
           <iconify-icon icon="solar:phone-linear" />
         </a>
         <a className="button button-red" href="#leadForm" data-scroll-form>
-          <iconify-icon icon="mdi:whatsapp" />
+          <iconify-icon icon="mdi:calendar-check" />
           <span>Agendar visita</span>
         </a>
       </div>
