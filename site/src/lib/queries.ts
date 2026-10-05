@@ -101,6 +101,7 @@ type Bruto = {
   priceCash?: number
   condominio?: number
   iptu?: number
+  iptuPeriodo?: 'mensal' | 'anual' | 'isento'
   precoM2Venda?: number
   aceitaNegociacao?: boolean
   garantiaLocacao?: string[]
@@ -272,7 +273,7 @@ const CAMPOS_DETALHE = `
   vagasCobertas, vagasDescobertas, garageType,
   numeroAndar, qtdAndar, qtdElevador, alturaPeDireito,
   anoConstrucao, anoReforma,
-  condominio, iptu, precoM2Venda, priceCash, aceitaNegociacao,
+  condominio, iptu, iptuPeriodo, precoM2Venda, priceCash, aceitaNegociacao,
   ocupacao, locado, exclusividade, zoneamento,
   description, videoUrl, tourVirtual,
   amenities, acabamentos, tags,
@@ -341,6 +342,7 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
       anoReforma: p.anoReforma,
       condominio: p.condominio,
       iptu: p.iptu,
+      iptuPeriodo: p.iptuPeriodo,
       precoM2: p.precoM2Venda,
       precoAVista: p.priceCash,
       aceitaNegociacao: p.aceitaNegociacao,

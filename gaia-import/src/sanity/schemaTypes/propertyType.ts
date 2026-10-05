@@ -251,9 +251,26 @@ export const propertyType = defineType({
     defineField({
       name: 'iptu', // [CRM]
       title: 'Valor do IPTU (R$)',
+      description: 'Valor em reais, no período escolhido em "IPTU — condições de pagamento" (mensal ou anual). Em branco se isento.',
       type: 'number',
       group: 'valores',
       validation: (rule) => rule.min(0),
+    }),
+    defineField({
+      name: 'iptuPeriodo', // [CRM]
+      title: 'IPTU — condições de pagamento',
+      description:
+        'Período a que o valor do IPTU se refere. Vazio = não informado (imóvel antigo, ainda não editado no CRM). "Isento" não tem valor.',
+      type: 'string',
+      group: 'valores',
+      options: {
+        list: [
+          {title: 'Mensal', value: 'mensal'},
+          {title: 'Anual', value: 'anual'},
+          {title: 'Isento', value: 'isento'},
+        ],
+        layout: 'radio',
+      },
     }),
     defineField({
       name: 'precoM2Venda',

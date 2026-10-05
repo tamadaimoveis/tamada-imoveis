@@ -95,7 +95,8 @@ function factRows(property) {
   const rows = [
     // Custo mensal — o que decide a compra e não está em lugar nenhum
     ['Condomínio', f.condominio ? `${brl(f.condominio)}/mês` : null],
-    ['IPTU', f.iptu ? brl(f.iptu) : null],
+    // iptuPeriodo vem do CRM; ausente = exibe como antes (só o valor)
+    ['IPTU', f.iptuPeriodo === 'isento' ? 'Isento' : f.iptu ? brl(f.iptu) + (f.iptuPeriodo === 'mensal' ? '/mês' : f.iptuPeriodo === 'anual' ? '/ano' : '') : null],
     ['Preço à vista', f.precoAVista ? brl(f.precoAVista) : null],
     ['Valor do m²', f.precoM2 ? brl(f.precoM2) : null],
     ['Aceita negociação', f.aceitaNegociacao ? 'Sim' : null],
