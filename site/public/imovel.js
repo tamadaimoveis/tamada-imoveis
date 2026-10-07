@@ -31,10 +31,34 @@ const cityCenters = {
   'santo andre': [-23.6639, -46.5383], 'sao paulo': [-23.5450, -46.5350]
 };
 
+const coordsBairro = {};
+function centroBairro(property) {
+  const chave = normalize(`${property.city}|${property.neighborhood}`);
+  if (!(chave in coordsBairro)) {
+    const lista = (window.TAMADA_CATALOG || []).filter(p => p.lat && p.lng && normalize(`${p.city}|${p.neighborhood}`) === chave);
+    coordsBairro[chave] = lista.length
+      ? [lista.reduce((s, p) => s + p.lat, 0) / lista.length, lista.reduce((s, p) => s + p.lng, 0) / lista.length]
+      : null;
+  }
+  return coordsBairro[chave];
+}
+
+/* Posição no mapa: coordenada real do endereço (geocodificada), com deslocamento
+   fixo de ~45–130 m pra apontar a região certa sem entregar a casa exata. Sem
+   coordenada, usa o centro do bairro; só em último caso o centro da cidade. */
 function approximateCoords(property) {
-  const base = cityCenters[normalize(property.city)] || cityCenters['sao paulo'];
   const value = hash(`${property.neighborhood}-${property.ref}`);
   const angle = (value % 360) * Math.PI / 180;
+  if (Number.isFinite(property.lat) && Number.isFinite(property.lng)) {
+    const r = .0004 + ((value >>> 8) % 80) / 100000;
+    return [property.lat + Math.cos(angle) * r, property.lng + Math.sin(angle) * r];
+  }
+  const centro = centroBairro(property);
+  if (centro) {
+    const r = .002 + ((value >>> 8) % 40) / 10000;
+    return [centro[0] + Math.cos(angle) * r, centro[1] + Math.sin(angle) * r];
+  }
+  const base = cityCenters[normalize(property.city)] || cityCenters['sao paulo'];
   const radius = normalize(property.city) === 'sao paulo' ? .018 + ((value >>> 8) % 48) / 1000 : .008 + ((value >>> 8) % 18) / 1000;
   return [base[0] + Math.cos(angle) * radius, base[1] + Math.sin(angle) * radius];
 }

@@ -50,6 +50,9 @@ export type Imovel = {
   url: string
   /** 'm' = mobiliado, 's' = semimobiliado, ausente = nenhum (slug exato em amenities). */
   mobilia?: 'm' | 's'
+  /** Coordenada do endereço (geocodificada). Ausente = mapa cai pro centro do bairro. */
+  lat?: number
+  lng?: number
 }
 
 export type ImovelDetalhe = Imovel & {
@@ -191,8 +194,15 @@ const CAMPOS_BASICOS = `
   "garages": garage,
   "img": mainImage.asset->url,
   "mobilia": select("mobiliado" in amenities => "m", "semimobiliado" in amenities => "s"),
+  latitude,
+  longitude,
   "slug": slug.current
 `
+
+// Só aceita coordenada dentro da grande São Paulo: lixo (0, troca de lat/lng,
+// outro estado) não pode virar pino. 4 casas decimais = ~11 m.
+const coordValida = (lat?: number, lng?: number) =>
+  typeof lat === 'number' && typeof lng === 'number' && lat > -24.3 && lat < -23.0 && lng > -47.3 && lng < -45.9
 
 function mapBasico(p: Bruto): Imovel {
   return {
@@ -209,6 +219,9 @@ function mapBasico(p: Bruto): Imovel {
     baths: p.baths || 0,
     garages: p.garages || 0,
     ...(p.mobilia === 'm' || p.mobilia === 's' ? { mobilia: p.mobilia } : {}),
+    ...(coordValida(p.latitude, p.longitude)
+      ? { lat: Number(p.latitude!.toFixed(4)), lng: Number(p.longitude!.toFixed(4)) }
+      : {}),
     image: p.img ? `${p.img}?w=560&h=400&fit=crop&auto=format` : '',
     // Rota real é /imovel/[ref] (1 segmento) — achado em 01/10: este campo
     // vinha com /imovel/{slug}/{ref} (2 segmentos), uma URL que nunca
@@ -244,9 +257,9 @@ export async function getBairros(): Promise<
     if (!nome) continue
     const b = (porBairro[nome] = porBairro[nome] || { nome, cidade: p.city || 'São Paulo', total: 0, lats: [], lngs: [] })
     b.total++
-    if (p.latitude && p.longitude) {
-      b.lats.push(p.latitude)
-      b.lngs.push(p.longitude)
+    if (coordValida(p.latitude, p.longitude)) {
+      b.lats.push(p.latitude!)
+      b.lngs.push(p.longitude!)
     }
   }
   const media = (a: number[]) => a.reduce((s, n) => s + n, 0) / a.length
