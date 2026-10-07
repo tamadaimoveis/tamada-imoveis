@@ -8,6 +8,9 @@
 import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 import { getRefBySlug } from '@/lib/queries'
+import { geocodificarImovel } from '@/lib/geocode'
+
+export const maxDuration = 30
 
 export async function POST(req: NextRequest) {
   const secret = process.env.REVALIDATE_SECRET
@@ -26,6 +29,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
+  // Imóvel recém-cadastrado chega sem latitude/longitude: converte o endereço
+  // agora, antes de revalidar, pra página já nascer com o pino no lugar certo.
+  // Best-effort — falha aqui nunca impede a revalidação.
+  let geocodificado = false
+  if (body?._id) geocodificado = await geocodificarImovel(body._id)
+
   const slug = body?.slug?.current
   const ref = slug ? await getRefBySlug(slug) : null
   if (ref) revalidatePath(`/imovel/${ref}`)
@@ -36,5 +45,5 @@ export async function POST(req: NextRequest) {
   revalidatePath('/imoveis')
   revalidatePath('/')
 
-  return NextResponse.json({ ok: true, revalidated: ref ?? null })
+  return NextResponse.json({ ok: true, revalidated: ref ?? null, geocodificado })
 }
