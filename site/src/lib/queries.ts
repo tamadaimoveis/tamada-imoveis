@@ -155,6 +155,11 @@ type Bruto = {
   mobilia?: string
 }
 
+/** Valor do m² do preço e da área ATUAIS; o campo gravado (precoM2Venda) fica velho quando o preço é editado depois da importação. */
+function precoPorM2(preco?: number, area?: number): number | undefined {
+  return preco && area && preco > 0 && area > 0 ? Math.round(preco / area) : undefined
+}
+
 const rotular = (valores: string[] | undefined, mapa: Record<string, string>) =>
   (valores || []).map((v) => mapa[v]).filter(Boolean)
 
@@ -356,7 +361,8 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
       condominio: p.condominio,
       iptu: p.iptu,
       iptuPeriodo: p.iptuPeriodo,
-      precoM2: p.precoM2Venda,
+      // m² do preço e da área atuais; o gravado (precoM2Venda) fica velho quando o preço é editado depois da importação
+      precoM2: precoPorM2(p.sale, p.area || p.areaTotal) ?? p.precoM2Venda,
       precoAVista: p.priceCash,
       aceitaNegociacao: p.aceitaNegociacao,
       ocupacao: OCUPACAO[p.ocupacao ?? ''] || null,
