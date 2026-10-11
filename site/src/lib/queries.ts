@@ -53,6 +53,8 @@ export type Imovel = {
   /** Coordenada do endereço (geocodificada). Ausente = mapa cai pro centro do bairro. */
   lat?: number
   lng?: number
+  /** 8 primeiros hex do uuid do condomínio (condominioRef); liga o card ao filtro `?condominio=` da busca. */
+  cond?: string
 }
 
 export type ImovelDetalhe = Imovel & {
@@ -79,6 +81,8 @@ export type ImovelDetalhe = Imovel & {
   /** Comodidades exclusivas do condomínio (área comum). `comodidades` acima
       já vem como a diferença unidade-menos-condomínio (ver getImovel). */
   comodidadesCondominio: string[]
+  /** `_id` do documento `condominio` (condominioRef): liga a ficha à seção "O condomínio". */
+  condominioId: string | null
 }
 
 type Bruto = {
@@ -153,6 +157,7 @@ type Bruto = {
   fotosCondominio?: string[]
   amenitiesCondominio?: string[]
   mobilia?: string
+  condId?: string
 }
 
 /** Valor do m² do preço e da área ATUAIS; o campo gravado (precoM2Venda) fica velho quando o preço é editado depois da importação. */
@@ -167,7 +172,7 @@ const rotular = (valores: string[] | undefined, mapa: Record<string, string>) =>
 // amenitiesCondominio, cujo vocabulário (documento `condominio`) não tem
 // garantia de estar 100% coberto por COMODIDADES. Formata em vez de
 // descartar silenciosamente (rotular() descarta via .filter(Boolean)).
-function rotularComFallback(valores: string[] | undefined, mapa: Record<string, string>): string[] {
+export function rotularComFallback(valores: string[] | undefined, mapa: Record<string, string>): string[] {
   return (valores || []).map((v) =>
     mapa[v] ?? v.replace(/[-_]+/g, ' ').split(' ').filter(Boolean)
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
@@ -201,6 +206,7 @@ const CAMPOS_BASICOS = `
   "mobilia": select("mobiliado" in amenities => "m", "semimobiliado" in amenities => "s"),
   latitude,
   longitude,
+  "condId": condominioRef._ref,
   "slug": slug.current
 `
 
@@ -224,6 +230,7 @@ function mapBasico(p: Bruto): Imovel {
     baths: p.baths || 0,
     garages: p.garages || 0,
     ...(p.mobilia === 'm' || p.mobilia === 's' ? { mobilia: p.mobilia } : {}),
+    ...(p.condId ? { cond: p.condId.replace(/^condominio-/, '').replace(/-/g, '').slice(0, 8) } : {}),
     ...(coordValida(p.latitude, p.longitude)
       ? { lat: Number(p.latitude!.toFixed(4)), lng: Number(p.longitude!.toFixed(4)) }
       : {}),
@@ -328,6 +335,7 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
     condominioNome: p.condominioNome ?? null,
     fotosCondominio: p.fotosCondominio || [],
     comodidadesCondominio: rotularComFallback(p.amenitiesCondominio, COMODIDADES),
+    condominioId: p.condId ?? null,
     acabamentos: rotular(p.acabamentos, ACABAMENTOS),
     garantias: rotular(p.garantiaLocacao, GARANTIAS),
     pagamento: rotular(p.paymentMethods, PAGAMENTO),

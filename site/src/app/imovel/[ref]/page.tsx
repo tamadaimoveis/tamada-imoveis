@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getImovel, getImoveis } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
+import CondominioSecao from '@/components/CondominioSecao'
+import { getCondominioPorId } from '@/lib/condominios'
+import { temConteudo } from '@/lib/condominio-secao'
 
 export const dynamicParams = true
 
@@ -46,6 +49,11 @@ export default async function ImovelPage({ params }: Props) {
   const { ref } = await params
   const imovel = await getImovel(ref.toUpperCase())
   if (!imovel) notFound()
+
+  // Condomínio completo (condominioRef). Sem referência ou sem conteúdo, a ficha fica como sempre foi.
+  // A página do condomínio só existe com imóvel ativo nele; este imóvel já é ativo, então o link vale.
+  const condominioDoc = imovel.condominioId ? await getCondominioPorId(imovel.condominioId) : null
+  const condominio = condominioDoc && temConteudo(condominioDoc) ? condominioDoc : null
 
   const parecidos = (await getImoveis()).slice(0, 400) // base pra "imóveis parecidos" (pickSimilar em imovel.js)
 
@@ -92,6 +100,7 @@ export default async function ImovelPage({ params }: Props) {
                 <a href="/imoveis?purpose=sale&type=APARTMENT">Apartamentos</a>
                 <a href="/imoveis?purpose=sale&type=LAND">Terrenos</a>
                 <a href="/imoveis?purpose=sale&commercial=1">Comerciais</a>
+                <a href="/condominios">Condomínios</a>
               </div>
             </details>
             <details className="nav-dropdown">
@@ -336,25 +345,13 @@ export default async function ImovelPage({ params }: Props) {
                   <ul className="amenity-grid" id="amenityGrid" />
                 </div>
 
-                <div className="detail-block" id="condominioAmenitiesBlock">
-                  <p className="eyebrow">
-                    <span /> Área comum
-                  </p>
-                  <h2>
-                    Comodidades
-                    <br />
-                    <em>do condomínio.</em>
-                  </h2>
-                  <ul className="amenity-grid" id="condominioAmenityGrid" />
-                </div>
-
-                <div className="detail-block" id="condominioFotosBlock">
-                  <p className="eyebrow">
-                    <span /> Fotos do condomínio
-                  </p>
-                  <h2 id="condominioFotosTitle">Área comum</h2>
-                  <div className="detail-gallery-grid" id="condominioFotosGrid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '.6rem' }} />
-                </div>
+                {/* O condomínio (documento `condominio` referenciado). Cada bloco só aparece com dado.
+                    O imovel.js não toca aqui: tudo é React e o lightbox tem ids próprios. */}
+                {condominio ? (
+                  <div id="condominio">
+                    <CondominioSecao condominio={condominio} href={`/condominios/${condominio.slug}`} />
+                  </div>
+                ) : null}
 
                 <div className="detail-block">
                   <p className="eyebrow">

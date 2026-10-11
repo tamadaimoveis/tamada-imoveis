@@ -22,6 +22,7 @@ export default function MobileMenu() {
         <a href="/imoveis?purpose=sale&type=HOUSE">Casas</a>
         <a href="/imoveis?purpose=sale&type=TWO_STORY_HOUSE">Sobrados</a>
         <a href="/imoveis?purpose=sale&commercial=1">Comerciais</a>
+        <a href="/condominios">Condomínios</a>
       </div>
 
       <div className="mobile-menu-links">

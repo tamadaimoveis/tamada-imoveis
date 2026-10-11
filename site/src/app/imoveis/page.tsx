@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { getImoveis, getBairros } from '@/lib/queries'
+import { getCondominiosComImoveis } from '@/lib/condominios'
 import Efeitos from '@/components/Efeitos'
 import Header from '@/components/Header'
 import MobileMenu from '@/components/MobileMenu'
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ImoveisPage() {
-  const [imoveis, bairros] = await Promise.all([getImoveis(), getBairros()])
+  const [imoveis, bairros, condominios] = await Promise.all([getImoveis(), getBairros(), getCondominiosComImoveis()])
 
   return (
     <>
@@ -22,7 +23,7 @@ export default async function ImoveisPage() {
       <Script src="/hero-copy.js" strategy="beforeInteractive" />
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.TAMADA_CATALOG=${JSON.stringify(imoveis)};window.TAMADA_BAIRROS=${JSON.stringify(bairros)};`,
+          __html: `window.TAMADA_CATALOG=${JSON.stringify(imoveis)};window.TAMADA_BAIRROS=${JSON.stringify(bairros)};window.TAMADA_CONDOMINIOS=${JSON.stringify(condominios.map((c) => ({ slug: c.slug, nome: c.nome })))};`,
         }}
       />
 

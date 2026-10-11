@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:condominio": "node --test src/lib/condominio-secao.test.mjs"
   },
   "dependencies": {
     "@sanity/client": "^7.21.0",

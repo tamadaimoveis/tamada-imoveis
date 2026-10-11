@@ -22,6 +22,8 @@ const state = {
   commercial: queryParams.get('commercial') === '1',
   garage: queryParams.get('garage') === '1',
   mobiliado: queryParams.get('mobiliado') === '1',
+  // Slug do condomínio (`?condominio=nome-<8 do uuid>`), vindo da página do condomínio. Casa com `property.cond`.
+  condominio: queryParams.get('condominio') || '',
   sort: 'featured',
   view: queryParams.get('view') === 'map' ? 'map' : 'grid',
   limit: 18
@@ -98,6 +100,18 @@ function imovelHref(property) {
   return purpose ? `/imovel/${property.ref}?de=${purpose}` : `/imovel/${property.ref}`;
 }
 
+// 8 últimos caracteres hex do slug = chave do condomínio (mesma de `property.cond`, ver queries.ts).
+function condominioKey(slug) {
+  const m = /-([0-9a-f]{8})$/.exec(slug || '');
+  return m ? m[1] : '__nenhum__';
+}
+
+function condominioNome(slug) {
+  const lista = Array.isArray(window.TAMADA_CONDOMINIOS) ? window.TAMADA_CONDOMINIOS : [];
+  const achado = lista.find(c => c.slug === slug);
+  return achado ? achado.nome : 'condomínio';
+}
+
 function matches(property) {
   if (state.purpose === 'sale' && !property.sale) return false;
   if (state.purpose === 'rent' && !property.rent) return false;
@@ -124,6 +138,7 @@ function matches(property) {
   if (state.garage && !Number(property.garages)) return false;
   // Só "mobiliado" (slug exato). Semimobiliado NÃO entra neste filtro.
   if (state.mobiliado && property.mobilia !== 'm') return false;
+  if (state.condominio && property.cond !== condominioKey(state.condominio)) return false;
   return true;
 }
 
@@ -177,7 +192,7 @@ function card(property) {
 }
 
 function activeFilterCount() {
-  return [state.purpose !== 'all', state.query, state.type, state.maxPrice, state.minBeds, state.minGarages, state.minArea, state.maxArea, state.affordable, state.commercial, state.garage, state.mobiliado].filter(Boolean).length;
+  return [state.purpose !== 'all', state.query, state.type, state.maxPrice, state.minBeds, state.minGarages, state.minArea, state.maxArea, state.affordable, state.commercial, state.garage, state.mobiliado, state.condominio].filter(Boolean).length;
 }
 
 function summaryText() {
@@ -188,6 +203,7 @@ function summaryText() {
   if (state.query) parts.push(`em “${state.query}”`);
   if (state.type) parts.push(typeLabels[state.type] || state.type);
   if (state.maxPrice) parts.push(`até ${money(state.maxPrice)}`);
+  if (state.condominio) parts.push(`no ${condominioNome(state.condominio)}`);
   return parts.length ? parts.join(' · ') : 'Todos os imóveis';
 }
 
@@ -202,6 +218,7 @@ function updateUrl() {
   if (state.commercial) params.set('commercial', '1');
   if (state.garage) params.set('garage', '1');
   if (state.mobiliado) params.set('mobiliado', '1');
+  if (state.condominio) params.set('condominio', state.condominio);
   if (state.view === 'map') params.set('view', 'map');
   history.replaceState(null, '', `${location.pathname}${params.size ? `?${params}` : ''}`);
 }
@@ -398,7 +415,7 @@ document.querySelector('#onlyGarage').addEventListener('change', event => { stat
 document.querySelector('#onlyMobiliado').addEventListener('change', event => { state.mobiliado = event.target.checked; render(); });
 
 function clearFilters() {
-  Object.assign(state, { purpose: 'all', query: '', type: '', maxPrice: 0, minBeds: 0, minBedsExact: true, minGarages: 0, minGaragesExact: true, minArea: 0, maxArea: 0, affordable: false, commercial: false, garage: false, mobiliado: false, limit: 18 });
+  Object.assign(state, { purpose: 'all', query: '', type: '', maxPrice: 0, minBeds: 0, minBedsExact: true, minGarages: 0, minGaragesExact: true, minArea: 0, maxArea: 0, affordable: false, commercial: false, garage: false, mobiliado: false, condominio: '', limit: 18 });
   el.minArea.value = ''; el.maxArea.value = '';
   document.querySelectorAll('.side-number-chips button').forEach(button => button.classList.toggle('active', button.dataset.value === '0'));
   document.querySelectorAll('.side-checks input').forEach(input => { input.checked = false; });

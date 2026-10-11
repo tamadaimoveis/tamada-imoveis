@@ -30,6 +30,7 @@ export default function Header({ catalogo = false, active }: { catalogo?: boolea
               <a href="/imoveis?purpose=sale&type=APARTMENT">Apartamentos</a>
               <a href="/imoveis?purpose=sale&type=LAND">Terrenos</a>
               <a href="/imoveis?purpose=sale&commercial=1">Comerciais</a>
+              <a href="/condominios">Condomínios</a>
             </div>
           </details>
           <details className="nav-dropdown">
