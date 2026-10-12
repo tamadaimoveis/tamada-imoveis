@@ -247,3 +247,36 @@ export function temConteudo(c: Condominio): boolean {
     c.fotos.length || c.descricao || c.comodidades.length || linhasFicha(c.ficha).length || grupos.length || pdfs.length || c.bookUrl
   )
 }
+
+export type BlocoDescricao = { tipo: 'paragrafo'; texto: string } | { tipo: 'lista'; itens: string[] }
+
+const LINHA_CURTA = 60
+
+/**
+ * A descrição do condomínio vem do CRM como texto livre. Muitas vêm como lista de linhas curtas
+ * ("Piscina", "Academia", "Apartamentos de 1 a 3 quartos"); jogadas como texto corrido ficam uma
+ * linha embaixo da outra. Três ou mais linhas curtas seguidas viram `lista` (itens sem o ponto
+ * final); o resto vira `paragrafo`. Linha em branco separa parágrafos; nada é descartado.
+ */
+export function blocosDaDescricao(texto: string | null | undefined): BlocoDescricao[] {
+  if (!texto) return []
+  const linhas = texto.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
+  const blocos: BlocoDescricao[] = []
+  let corrida: string[] = []
+
+  const fechaCorrida = () => {
+    if (corrida.length >= 3) blocos.push({ tipo: 'lista', itens: corrida.map((l) => l.replace(/[.;]+$/, '')) })
+    else for (const l of corrida) blocos.push({ tipo: 'paragrafo', texto: l })
+    corrida = []
+  }
+
+  for (const linha of linhas) {
+    if (linha.length <= LINHA_CURTA) corrida.push(linha)
+    else {
+      fechaCorrida()
+      blocos.push({ tipo: 'paragrafo', texto: linha })
+    }
+  }
+  fechaCorrida()
+  return blocos
+}

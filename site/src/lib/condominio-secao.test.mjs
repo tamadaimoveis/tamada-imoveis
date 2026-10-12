@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
   slugCondominio, sufixoDoSlug, slugValido, localDoCondominio, formatarPrevisaoEntrega,
-  detalhesTipologia, pertenceAoCondominio, linhasFicha, gruposDePlantas, montarCondominio, temConteudo,
+  detalhesTipologia, blocosDaDescricao, pertenceAoCondominio, linhasFicha, gruposDePlantas, montarCondominio, temConteudo,
 } from './condominio-secao.ts'
 
 const ID = 'condominio-3dce29c5-1111-4222-8333-444455556666'
@@ -85,4 +85,21 @@ test('filtro da busca: imóvel pertence ao condomínio pelo sufixo do slug', () 
   assert.equal(pertenceAoCondominio(ID, 'edificio-promenade-aaaaaaaa'), false)
   assert.equal(pertenceAoCondominio(undefined, 'edificio-promenade-3dce29c5'), false)
   assert.equal(pertenceAoCondominio(ID, 'sem-sufixo'), false)
+})
+
+test('descrição: lista de linhas curtas vira lista; texto longo e linhas soltas viram parágrafo', () => {
+  const lista = blocosDaDescricao('Apartamentos de 40 a 75m²\n\nApartamentos de 1 a 3 quartos\n\nGaragem com até 2 vagas\n\nPortaria 24 horas')
+  assert.deepEqual(lista, [{ tipo: 'lista', itens: ['Apartamentos de 40 a 75m²', 'Apartamentos de 1 a 3 quartos', 'Garagem com até 2 vagas', 'Portaria 24 horas'] }])
+
+  const longo = 'O Residencial Aurora reúne apartamentos de dois quartos, opções térreas com garden privativo e uma ampla estrutura de lazer.'
+  const misto = blocosDaDescricao(['Lazer para toda a família', longo, 'Piscinas adulta e infantil.', 'Duas churrasqueiras.', 'Salão de festas.', 'Cinema.'].join('\n'))
+  assert.deepEqual(misto, [
+    { tipo: 'paragrafo', texto: 'Lazer para toda a família' },
+    { tipo: 'paragrafo', texto: longo },
+    { tipo: 'lista', itens: ['Piscinas adulta e infantil', 'Duas churrasqueiras', 'Salão de festas', 'Cinema'] },
+  ])
+
+  assert.deepEqual(blocosDaDescricao('Só duas\nlinhas curtas'), [{ tipo: 'paragrafo', texto: 'Só duas' }, { tipo: 'paragrafo', texto: 'linhas curtas' }])
+  assert.deepEqual(blocosDaDescricao(null), [])
+  assert.deepEqual(blocosDaDescricao('  \n \n'), [])
 })

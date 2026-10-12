@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { gruposDePlantas, linhasFicha, type Condominio } from '@/lib/condominio-secao'
+import { blocosDaDescricao, gruposDePlantas, linhasFicha, type Condominio } from '@/lib/condominio-secao'
 
 type Foto = { url: string; alt: string }
 
@@ -113,7 +113,25 @@ export default function CondominioSecao({
             <br />
             <em>condomínio.</em>
           </h2>
-          <p style={{ whiteSpace: 'pre-line', maxWidth: '68ch', lineHeight: 1.8, margin: 0 }}>{c.descricao}</p>
+          {blocosDaDescricao(c.descricao).map((bloco, i) =>
+            bloco.tipo === 'lista' ? (
+              // Linhas curtas seguidas = lista de características: mesmos cartões das comodidades.
+              <ul className="amenity-grid" key={i} style={{ margin: '0 0 24px' }}>
+                {bloco.itens.map((item) => (
+                  <li className="in" key={item}>
+                    <iconify-icon icon="solar:check-circle-linear" style={{ fontSize: 28, flex: '0 0 auto' }} />
+                    <div>
+                      <span>{item}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p key={i} style={{ maxWidth: '68ch', lineHeight: 1.8, margin: '0 0 16px' }}>
+                {bloco.texto}
+              </p>
+            )
+          )}
         </div>
       )}
 
@@ -129,8 +147,8 @@ export default function CondominioSecao({
           </h2>
           <ul className="amenity-grid">
             {c.comodidades.map((label) => (
-              <li key={label}>
-                <iconify-icon icon="solar:check-circle-linear" />
+              <li className="in" key={label}>
+                <iconify-icon icon="solar:check-circle-linear" style={{ fontSize: 28, flex: '0 0 auto' }} />
                 <div>
                   <span>{label}</span>
                 </div>
