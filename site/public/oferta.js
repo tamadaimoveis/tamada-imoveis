@@ -14,9 +14,21 @@
  * direto na primeira renderização.
  */
 
-/** 'sale' | 'rent' | null — contexto de onde o visitante está navegando. */
+/**
+ * 'sale' | 'rent' | null — contexto de onde o visitante está navegando.
+ *
+ * `?foco=venda|locacao` é o que o link compartilhado pelo CRM carrega (o corretor escolhe a carteira e o
+ * cliente abre a ficha com o valor dela em destaque). Vale só para imóvel com os dois valores (ver
+ * precoDestaque: imóvel de uma carteira só mostra o único preço que tem). Valor desconhecido = ignora.
+ * `?de=` / `?purpose=` seguem valendo: são os carimbos do catálogo (aba Comprar/Alugar). O foco do CRM
+ * ganha se vierem os dois.
+ */
 function purposeDaUrl() {
-  const p = new URLSearchParams(window.location.search).get('de') || new URLSearchParams(window.location.search).get('purpose');
+  const q = new URLSearchParams(window.location.search);
+  const foco = q.get('foco');
+  if (foco === 'locacao') return 'rent';
+  if (foco === 'venda') return 'sale';
+  const p = q.get('de') || q.get('purpose');
   return p === 'rent' || p === 'sale' ? p : null;
 }
 
