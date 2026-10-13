@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getImovel, getImoveis } from '@/lib/queries'
+import { getImovel, getImoveis, getParecidos, getBairros } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
 import CondominioSecao from '@/components/CondominioSecao'
 import { getCondominioPorId } from '@/lib/condominios'
@@ -55,7 +55,11 @@ export default async function ImovelPage({ params }: Props) {
   const condominioDoc = imovel.condominioId ? await getCondominioPorId(imovel.condominioId) : null
   const condominio = condominioDoc && temConteudo(condominioDoc) ? condominioDoc : null
 
-  const parecidos = (await getImoveis()).slice(0, 400) // base pra "imóveis parecidos" (pickSimilar em imovel.js)
+  // Só os candidatos a "imóveis parecidos" (≤12, pickSimilar em imovel.js escolhe 3) e o
+  // centro do bairro pro mapa — antes a ficha embutia o catálogo (400 imóveis) pra isso.
+  const [parecidos, bairros] = await Promise.all([getParecidos(imovel.ref, imovel.neighborhood), getBairros()])
+  const centroBairro = bairros.find((b) => b.nome === imovel.neighborhood && b.cidade === imovel.city)
+  const centro = centroBairro ? [centroBairro.lat, centroBairro.lng] : null
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -74,7 +78,7 @@ export default async function ImovelPage({ params }: Props) {
       <script
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          __html: `window.__TAMADA_PROPERTY__=${JSON.stringify(imovel)};window.TAMADA_CATALOG=${JSON.stringify(parecidos)};`,
+          __html: `window.__TAMADA_PROPERTY__=${JSON.stringify(imovel)};window.TAMADA_CATALOG=${JSON.stringify(parecidos)};window.__TAMADA_CENTRO=${JSON.stringify(centro)};`,
         }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

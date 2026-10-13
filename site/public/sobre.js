@@ -6,8 +6,8 @@
 // "imóveis disponíveis" era número fixo no HTML — desatualizava toda vez que
 // o estoque mudava no Sanity. Agora conta o catálogo gerado no build.
 const statImoveis = document.querySelector('#statImoveis');
-if (statImoveis && Array.isArray(window.TAMADA_CATALOG)) {
-  statImoveis.textContent = window.TAMADA_CATALOG.length.toLocaleString('pt-BR');
+if (statImoveis && window.TAMADA_STATS && window.TAMADA_STATS.imoveis) {
+  statImoveis.textContent = window.TAMADA_STATS.imoveis.toLocaleString('pt-BR');
 }
 
 (() => {

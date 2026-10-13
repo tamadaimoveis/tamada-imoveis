@@ -33,6 +33,9 @@ const cityCenters = {
 
 const coordsBairro = {};
 function centroBairro(property) {
+  // A ficha só recebe ~12 imóveis parecidos (não o catálogo), então o centro do
+  // bairro vem calculado do servidor em __TAMADA_CENTRO.
+  if (Array.isArray(window.__TAMADA_CENTRO)) return window.__TAMADA_CENTRO;
   const chave = normalize(`${property.city}|${property.neighborhood}`);
   if (!(chave in coordsBairro)) {
     const lista = (window.TAMADA_CATALOG || []).filter(p => p.lat && p.lng && normalize(`${p.city}|${p.neighborhood}`) === chave);

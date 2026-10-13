@@ -246,22 +246,22 @@ function mapBasico(p: Bruto): Imovel {
   }
 }
 
-export async function getImoveis(): Promise<Imovel[]> {
+export async function getImoveis(revalidar = REVALIDATE): Promise<Imovel[]> {
   const data = await client.fetch<Bruto[]>(
     `*[${FILTRO_PUBLICO}]|order(_createdAt desc){${CAMPOS_BASICOS}}`,
     {},
-    { next: { revalidate: REVALIDATE } }
+    { next: { revalidate: revalidar } }
   )
   return (data || []).filter((p) => p.ref && p.title).map(mapBasico)
 }
 
-export async function getBairros(): Promise<
+export async function getBairros(revalidar = REVALIDATE): Promise<
   { nome: string; cidade: string; total: number; lat: number; lng: number; amostras: number }[]
 > {
   const data = await client.fetch<{ neighborhood?: string; city?: string; latitude?: number; longitude?: number }[]>(
     `*[${FILTRO_PUBLICO}]{neighborhood, "city": cidade, latitude, longitude}`,
     {},
-    { next: { revalidate: REVALIDATE } }
+    { next: { revalidate: revalidar } }
   )
   const porBairro: Record<string, { nome: string; cidade: string; total: number; lats: number[]; lngs: number[] }> = {}
   for (const p of data || []) {
@@ -286,6 +286,34 @@ export async function getBairros(): Promise<
       amostras: b.lats.length,
     }))
     .sort((a, b) => b.total - a.total)
+}
+
+/** Só os dois números que Sobre e Trabalhe conosco mostram — sem puxar o catálogo inteiro. */
+export async function getResumo(): Promise<{ imoveis: number; bairros: number }> {
+  const r = await client.fetch<{ imoveis: number; bairros: number } | null>(
+    `{"imoveis": count(*[${FILTRO_PUBLICO}]), "bairros": count(array::unique(*[${FILTRO_PUBLICO} && defined(neighborhood) && neighborhood != ""].neighborhood))}`,
+    {},
+    { next: { revalidate: REVALIDATE } }
+  )
+  return { imoveis: r?.imoveis ?? 0, bairros: r?.bairros ?? 0 }
+}
+
+/**
+ * Candidatos a "imóveis parecidos" da ficha, já filtrados no servidor: até 6 do mesmo
+ * bairro e 6 do mesmo tipo em outro bairro (a mesma regra do pickSimilar em imovel.js,
+ * que escolhe 3). Antes a ficha embutia 400 imóveis só pra isso.
+ */
+export async function getParecidos(ref: string, bairro: string): Promise<Imovel[]> {
+  const base = `${FILTRO_PUBLICO} && codigoImovel != $ref`
+  const r = await client.fetch<{ hood: Bruto[]; tipo: Bruto[] } | null>(
+    `{
+      "hood": *[${base} && neighborhood == $bairro]|order(_createdAt desc)[0...6]{${CAMPOS_BASICOS}},
+      "tipo": *[${base} && neighborhood != $bairro && type == *[${FILTRO_PUBLICO} && codigoImovel == $ref][0].type]|order(_createdAt desc)[0...6]{${CAMPOS_BASICOS}}
+    }`,
+    { ref, bairro },
+    { next: { revalidate: REVALIDATE } }
+  )
+  return [...(r?.hood || []), ...(r?.tipo || [])].filter((p) => p.ref && p.title).map(mapBasico)
 }
 
 const CAMPOS_DETALHE = `

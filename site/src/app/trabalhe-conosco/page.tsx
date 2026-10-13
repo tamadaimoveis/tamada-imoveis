@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getImoveis, getBairros } from '@/lib/queries'
+import { getResumo } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
 import MobileMenu from '@/components/MobileMenu'
 import TabBar from '@/components/TabBar'
@@ -11,13 +11,13 @@ export const metadata: Metadata = {
 }
 
 export default async function TrabalheConoscoPage() {
-  const [imoveis, bairros] = await Promise.all([getImoveis(), getBairros()])
+  const resumo = await getResumo()
 
   return (
     <>
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.TAMADA_CATALOG=${JSON.stringify(imoveis)};window.TAMADA_BAIRROS=${JSON.stringify(bairros)};`,
+          __html: `window.TAMADA_STATS=${JSON.stringify(resumo)};`,
         }}
       />
 
@@ -132,11 +132,11 @@ export default async function TrabalheConoscoPage() {
                 <p>Oportunidades em diferentes áreas para quem quer aprender, crescer e construir uma trajetória com a Tamada.</p>
                 <dl>
                   <div>
-                    <dt id="statCarteira">{imoveis.length}</dt>
+                    <dt id="statCarteira">{resumo.imoveis}</dt>
                     <dd>imóveis na carteira ativa</dd>
                   </div>
                   <div>
-                    <dt id="statBairros">{bairros.length}</dt>
+                    <dt id="statBairros">{resumo.bairros}</dt>
                     <dd>bairros com presença</dd>
                   </div>
                   <div>
@@ -171,7 +171,7 @@ export default async function TrabalheConoscoPage() {
                 </div>
                 <h3>Carteira pronta</h3>
                 <p>
-                  <span id="statCarteira3">{imoveis.length}</span> imóveis ativos agora — você não começa do zero
+                  <span id="statCarteira3">{resumo.imoveis}</span> imóveis ativos agora — você não começa do zero
                   procurando cliente.
                 </p>
               </article>
@@ -180,7 +180,7 @@ export default async function TrabalheConoscoPage() {
                   <iconify-icon icon="solar:medal-ribbon-star-linear" />
                 </div>
                 <h3>
-                  Marca em <span id="statBairros3">{bairros.length}</span> bairros
+                  Marca em <span id="statBairros3">{resumo.bairros}</span> bairros
                 </h3>
                 <p>Você negocia com o peso de uma imobiliária já presente na região.</p>
               </article>

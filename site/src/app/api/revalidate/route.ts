@@ -39,11 +39,10 @@ export async function POST(req: NextRequest) {
   const ref = slug ? await getRefBySlug(slug) : null
   if (ref) revalidatePath(`/imovel/${ref}`)
 
-  // O imóvel aparece na home (destaques) e no catálogo também — as três
-  // caem juntas, senão o card fica com preço/foto velhos em algum canto
-  // mesmo depois do PATCH.
-  revalidatePath('/imoveis')
-  revalidatePath('/')
+  // Home e catálogo NÃO são mais revalidados a cada save: o HTML delas não leva
+  // mais dados de imóvel, e a lista vem de /catalogo.js (refeito a cada 15 min).
+  // Revalidar as duas a cada salvamento do CRM era o que mais gastava a cota da
+  // Vercel (cada save regenerava ~4,5 MB duas vezes).
 
   return NextResponse.json({ ok: true, revalidated: ref ?? null, geocodificado })
 }

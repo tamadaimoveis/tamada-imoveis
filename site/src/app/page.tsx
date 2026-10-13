@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import type { CSSProperties } from 'react'
-import { getImoveis, getBairros } from '@/lib/queries'
+import { getResumo } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
 import Header from '@/components/Header'
 import MobileMenu from '@/components/MobileMenu'
@@ -14,19 +14,12 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  const [imoveis, bairros] = await Promise.all([getImoveis(), getBairros()])
-
+  const resumo = await getResumo()
   return (
     <>
       {/* Destaques/mapa/bairros continuam montados client-side pelo script.js
-          legado (portado sem alterações) — aqui só trocamos a origem dos
-          dados: em vez de esperar catalog-data.js (gerado no build), injetamos
-          o resultado da query Sanity direto na página. */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `window.TAMADA_CATALOG=${JSON.stringify(imoveis)};window.TAMADA_BAIRROS=${JSON.stringify(bairros)};`,
-        }}
-      />
+          legado (portado sem alterações). A lista de imóveis vem de /catalogo.js
+          (cache da CDN), carregado antes do script.js — não mais embutida na página. */}
       {/* Leaflet só carregava o JS, nunca o CSS — sem isso o mapa não tem
           posicionamento absoluto e os tiles empilham soltos na página. */}
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -239,7 +232,7 @@ export default async function HomePage() {
 
             <div className="mobile-carousel-toolbar">
               <p>
-                <strong>{imoveis.length}</strong> imóveis no catálogo
+                <strong>{resumo.imoveis}</strong> imóveis no catálogo
               </p>
               <a href="/imoveis">
                 Ver todos <iconify-icon icon="solar:arrow-right-linear" />
@@ -683,7 +676,7 @@ export default async function HomePage() {
       <SearchModal />
 
       <Efeitos
-        scripts={['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', '/elegant-select.js', '/nav-dropdown.js', '/oferta.js', '/script.js']}
+        scripts={['/catalogo.js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', '/elegant-select.js', '/nav-dropdown.js', '/oferta.js', '/script.js']}
         gsap={false}
       />
     </>

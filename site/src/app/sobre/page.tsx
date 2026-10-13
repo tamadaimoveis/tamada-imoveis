@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getImoveis } from '@/lib/queries'
+import { getResumo } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
 import MobileMenu from '@/components/MobileMenu'
 import TabBar from '@/components/TabBar'
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function SobrePage() {
-  const imoveis = await getImoveis()
+  const resumo = await getResumo()
 
   return (
     <>
@@ -21,7 +21,7 @@ export default async function SobrePage() {
       <link rel="stylesheet" href="/hero-video.css" />
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.TAMADA_CATALOG=${JSON.stringify(imoveis)};`,
+          __html: `window.TAMADA_STATS=${JSON.stringify(resumo)};`,
         }}
       />
 
@@ -161,7 +161,7 @@ export default async function SobrePage() {
                       <dd>anos de sede própria</dd>
                     </div>
                     <div>
-                      <dt id="statImoveis">{imoveis.length}</dt>
+                      <dt id="statImoveis">{resumo.imoveis}</dt>
                       <dd>imóveis disponíveis</dd>
                     </div>
                     <div>
@@ -208,7 +208,7 @@ export default async function SobrePage() {
                 <dd>Anos de atuação</dd>
               </div>
               <div>
-                <dt>{imoveis.length}</dt>
+                <dt>{resumo.imoveis}</dt>
                 <dd>Imóveis no site</dd>
               </div>
               <div>

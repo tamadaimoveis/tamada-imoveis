@@ -12,12 +12,11 @@
    e destoando do ticket típico. Virou texto fixo sobre cultura da empresa em
    vez de número que confundia mais do que ajudava. */
 function renderStats() {
-  const inventory = Array.isArray(window.TAMADA_CATALOG) ? window.TAMADA_CATALOG : [];
-  const bairros = Array.isArray(window.TAMADA_BAIRROS) ? window.TAMADA_BAIRROS : [];
-  if (!inventory.length) return;
+  const stats = window.TAMADA_STATS || {};
+  if (!stats.imoveis) return;
 
-  const carteira = String(inventory.length);
-  const totalBairros = String(bairros.length);
+  const carteira = String(stats.imoveis);
+  const totalBairros = String(stats.bairros || 0);
 
   ['statCarteira', 'statCarteira3'].forEach(id => {
     const el = document.getElementById(id);

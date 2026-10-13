@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { getImoveis, getBairros } from '@/lib/queries'
 import { getCondominiosComImoveis } from '@/lib/condominios'
+import { getResumo } from '@/lib/queries'
 import Efeitos from '@/components/Efeitos'
 import Header from '@/components/Header'
 import MobileMenu from '@/components/MobileMenu'
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ImoveisPage() {
-  const [imoveis, bairros, condominios] = await Promise.all([getImoveis(), getBairros(), getCondominiosComImoveis()])
+  const [resumo, condominios] = await Promise.all([getResumo(), getCondominiosComImoveis()])
 
   return (
     <>
@@ -23,7 +23,7 @@ export default async function ImoveisPage() {
       <Script src="/hero-copy.js" strategy="beforeInteractive" />
       <script
         dangerouslySetInnerHTML={{
-          __html: `window.TAMADA_CATALOG=${JSON.stringify(imoveis)};window.TAMADA_BAIRROS=${JSON.stringify(bairros)};window.TAMADA_CONDOMINIOS=${JSON.stringify(condominios.map((c) => ({ slug: c.slug, nome: c.nome })))};`,
+          __html: `window.TAMADA_CONDOMINIOS=${JSON.stringify(condominios.map((c) => ({ slug: c.slug, nome: c.nome })))};`,
         }}
       />
 
@@ -60,11 +60,11 @@ export default async function ImoveisPage() {
                 </p>
                 <dl>
                   <div>
-                    <dt id="heroResultCount">{imoveis.length}</dt>
+                    <dt id="heroResultCount">{resumo.imoveis}</dt>
                     <dd>imóveis disponíveis</dd>
                   </div>
                   <div>
-                    <dt>{bairros.length}</dt>
+                    <dt>{resumo.bairros}</dt>
                     <dd>regiões em destaque</dd>
                   </div>
                   <div>
@@ -475,6 +475,7 @@ export default async function ImoveisPage() {
 
       <Efeitos
         scripts={[
+          '/catalogo.js',
           'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
           '/nav-dropdown.js',
           '/common.js',
