@@ -594,7 +594,13 @@ img{display:block;max-width:100%}
      lista. Empilha mapa+painel de cards em vez do grid 2 colunas. */
   .map-layout{padding:0;grid-template-columns:1fr;min-height:0}
   .map-shell{height:52vh;min-height:320px}
-  .map-panel{min-height:0;max-height:38vh;padding:16px}
+  /* Sem max-height: com 38vh o painel (flex em coluna) espremia o quadro da foto
+     até altura 0 e o texto/botão passavam do limite, ficando atrás da barra
+     inferior. Agora o painel cresce com o conteúdo e nada encolhe. */
+  .map-panel{min-height:0;padding:16px}
+  .map-panel>*{flex-shrink:0}
+  .map-card-image{height:190px}
+  .map-panel-copy h3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .atlas-back-floating{top:calc(env(safe-area-inset-top) + 12px);left:12px;padding:10px 14px;font-size:12px}
   .atlas-open-map{display:flex;width:calc(100% - 32px);margin:24px 16px 0;justify-content:center;gap:10px;min-height:52px;color:#fff;border-color:rgba(255,255,255,.35)}
 
