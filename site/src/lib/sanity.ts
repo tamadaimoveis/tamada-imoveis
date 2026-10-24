@@ -8,5 +8,8 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
+  // Leituras pela CDN do Sanity (cota de 1M/mês, quase sem uso) em vez da API comum
+  // (cota de 250k/mês, que chegou a 87%). O cache do Next já revalida a cada 5-15 min,
+  // então os poucos segundos de atraso da CDN não mudam nada.
+  useCdn: true,
 })
