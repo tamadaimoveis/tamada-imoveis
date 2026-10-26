@@ -598,7 +598,7 @@ function render(property) {
 
   const purpose = purposeDaUrl();
 
-  document.querySelector('#crumbRef').textContent = property.ref;
+  document.querySelector('#crumbRef').textContent = property.ref; document.querySelector('#detailRef').textContent = `Cód. ${property.ref}`; // celular: o breadcrumb some, o selo fica
   document.querySelector('#detailPurpose').textContent = purposeLabelContextual(property, purpose);
   document.querySelector('#detailType').textContent = typeLabels[property.type] || 'Imóvel';
   const mobEl = document.querySelector('#detailMobilia');

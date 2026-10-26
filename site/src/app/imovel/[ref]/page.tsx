@@ -260,6 +260,7 @@ export default async function ImovelPage({ params }: Props) {
                   <span className="detail-purpose" id="detailPurpose" />
                   <span className="detail-type" id="detailType" />
                   <span id="detailMobilia" hidden />
+                  <span className="detail-ref" id="detailRef" />
                 </p>
                 <h1 id="detailTitle" />
                 <p className="detail-location">

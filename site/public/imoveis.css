@@ -138,7 +138,7 @@
 .pc-note{position:relative;font-size:12px;color:var(--muted);padding-bottom:5px}
 
 .detail-intro .breadcrumbs{margin-bottom:16px}
-.detail-badges{display:flex;gap:8px;margin:0 0 16px}
+.detail-badges{display:flex;gap:8px;margin:0 0 16px}.detail-ref{display:none}
 .detail-purpose,.detail-type{display:inline-block;padding:7px 12px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .detail-purpose{background:var(--red);color:#fff}
 .detail-type{background:var(--paper-deep);color:var(--ink-soft)}
@@ -825,6 +825,7 @@
 
   .detail-intro-left{padding:16px}
   .detail-intro .breadcrumbs{display:none}
+  .detail-intro .detail-ref{display:inline-block;padding:6px 10px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line)}
   .detail-badges{margin:0 0 14px;flex-wrap:wrap}
   .detail-purpose,.detail-type{padding:6px 10px;font-size:9px}
   .detail-type{border:1px solid var(--line);background:none}
