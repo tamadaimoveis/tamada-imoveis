@@ -80,7 +80,7 @@ function normalize(value = '') {
 
 function money(value, monthly = false) {
   if (!value) return 'Sob consulta';
-  const formatted = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+  const cents = monthly && !Number.isInteger(value); const formatted = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 }).format(value);
   return monthly ? `${formatted}/mês` : formatted;
 }
 
@@ -196,7 +196,7 @@ function propertyCard(property) {
         <p class="property-location"><span>${property.neighborhood} · ${property.city}</span><span>${typeLabels[property.type] || 'Imóvel'}</span></p>
         <h3><a href="${href}"><span class="property-title-full">${property.title}</span><span class="property-title-short">${shortTitle(property)}</span></a></h3>
         <div class="property-specs">${specsMarkup(property)}</div>
-        <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}</strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+        <div class="property-price-row"><strong>${money(currentPrice, monthly)} ${property.sale && property.rent ? '<small>· venda ou aluguel</small>' : ''}${incluiHtml(property, ativo)}</strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
       </div>
     </article>`;
 }

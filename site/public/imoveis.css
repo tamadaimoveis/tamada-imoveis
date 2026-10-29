@@ -136,6 +136,12 @@
 .pc-label{position:relative;display:block;font-size:15px;letter-spacing:.01em;color:var(--muted);margin-bottom:6px}
 .pc-value{position:relative;display:block;font-size:clamp(34px,3.6vw,52px);font-weight:750;letter-spacing:-.03em;line-height:1;background:linear-gradient(120deg,#151514 0%,#3a1418 62%,var(--red) 130%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .pc-note{position:relative;font-size:12px;color:var(--muted);padding-bottom:5px}
+.pc-inclui{position:relative;display:block;margin-top:9px;font-size:13px;color:var(--muted)}
+.preco-inclui{display:block;margin-top:2px;font-size:10px;font-weight:400;letter-spacing:0;color:var(--muted)}
+.detail-composicao{margin:16px 0 30px;max-width:420px;border:1px solid var(--line);background:#fff;padding:16px 18px}
+.detail-composicao .dc-titulo{margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.detail-composicao dl{margin:0}.detail-composicao dl>div{display:flex;justify-content:space-between;gap:16px;padding:7px 0;font-size:14px}.detail-composicao dt small{font-size:11px;color:var(--muted)}.detail-composicao dd{margin:0}
+.detail-composicao .dc-total{margin-top:6px;border-top:1px solid var(--line);padding-top:11px;font-weight:700}
 
 .detail-intro .breadcrumbs{margin-bottom:16px}
 .detail-badges{display:flex;gap:8px;margin:0 0 16px}.detail-ref{display:none}
@@ -822,6 +828,8 @@
   .pc-label{color:rgba(255,255,255,.6);font-size:11px;margin-bottom:4px}
   .pc-value{font-family:Elicyon,Georgia,serif;background:none;-webkit-text-fill-color:initial;color:#fff;font-size:clamp(26px,8vw,34px);font-weight:400}
   .pc-note{color:rgba(255,255,255,.5);font-size:9px;max-width:110px;text-align:right;padding-bottom:0}
+  .pc-inclui{color:rgba(255,255,255,.6);font-size:11px;margin-top:6px}
+  .detail-composicao{margin:0 0 22px;max-width:none;border-top:0}
 
   .detail-intro-left{padding:16px}
   .detail-intro .breadcrumbs{display:none}

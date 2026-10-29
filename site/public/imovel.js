@@ -11,7 +11,7 @@ function normalize(value = '') {
 
 function money(value, monthly = false) {
   if (!value) return 'Sob consulta';
-  const text = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+  const cents = monthly && !Number.isInteger(value); const text = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 }).format(value);
   return monthly ? `${text}/mês` : text;
 }
 
@@ -256,7 +256,7 @@ function similarCard(property, purpose) {
       <span class="catalog-card-purpose">${purposeLabelContextual(property, purpose)}</span><span class="catalog-card-code">${property.ref}</span>${mobiliaBadge(property, 'on-card')}
     </div>
     <div class="catalog-card-copy"><p class="catalog-card-location">${property.neighborhood} · ${property.city}</p><h2>${property.title}</h2><div class="catalog-card-specs">${specs(property)}</div>
-      <div class="catalog-card-bottom"><strong>${money(destaque, locacao)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabelContextual(property, purpose)}</small></strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+      <div class="catalog-card-bottom"><strong>${money(destaque, locacao)}${incluiHtml(property, purpose)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabelContextual(property, purpose)}</small></strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
     </div></article>`;
 }
 
@@ -590,6 +590,31 @@ function setupFavorite(property) {
   });
 }
 
+/** Valor da composição: R$ com centavos só quando não é inteiro (R$ 6.516,67), sem "/mês". */
+function moneyExato(value) {
+  const cents = !Number.isInteger(value);
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 }).format(value);
+}
+
+/** Composição do valor mensal (aluguel + condomínio + IPTU = total). Só aparece quando a locação é o destaque
+ *  e há encargo cadastrado; sem condomínio/IPTU o valor é o próprio aluguel e a ficha fica como sempre foi. */
+function renderComposicao(property, destaqueLocacao) {
+  const el = document.querySelector('#detailComposicao');
+  if (!el) return;
+  const l = property.locacao;
+  if (!destaqueLocacao || !l || !l.inclui) { el.hidden = true; return; }
+  const linha = (rotulo, nota, valor, cls) =>
+    `<div${cls ? ` class="${cls}"` : ''}><dt>${rotulo}${nota ? ` <small>${nota}</small>` : ''}</dt><dd>${valor}</dd></div>`;
+  const iptuNota = l.iptuModo === 'anual' ? 'anual ÷ 12' : l.iptuModo === 'mensal' ? 'mensal' : '';
+  el.querySelector('dl').innerHTML = [
+    linha('Aluguel', '', moneyExato(l.aluguel)),
+    l.condominio ? linha('Condomínio', '', moneyExato(l.condominio)) : '',
+    l.iptu ? linha('IPTU', iptuNota, moneyExato(l.iptu)) : '',
+    linha('Total mensal', '', moneyExato(l.total), 'dc-total')
+  ].join('');
+  el.hidden = false;
+}
+
 function render(property) {
   document.title = `${property.title} — ${property.neighborhood} · Tamada Imóveis`;
   document.querySelector('#detailFound').hidden = false;
@@ -623,10 +648,14 @@ function render(property) {
   const secundario = precoSecundario(property, purpose);
   document.querySelector('#detailPriceLabel').textContent = rotuloPrecoContextual(property, purpose);
   document.querySelector('#detailPrice').textContent = mainPrice;
+  const inclui = textoIncluso(property, purpose);
+  const incluiEl = document.querySelector('#detailInclui');
+  if (incluiEl) { incluiEl.textContent = inclui; incluiEl.hidden = !inclui; }
+  renderComposicao(property, destaqueLocacao);
   document.querySelector('#asidePrice').textContent = mainPrice;
   document.querySelector('#asidePurpose').textContent = secundario != null
-    ? (destaqueLocacao ? `ou ${money(secundario)} na venda` : `ou ${money(secundario, true)} na locação`)
-    : purposeLabelContextual(property, purpose);
+    ? (destaqueLocacao ? `ou ${money(secundario)} na venda` : `ou ${money(secundario, true)} na locação${incluiLocacao(property) ? ` (inclui ${incluiLocacao(property)})` : ''}`)
+    : purposeLabelContextual(property, purpose) + (inclui ? ` · ${inclui}` : '');
 
   document.querySelector('#officialLink').href = purpose
     ? `${liveBase}${property.url}?de=${purpose}`

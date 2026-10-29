@@ -245,8 +245,13 @@ export default async function ImovelPage({ params }: Props) {
                       À venda por
                     </span>
                     <strong className="pc-value" id="detailPrice" />
+                    <span className="pc-inclui" id="detailInclui" hidden />
                   </div>
                   <span className="pc-note">* Os valores podem variar sem data prevista.</span>
+                </div>
+                <div className="detail-composicao" id="detailComposicao" hidden>
+                  <p className="dc-titulo">Composição do valor mensal</p>
+                  <dl />
                 </div>
 
                 <nav className="breadcrumbs" aria-label="Navegação estrutural">

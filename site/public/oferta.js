@@ -80,3 +80,24 @@ function rotuloPrecoContextual(property, purpose) {
   if (!precoDestaque(property, purpose)) return 'Valor';
   return destaqueEhLocacao(property, purpose) ? 'Para locação por' : 'À venda por';
 }
+
+/**
+ * O que o valor mensal da locação inclui além do aluguel ('condomínio', 'IPTU',
+ * 'condomínio e IPTU'), ou '' quando `rent` é só o aluguel. `rent` já é o valor
+ * cheio (aluguel + condomínio + IPTU mensal, calculado em queries.ts).
+ */
+function incluiLocacao(property) {
+  return { condominio: 'condomínio', iptu: 'IPTU', ambos: 'condomínio e IPTU' }[property.rentInclui] || '';
+}
+
+/** Texto discreto sob o preço, só quando o valor em destaque é a locação com encargos. '' = nada a mostrar. */
+function textoIncluso(property, purpose) {
+  const inclui = incluiLocacao(property);
+  return inclui && destaqueEhLocacao(property, purpose) ? `inclui ${inclui}` : '';
+}
+
+/** Mesmo texto, já como elemento do card (vazio quando não se aplica). */
+function incluiHtml(property, purpose) {
+  const texto = textoIncluso(property, purpose);
+  return texto ? `<span class="preco-inclui">${texto}</span>` : '';
+}

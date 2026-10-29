@@ -47,6 +47,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const brl = (v: number) => `R$ ${v.toLocaleString('pt-BR')}`
+// Locação é o valor cheio (pode ter centavos): 2 casas só quando não é inteiro, nunca 3.
+const brlMensal = (v: number) => `R$ ${v.toLocaleString('pt-BR', { minimumFractionDigits: Number.isInteger(v) ? 0 : 2, maximumFractionDigits: 2 })}`
 
 export default async function CondominioPage({ params }: Props) {
   const { slug } = await params
@@ -135,7 +137,7 @@ export default async function CondominioPage({ params }: Props) {
                       </p>
                       <h2>{p.title}</h2>
                       <div className="catalog-card-bottom">
-                        <strong>{p.sale ? brl(p.sale) : p.rent ? `${brl(p.rent)}/mês` : 'Sob consulta'}</strong>
+                        <strong>{p.sale ? brl(p.sale) : p.rent ? `${brlMensal(p.rent)}/mês` : 'Sob consulta'}</strong>
                         <a href={`/imovel/${p.ref}`} aria-label="Abrir imóvel">
                           <iconify-icon icon="solar:arrow-up-right-linear" />
                         </a>

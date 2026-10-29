@@ -63,7 +63,7 @@ function normalize(value = '') {
 
 function money(value, monthly = false) {
   if (!value) return 'Sob consulta';
-  const text = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+  const cents = monthly && !Number.isInteger(value); const text = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 }).format(value);
   return monthly ? `${text}/mês` : text;
 }
 
@@ -187,7 +187,7 @@ function card(property) {
       <button class="catalog-favorite ${saved ? 'saved' : ''}" type="button" data-favorite="${property.ref}" aria-label="${saved ? 'Remover dos favoritos' : 'Salvar imóvel'}"><iconify-icon icon="solar:heart-${saved ? 'bold' : 'linear'}"></iconify-icon></button>
     </div>
     <div class="catalog-card-copy"><p class="catalog-card-location">${property.neighborhood} · ${property.city}</p><h2>${property.title}</h2><div class="catalog-card-specs">${specs(property)}</div>
-      <div class="catalog-card-bottom"><strong>${displayPrice(property)}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
+      <div class="catalog-card-bottom"><strong>${displayPrice(property)}${incluiHtml(property, purposeAtivo())}<small>${typeLabels[property.type] || 'Imóvel'} · ${purposeLabel(property)}</small></strong><a href="${href}" aria-label="Abrir imóvel"><iconify-icon icon="solar:arrow-up-right-linear"></iconify-icon></a></div>
     </div></article>`;
 }
 

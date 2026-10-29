@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test:condominio": "node --test src/lib/condominio-secao.test.mjs"
+    "test:condominio": "node --test src/lib/condominio-secao.test.mjs",
+    "test:locacao": "node --test src/lib/valor-locacao.test.mjs src/lib/oferta.test.mjs"
   },
   "dependencies": {
     "@sanity/client": "^7.21.0",

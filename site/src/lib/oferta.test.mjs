@@ -28,6 +28,8 @@ const {
   rotuloPrecoContextual,
   temAmbos,
   purposeDaUrl,
+  textoIncluso,
+  incluiHtml,
 } = sandbox
 
 const soVenda = { sale: 500000, rent: null }
@@ -104,4 +106,22 @@ test('purposeDaUrl: aceita ?de= (ficha) e ?purpose= (catálogo), ignora valores 
   assert.equal(purposeDaUrl(), null)
   sandbox.window.location.search = ''
   assert.equal(purposeDaUrl(), null)
+})
+
+test('texto "inclui ...": só quando a locação com encargo é o valor em destaque', () => {
+  const comEncargos = { sale: null, rent: 3100, rentInclui: 'ambos' }
+  assert.equal(textoIncluso(comEncargos, null), 'inclui condomínio e IPTU')
+  assert.equal(textoIncluso({ ...comEncargos, rentInclui: 'condominio' }, 'rent'), 'inclui condomínio')
+  assert.equal(textoIncluso({ ...comEncargos, rentInclui: 'iptu' }, 'rent'), 'inclui IPTU')
+  // só aluguel (sem condomínio/IPTU): nada muda na tela
+  assert.equal(textoIncluso({ sale: null, rent: 1500 }, null), '')
+  assert.equal(incluiHtml({ sale: null, rent: 1500 }, null), '')
+})
+
+test('texto "inclui ...": imóvel de venda e locação só mostra com a locação em destaque', () => {
+  const dupla = { sale: 600000, rent: 3100, rentInclui: 'ambos' }
+  assert.equal(textoIncluso(dupla, 'sale'), '')
+  assert.equal(textoIncluso(dupla, null), '')
+  assert.equal(textoIncluso(dupla, 'rent'), 'inclui condomínio e IPTU')
+  assert.equal(incluiHtml(dupla, 'rent'), '<span class="preco-inclui">inclui condomínio e IPTU</span>')
 })

@@ -6,6 +6,7 @@
  * (com cache do Next), lá era arquivo gerado no build.
  */
 import { client } from './sanity'
+import { valorLocacao, tituloComValorCheio, type ValorLocacao } from './valor-locacao'
 import { COMODIDADES, ACABAMENTOS, GARANTIAS, PAGAMENTO, OCUPACAO, ORIENTACAO_SOLAR } from './opcoes'
 
 const REVALIDATE = 300
@@ -41,7 +42,10 @@ export type Imovel = {
   neighborhood: string
   city: string
   sale: number
+  /** Locação = valor cheio (aluguel + condomínio + IPTU mensal), igual ao do CRM; ver valor-locacao.ts. */
   rent: number
+  /** O que além do aluguel entrou em `rent`. Ausente = `rent` é só o aluguel. */
+  rentInclui?: 'condominio' | 'iptu' | 'ambos'
   area: number
   beds: number
   baths: number
@@ -59,6 +63,8 @@ export type Imovel = {
 
 export type ImovelDetalhe = Imovel & {
   codigo: string | null
+  /** Composição do valor mensal da locação (aluguel, condomínio, IPTU, total). null = imóvel sem aluguel. */
+  locacao: ValorLocacao | null
   photos: string[]
   descricao: string
   comodidades: string[]
@@ -198,6 +204,7 @@ const CAMPOS_BASICOS = `
   "city": cidade,
   "sale": price,
   "rent": rentPrice,
+  condominio, iptu, iptuPeriodo,
   area,
   "beds": bedrooms,
   "baths": bathrooms,
@@ -216,15 +223,17 @@ const coordValida = (lat?: number, lng?: number) =>
   typeof lat === 'number' && typeof lng === 'number' && lat > -24.3 && lat < -23.0 && lng > -47.3 && lng < -45.9
 
 function mapBasico(p: Bruto): Imovel {
+  const loc = valorLocacao(p)
   return {
     ref: p.ref,
-    title: p.title,
+    title: tituloComValorCheio(p.title, loc),
     featured: p.featured === true,
     type: TIPO[p.tipo ?? ''] || 'HOUSE',
     neighborhood: p.neighborhood || '',
     city: p.city || 'São Paulo',
     sale: p.sale || 0,
-    rent: p.rent || 0,
+    rent: loc?.total ?? 0,
+    ...(loc?.inclui ? { rentInclui: loc.inclui } : {}),
     area: p.area || 0,
     beds: p.beds || 0,
     baths: p.baths || 0,
@@ -326,7 +335,7 @@ const CAMPOS_DETALHE = `
   vagasCobertas, vagasDescobertas, garageType,
   numeroAndar, qtdAndar, qtdElevador, alturaPeDireito,
   anoConstrucao, anoReforma,
-  condominio, iptu, iptuPeriodo, precoM2Venda, priceCash, aceitaNegociacao,
+  precoM2Venda, priceCash, aceitaNegociacao,
   ocupacao, locado, exclusividade, zoneamento,
   description, videoUrl, tourVirtual,
   amenities, acabamentos, tags,
@@ -357,6 +366,7 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
   return {
     ...basico,
     codigo: p.codigo ?? null,
+    locacao: valorLocacao(p),
     photos: [p.img, ...(p.fotos || [])].filter((v): v is string => !!v),
     descricao: p.description || '',
     comodidades: rotular((p.amenities || []).filter((v) => !doCondominio.has(v)), COMODIDADES),
