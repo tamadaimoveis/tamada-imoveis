@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "check:tipos": "node src/lib/confere-tipos.mjs",
     "test:condominio": "node --test src/lib/condominio-secao.test.mjs",
     "test:locacao": "node --test src/lib/valor-locacao.test.mjs src/lib/oferta.test.mjs"
   },

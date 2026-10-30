@@ -7,35 +7,10 @@
  */
 import { client } from './sanity'
 import { valorLocacao, tituloComValorCheio, type ValorLocacao } from './valor-locacao'
+import { tipoDoSite } from './tipos'
 import { COMODIDADES, ACABAMENTOS, GARANTIAS, PAGAMENTO, OCUPACAO, ORIENTACAO_SOLAR } from './opcoes'
 
 const REVALIDATE = 300
-
-const TIPO: Record<string, string> = {
-  apartamento: 'APARTMENT',
-  apartamento_duplex: 'APARTMENT',
-  cobertura: 'APARTMENT',
-  studio: 'APARTMENT',
-  studio_kitchenette: 'APARTMENT',
-  estudio: 'APARTMENT',
-  conjunto: 'APARTMENT',
-  casa: 'HOUSE',
-  sobrado: 'TWO_STORY_HOUSE',
-  terreno: 'LAND',
-  area: 'LAND',
-  salao: 'HALL',
-  salao_comercial: 'HALL',
-  loja: 'HALL',
-  ponto: 'HALL',
-  sala: 'ROOM',
-  sala_comercial: 'ROOM',
-  predio: 'BUILDING',
-  predio_comercial: 'BUILDING',
-  hotel: 'BUILDING',
-  galpao: 'OUTHOUSE',
-  chacara: 'SMALL_FARM',
-  sitio: 'SMALL_FARM',
-}
 
 const FILTRO_PUBLICO = `_type=="property" && publicarSite==true && status=="ativo"`
 
@@ -233,7 +208,7 @@ function mapBasico(p: Bruto): Imovel {
     ref: p.ref,
     title: tituloComValorCheio(p.title, loc),
     featured: p.featured === true,
-    type: TIPO[p.tipo ?? ''] || 'HOUSE',
+    type: tipoDoSite(p.tipo),
     neighborhood: p.neighborhood || '',
     city: p.city || 'São Paulo',
     sale: p.sale || 0,
