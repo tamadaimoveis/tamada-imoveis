@@ -662,6 +662,8 @@ function render(property) {
     : `${liveBase}${property.url}`;
 
   setupLeadGate(property, destaqueLocacao);
+  // O pop-up do WhatsApp (whats-gate.js) usa o mesmo imóvel e a mesma finalidade do formulário.
+  window.__TAMADA_LEAD_CTX__ = { property, ehLocacao: destaqueLocacao };
   setupShare(property, purpose);
   setupFavorite(property);
   setupMedia(property);
