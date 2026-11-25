@@ -8,6 +8,7 @@
 import { client } from './sanity'
 import { valorLocacao, tituloComValorCheio, type ValorLocacao } from './valor-locacao'
 import { tipoDoSite } from './tipos'
+import { camposPersonalizados, type CampoBruto, type CampoFicha } from './campos-personalizados'
 import { COMODIDADES, ACABAMENTOS, GARANTIAS, PAGAMENTO, OCUPACAO, ORIENTACAO_SOLAR } from './opcoes'
 
 const REVALIDATE = 300
@@ -53,6 +54,8 @@ export type ImovelDetalhe = Imovel & {
   pagamento: string[]
   tags: string[]
   ficha: Record<string, unknown>
+  /** Campos personalizados do Trama (customFields) com valor: a ficha mostra todos, depois de Suítes. */
+  camposExtras: CampoFicha[]
   video: string | null
   videoInstitucional: boolean
   tour: string | null
@@ -73,6 +76,7 @@ export type ImovelDetalhe = Imovel & {
 
 type Bruto = {
   ref: string
+  customFields?: CampoBruto[]
   codigo?: string
   title: string
   tipo?: string
@@ -319,6 +323,7 @@ const CAMPOS_DETALHE = `
   ocupacao, locado, exclusividade, zoneamento,
   description, videoUrl, tourVirtual,
   amenities, acabamentos, tags,
+  customFields[]{ key, label, tipo, value, sufixo },
   captador, captadorCelular, captadorCRECI,
   "fotos": images[].asset->url,
   "usoDeVideo": count(*[_type=="property" && videoUrl==^.videoUrl]),
@@ -406,6 +411,7 @@ export async function getImovel(ref: string): Promise<ImovelDetalhe | null> {
                 ? 'Lançamento'
                 : null,
     },
+    camposExtras: camposPersonalizados(p.customFields),
     video: p.videoUrl || null,
     videoInstitucional: !!p.videoUrl && (p.usoDeVideo || 0) > LIMITE_INSTITUCIONAL,
     tour: p.tourVirtual || null,

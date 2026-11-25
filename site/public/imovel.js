@@ -112,6 +112,9 @@ function escapeHtml(s) {
    também não entra — imóvel sem condomínio não exibe "Condomínio: —". */
 function factRows(property) {
   const f = property.ficha || {};
+  const extras = Array.isArray(property.camposExtras) ? property.camposExtras.filter((c) => c && c.rotulo && c.valor) : [];
+  const norm = (s) => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+  const doTrama = new Set(extras.map((c) => norm(c.rotulo)));
   const m2 = v => `${String(v).replace('.', ',')} m²`;
   const brl = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
   const vagas = [
@@ -139,6 +142,9 @@ function factRows(property) {
     ['Área construída', f.areaConstruida ? m2(f.areaConstruida) : null],
     ['Área privativa', f.areaPrivativa ? m2(f.areaPrivativa) : null],
     ['Suítes', f.suites],
+    // Campos personalizados do Trama (customFields): todos os que têm valor, na ordem do CRM.
+    // Se um deles tiver o mesmo rótulo de uma linha fixa (ex.: "Salas"), vale o do Trama e a fixa sai.
+    ...extras.map((c) => [c.rotulo, c.valor]),
     ['Salas', f.salas],
     ['Lavanderia', f.lavanderia],
     ['Escritório', f.escritorio],
@@ -160,9 +166,11 @@ function factRows(property) {
     // alimenta esta página. Localização pública é só bairro e cidade.
   ];
 
+  const extraSet = new Set(extras.map((c) => c.rotulo));
   return rows
-    .filter(([, value]) => value !== null && value !== undefined && value !== '' && value !== 0)
-    .map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(String(value))}</dd></div>`)
+    .filter(([label, value]) => value !== null && value !== undefined && value !== '' && value !== 0)
+    .filter(([label]) => extraSet.has(label) || !doTrama.has(norm(label)))
+    .map(([label, value]) => `<div><dt>${escapeHtml(String(label))}</dt><dd>${escapeHtml(String(value))}</dd></div>`)
     .join('');
 }
 
